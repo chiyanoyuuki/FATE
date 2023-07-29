@@ -67,7 +67,7 @@
       <div style="width:100%">
         <div *ngFor="let user of users;let i=index" >
           <div style="display:flex;">
-            <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{i}}</p>
+            <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{(i+1)}}</p>
             <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
               <p class="sc" style="top:-3px">{{user.score}}</p><img draggable="false" src="./assets/images/graal.png"/>
             </div>

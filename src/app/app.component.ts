@@ -102,13 +102,13 @@ export class AppComponent implements OnInit
 
     this.getBanner();
     AppComponent.son = new Audio();
-    AppComponent.son.src = "../assets/Chaldea.ogg";
+    AppComponent.son.src = "./assets/Chaldea.ogg";
     AppComponent.son.load();
     AppComponent.son.volume = 0.1;
     AppComponent.son.loop = true;
 
     this.sonbtn = new Audio();
-    this.sonbtn.src = "../assets/confirm_button.mp3";
+    this.sonbtn.src = "./assets/confirm_button.mp3";
     this.sonbtn.load();
     this.sonbtn.volume = 0.5;
 
@@ -155,7 +155,7 @@ export class AppComponent implements OnInit
       this.vid.addEventListener('loadeddata', function() {
             AppComponent.loadedVid();
         }, false);
-        this.vid.src = "../assets/videos/"+this.video+".mp4"
+        this.vid.src = "./assets/videos/"+this.video+".mp4"
         this.vid.volume = 0.1;
         this.vid.currentTime = 0;
         this.vid.play();
@@ -353,7 +353,7 @@ export class AppComponent implements OnInit
   }
 
   getBack(){
-    if(!AppComponent.perso)return "../assets/images/back/saber.png";
+    if(!AppComponent.perso)return "./assets/images/back/saber.png";
       let retour: string = "";
       if(AppComponent.perso.level > 3)
       {
@@ -362,7 +362,7 @@ export class AppComponent implements OnInit
       retour += AppComponent.perso.classe;
       retour = retour.toLowerCase();
       retour = retour.replace(/ /g,"");
-      return "../assets/images/back/" + retour + ".png";
+      return "./assets/images/back/" + retour + ".png";
   }
   
   isShow(){
@@ -375,8 +375,8 @@ export class AppComponent implements OnInit
 
   getBorder()
   {
-    if(!AppComponent.perso)return "../assets/images/borders/" + 1 + ".png";
-    return "../assets/images/borders/" + AppComponent.perso.level + ".png";
+    if(!AppComponent.perso)return "./assets/images/borders/" + 1 + ".png";
+    return "./assets/images/borders/" + AppComponent.perso.level + ".png";
   }
 
   videoEnd()
