@@ -1,1 +1,246 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+    font-family: 'font2';
+    src: url('./assets/fonts/Ancient Medium.ttf');
+  }
+
+  @font-face {
+    font-family: 'font3';
+    src: url('./assets/fonts/Kastellar Wd Regular.ttf');
+  }
+
+  @font-face {
+    font-family: 'font';
+    src: url('./assets/fonts/Algerian Regular.ttf');
+  }
+
+  * {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+  
+body{
+    background-color: black;
+    margin:0;
+}
+
+  p{
+    font-family: 'font';
+    margin:0;
+    color:#aa2020;
+    font-size: 20px;
+    text-shadow: 4px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+  }
+
+.boosted1 div{
+    position: absolute;
+    bottom: 50px;
+    max-width: 330px;
+    left:10px;
+}
+
+div .boosted2{
+    position: absolute;
+    bottom: 32px;
+    max-width: 330px;
+    left:8px;
+}
+
+div .row5
+{
+    bottom: 12px;
+}
+
+.boosted2 p{
+    line-height:13px;
+    font-size:16px;
+    display:none;
+}
+
+.boosted1 p{
+    font-size: 65px;
+    line-height:45px;
+}
+
+.right div{
+    right:15px;
+}
+
+.left div p{
+    text-align: left;
+}
+.right div p{
+    text-align: right;
+}
+
+.summon:hover{
+    cursor:pointer;
+    filter: brightness(140%);
+}
+
+.footer img:hover{
+    cursor:pointer;
+    opacity:0.5;
+}
+
+.header div, .score{
+    width: 200px;
+height: 40px;
+border: 2px solid #bbb;
+background-color: rgba(20,20,20,0.5);
+border-radius: 20px;
+margin-top: 20px;
+text-align: center;
+position: relative;
+box-shadow: black -9px 8px 15px;
+}
+
+.header div p, .score .sc{
+    font-size: 35px;
+top: -4px;
+position: relative;
+color: white;
+text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.header div img, .score img{
+    height: 70px;
+left: -25px;
+position: absolute;
+top: -15px;
+}
+
+.recap img{
+    height:200px;
+}
+
+.connform{
+    padding: 50px 0px;
+background-color: rgba(20,20,20,0.9);
+border: 3px ridge #bbb;
+border-radius: 20px;
+box-shadow: black 10px 10px 10px;
+display:flex;
+justify-content: center;
+width:550px;
+}
+
+.connform p{
+color: white;
+text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+margin-bottom:3px;
+}
+
+input{
+    background-color: #404040;
+border: 3px ridge #bbb;
+border-radius: 20px;
+padding: 5px;
+width: 100%;
+text-align: center;
+color: white;
+box-shadow: black 10px 10px 10px;
+margin-bottom:10px;
+}
+
+
+button{
+    background-color: #404040;
+border: 3px ridge #bbb;
+border-radius: 20px;
+padding: 5px;
+width: 100px;
+text-align: center;
+color: white;
+box-shadow: black 10px 10px 10px;
+margin-top:10px;
+}
+
+button:hover{
+    cursor:pointer;
+    opacity:0.5;
+}
+
+.disabled{
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+.disabledButton{
+    opacity:0.2;
+    pointer-events: none;
+}
+
+.options{
+    position: absolute;
+width: 110px;
+background-color: rgba(20,20,20,0.9);
+box-shadow: black 10px 10px 10px;
+border: 3px ridge #bbb;
+z-index: 2;
+left: -3px;
+padding-left: 20px;
+padding: 20px;
+overflow:hidden;
+}
+
+.options p{
+    color:white;
+    text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.options p:hover{
+    cursor:pointer;
+    opacity:0.5;
+}
+
+.red{
+    color:#aa2020 !important;
+}
+
+.tab2{
+    position: relative;
+top: 0px;
+display: flex;
+max-width: 80%;
+overflow-y: auto;
+overflow-x: hidden;
+white-space: pre;
+flex-flow: wrap;
+max-height: 779px;
+left: 200px;
+}
+
+.tab{
+    display: flex;
+white-space: pre;
+flex-flow: wrap;
+}
+
+.containerScore{
+    position: absolute;
+left: 27%;
+top: 120px;
+width: 750px;
+display: flex;
+justify-content: center;
+padding: 40px 0px;
+background-color: rgba(20,20,20,0.9);
+box-shadow: black 10px 10px 10px;
+border: 3px ridge #bbb;
+max-height: 693px;
+overflow-y: auto;
+}
+
+.nextBann
+{
+    position: absolute;
+z-index: 4;
+font-size: 65px;
+white-space: nowrap;
+left: 380px;
+top: -35px;
+text-shadow: 4px 0 green, 0 2px green, 2px 0 green, 2px 2px green;
+color: white;
+}
