@@ -99,6 +99,16 @@ export class AppComponent implements OnInit
     //partager site
     //defis
     //choix favori
+    //button refresh friends
+    //enlevere waiting
+    //bouton son
+    //timings
+    //10 par jours
+    //video + rapide
+    //voir servants en + grand
+    //quartz dans friends
+    //filter inverse
+    //verifier pokedex
 
     this.getBanner();
     AppComponent.son = new Audio();
@@ -202,7 +212,6 @@ export class AppComponent implements OnInit
     }
     this.sonbtn.play();
     this.spendQuartz(nb*3);
-    console.log(this.persosToInvoq);
     for(let i=0;i<nb;i++)
     {
       this.addServant(this.persosToInvoq[i]);
@@ -345,7 +354,6 @@ export class AppComponent implements OnInit
         else if(rdm2==2)perso = this.data.filter((d:any)=>d.nom=="Craft Essence"&&d.level==1)[0];
       }
     }
-    if(perso==undefined)console.log(rdm);
     this.persosToInvoq.push(perso);
   }
 

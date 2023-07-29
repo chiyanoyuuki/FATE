@@ -65,13 +65,17 @@
 
     <div *ngIf="state=='friends'" class="containerScore">
       <div style="width:100%">
+        <button (click)="getUsers()" style="position: absolute;top: -10px;left: 265px;width: 200px;">Refresh</button>
         <div *ngFor="let user of users;let i=index" >
           <div style="display:flex;">
             <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{(i+1)}}</p>
             <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
               <p class="sc" style="top:-3px">{{user.score}}</p><img draggable="false" src="./assets/images/graal.png"/>
             </div>
-            <p style="position: absolute;left: 300px;padding-top: 10px;font-size:30px;text-align: left;" [style.color]="user.id==id?'#bb9930':'#aa2020'">{{user.nom}}</p>
+            <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
+              <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
+            </div>
+            <p style="position: absolute;left: 530px;padding-top: 10px;font-size:30px;text-align: left;" [style.color]="user.id==id?'#bb9930':'#aa2020'">{{user.nom}}</p>
           </div>
         </div>
       </div>
