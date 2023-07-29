@@ -62,7 +62,9 @@ export class AppComponent implements OnInit
   public expand = true;
   public score = 0;
   public nextChangeBanner : any;
+  public nextChangeBanners : any;
   public nextSQ : any;
+  public nextSQs : any;
 
   public vid: any;
   public load: boolean = false;
@@ -84,6 +86,10 @@ export class AppComponent implements OnInit
   public users: any;
   public banner: any;
   public bannerInterval: any;
+
+  public timerBanner: any = 5000000;
+  public timerQuartz: any = 5000000;
+  public timerInterval: any;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -109,6 +115,29 @@ export class AppComponent implements OnInit
     //quartz dans friends
     //filter inverse
     //verifier pokedex
+    //voir pokedex autres avec option desactiver
+    //craft essence
+    //succès
+
+    this.timerInterval = setInterval(() => {
+      this.timerBanner -= 1000;
+      this.timerQuartz -= 1000;
+      this.nextSQ = Math.floor(this.timerQuartz/60000);
+      this.nextSQs = Math.floor((this.timerQuartz%60000)/1000);
+      this.nextChangeBanner = Math.floor(this.timerBanner/60000);
+      this.nextChangeBanners = Math.floor((this.timerBanner%60000)/1000);
+
+      if(this.timerQuartz<=0)
+      {
+        this.timerQuartz = 400000;
+        this.spendQuartz(-1);
+      }
+      if(this.timerBanner<=0)
+      {
+        this.timerBanner = 1800000;
+        this.generateBanner();
+      }
+  },1000);
 
     this.getBanner();
     AppComponent.son = new Audio();
@@ -276,7 +305,7 @@ export class AppComponent implements OnInit
   {
     let perso: any;
     let rdm = Math.floor(Math.random()*1000);
-    if(rdm==0)
+    if(rdm==666)
     {
       let persos = this.data.filter((d:any)=>d.level==0&&d.nom!="Craft Essence");
       perso = persos[0];
@@ -440,14 +469,7 @@ export class AppComponent implements OnInit
         this.getUsers();
         this.state = "banner";
         AppComponent.son.play();
-        let now = Date.now();
-        this.nextSQ = new Date(now + 400000);
-
-        this.CEInterval = setInterval(() => {
-          let now = Date.now();
-          this.nextSQ = new Date(now + 400000);
-          this.spendQuartz(-1);
-      },400000);
+        this.timerQuartz = 400000;
       }
     });
   }
@@ -581,32 +603,13 @@ export class AppComponent implements OnInit
       if(ecart>30)
       {
         this.generateBanner();
-        this.nextChangeBanner = new Date(now + 30*60000);
-        this.bannerInterval = setInterval(() => {
-          let now = Date.now();
-          this.nextChangeBanner = new Date(now + 30*60000);
-          this.generateBanner();
-          clearInterval(this.bannerInterval);
-      },30*60*1000);
+        this.timerBanner = 30*60000;
       }
       else
       {
-        if(this.bannerInterval)clearInterval(this.bannerInterval);
         ecart = ecart*60000;
         let restant = 30*60000 - ecart;
-        this.nextChangeBanner = new Date(now+restant);
-        this.bannerInterval = setInterval(() => {
-          this.generateBanner();
-          let now = Date.now();
-          this.nextChangeBanner = new Date(now + 30*60000);
-          clearInterval(this.bannerInterval);
-          this.bannerInterval = setInterval(() => {
-            let now = Date.now();
-            this.nextChangeBanner = new Date(now + 30*60000);
-            this.generateBanner();
-            clearInterval(this.bannerInterval);
-        },30*60*1000);
-      },restant);
+        this.timerBanner = restant;
       }
       this.loadPersos();
     });

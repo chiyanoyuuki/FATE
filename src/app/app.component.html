@@ -87,7 +87,7 @@
         <div><p>{{score}}</p><img draggable="false" src="./assets/images/graal.png"/></div>
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
         <div><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
-        <p style="position: absolute;top: 68px;right: 280px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ | date: 'HH:mm'}}</p>
+        <p style="position: absolute;top: 68px;right: 280px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
   
       <img draggable="false" src="./assets/images/wait.png" *ngIf="state!='recap'&&state!='formation'&&state!='friends'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
@@ -103,7 +103,7 @@
       
       <div style="position:relative;height:505px;left:150px;width:fit-content" *ngIf="state=='banner'">
         <img draggable="false" style="position:absolute;width:1400px" src="./assets/images/backBanner.png"/>
-        <p  class="nextBann" >Next Banner : {{nextChangeBanner | date: 'HH:mm'}}</p>
+        <p  class="nextBann" >Next Banner : {{nextChangeBanner < 10?'0':''}}{{nextChangeBanner}}:{{nextChangeBanners < 10?'0':''}}{{nextChangeBanners}}</p>
         <div style="position:absolute;left:350px;top:135px">
           <div style="display:flex">
             <div *ngFor="let perso of persos5" style="position:relative">
