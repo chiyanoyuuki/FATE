@@ -115,7 +115,6 @@ export class AppComponent implements OnInit
     document.oncontextmenu = function () {
       return false;
     }
-    this.loadPersos();
   }
 
   public generateBanner()
@@ -203,6 +202,7 @@ export class AppComponent implements OnInit
     }
     this.sonbtn.play();
     this.spendQuartz(nb*3);
+    console.log(this.persosToInvoq);
     for(let i=0;i<nb;i++)
     {
       this.addServant(this.persosToInvoq[i]);
@@ -345,6 +345,7 @@ export class AppComponent implements OnInit
         else if(rdm2==2)perso = this.data.filter((d:any)=>d.nom=="Craft Essence"&&d.level==1)[0];
       }
     }
+    if(perso==undefined)console.log(rdm);
     this.persosToInvoq.push(perso);
   }
 
@@ -563,14 +564,12 @@ export class AppComponent implements OnInit
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetBanner').subscribe(data=>
     {
       this.banner = data[0];
-      console.log(this.banner);
       this.setBanner();
       let date = new Date(data[0].maj);
       let now = Date.now();
       let ecart = now-date.getTime();
       ecart = ecart/1000;//secondes
       ecart = ecart/60;//minutes
-      console.log(ecart);
       if(ecart>30)
       {
         this.generateBanner();
@@ -601,6 +600,7 @@ export class AppComponent implements OnInit
         },30*60*1000);
       },restant);
       }
+      this.loadPersos();
     });
   }
 
