@@ -1,5 +1,5 @@
     <div *ngIf="state=='connection'">
-      <img draggable="false" src="../assets/images/connScreen.png" style="width:100%"/>
+      <img draggable="false" src="./assets/images/connScreen.png" style="width:100%"/>
       <div class="connform" style="position: absolute;left:33%;top:23%">
         <div>
           <p>Pseudo :</p>
@@ -44,7 +44,7 @@
         <div class="tab">
           <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;">
             <img draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}"/>
-            <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="../assets/images/borders/{{perso.level}}.png"/>
+            <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
             <p style="bottom: 0px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
               background-color: #aa2002;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{perso.qte}}</p>
             <p style="height:0px;white-space: break-spaces;line-height: 10px;width:130px;top: -33px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{perso.nom}}</p>
@@ -55,7 +55,7 @@
         <div class="tab">
           <div *ngFor="let perso of getNoData();let i=index" style="position:relative;margin-right:10px;filter: grayscale(200%);opacity: 0.6;">
             <img draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px" src="{{perso.img1}}"/>
-            <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="../assets/images/borders/{{perso.level}}.png"/>
+            <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
             <p style="width:130px;top: -33px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
             white-space: break-spaces;line-height: 10px;">{{perso.nom}}</p>
           </div>
@@ -69,7 +69,7 @@
           <div style="display:flex;">
             <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{i}}</p>
             <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
-              <p class="sc" style="top:-3px">{{user.score}}</p><img draggable="false" src="../assets/images/graal.png"/>
+              <p class="sc" style="top:-3px">{{user.score}}</p><img draggable="false" src="./assets/images/graal.png"/>
             </div>
             <p style="position: absolute;left: 300px;padding-top: 10px;font-size:30px;text-align: left;" [style.color]="user.id==id?'#bb9930':'#aa2020'">{{user.nom}}</p>
           </div>
@@ -80,25 +80,25 @@
     
     <div *ngIf="state!='connection'">
       <div class="header" style="box-shadow: white 1px 1px 10px;width: 99%;height: 90px;background-color: rgba(100,150,200,0.8);border: 3px ridge #555;display:flex;justify-content: space-around;margin-bottom:20px;">
-        <div><p>{{score}}</p><img draggable="false" src="../assets/images/graal.png"/></div>
+        <div><p>{{score}}</p><img draggable="false" src="./assets/images/graal.png"/></div>
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
-        <div><p>{{quartz}}</p><img draggable="false" src="../assets/images/quartz.png"/></div>
+        <div><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
         <p style="position: absolute;top: 68px;right: 280px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ | date: 'HH:mm'}}</p>
       </div>
   
-      <img draggable="false" src="../assets/images/wait.png" *ngIf="state!='recap'&&state!='formation'&&state!='friends'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
+      <img draggable="false" src="./assets/images/wait.png" *ngIf="state!='recap'&&state!='formation'&&state!='friends'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
   
-      <img draggable="false" src="../assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
+      <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
   
       <div class="recap" *ngIf="state=='recap'" style="display:flex;justify-content: center;top: 270px;position: absolute;width: 100%;">
         <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="{{perso.img1}}"/>
         <div style="position: absolute;">
-          <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="../assets/images/borders/{{perso.level}}.png"/>
+          <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="./assets/images/borders/{{perso.level}}.png"/>
         </div>
       </div>
       
       <div style="position:relative;height:505px;left:150px;width:fit-content" *ngIf="state=='banner'">
-        <img draggable="false" style="position:absolute;width:1400px" src="../assets/images/backBanner.png"/>
+        <img draggable="false" style="position:absolute;width:1400px" src="./assets/images/backBanner.png"/>
         <p  class="nextBann" >Next Banner : {{nextChangeBanner | date: 'HH:mm'}}</p>
         <div style="position:absolute;left:350px;top:135px">
           <div style="display:flex">
@@ -135,17 +135,17 @@
           </div>
         </div>
         
-        <img draggable="false" style="box-shadow: green 0px 0px 25px;position:absolute;width:1400px" src="../assets/images/frontBanner.png" />
+        <img draggable="false" style="box-shadow: green 0px 0px 25px;position:absolute;width:1400px" src="./assets/images/frontBanner.png" />
   
         <div style="position:absolute;left:410px;bottom:-10%;display:flex;">
-          <img draggable="false" [class.disabled]="cantInvoq(1)" class="summon" style="margin-right:50px;" src="../assets/images/summon1.png" (click)="startSummon(1)"/>
-          <img draggable="false" [class.disabled]="cantInvoq(10)" class="summon"  src="../assets/images/summon.png" (click)="startSummon(10)"/>
+          <img draggable="false" [class.disabled]="cantInvoq(1)" class="summon" style="margin-right:50px;" src="./assets/images/summon1.png" (click)="startSummon(1)"/>
+          <img draggable="false" [class.disabled]="cantInvoq(10)" class="summon"  src="./assets/images/summon.png" (click)="startSummon(10)"/>
         </div>
       </div>
   
       <div [style.display]="state=='invocation'?'unset':'none'">
         <video muted id="video1"  width="1407px" height="580px" style="left:150px;position: absolute;" (ended)="videoEnd()">
-            <source src="../assets/videos/cligno.mp4" type='video/mp4'/>
+            <source src="./assets/videos/cligno.mp4" type='video/mp4'/>
         </video>
   
         <div [style.display]="isShow()?'unset':'none'">
@@ -167,9 +167,9 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="playButton();state!='invocation'?state='formation':null" src="../assets/images/formationButton.png"/>
-        <img draggable="false" (click)="playButton();state!='invocation'?state='banner':null" src="../assets/images/summonButton.png"/>
-        <img draggable="false" (click)="playButton();state!='invocation'?state='friends':null" src="../assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
       </div>
     </div>
     
