@@ -201,14 +201,13 @@ overflow:hidden;
 
 .tab2{
     position: relative;
-    top: -20px;
     display: flex;
     max-width: 80%;
     overflow-y: auto;
     overflow-x: hidden;
     white-space: pre;
     flex-flow: wrap;
-    max-height: 560px;
+    max-height: 545px;
     left: 200px;
     padding: 20px 20px;
 }

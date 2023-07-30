@@ -55,6 +55,7 @@ export class AppComponent implements OnInit
   public sonbtn: any;
   public titles: any;
   public allTitles: any;
+  public recherche = "";
 
   public pseudo = "";
   public mdp = "";
@@ -154,6 +155,41 @@ export class AppComponent implements OnInit
     document.oncontextmenu = function () {
       return false;
     }
+  }
+
+  testTirages()
+  {
+    let tirages = 100000;
+    let data = [0,0,0,0,0,0,0,0,0,0,0];
+    for(let i=0;i<tirages;i++)
+    {
+      if(i%1000==0)console.log(i);
+      let perso = this.persosToInvoq.shift();
+      this.loadPerso();
+      if(perso==this.perso5)data[0]++;
+      else if(perso==this.perso4)data[1]++;
+      else if(this.persos5.includes(perso))data[2]++;
+      else if(this.persos4.includes(perso))data[3]++;
+      else if(perso.nom!="Craft Essence" && perso.level==5)data[4]++;
+      else if(perso.nom!="Craft Essence" && perso.level==4)data[5]++;
+      else if(perso.nom!="Craft Essence" && perso.level==3)data[6]++;
+      else if(perso.nom!="Craft Essence" && perso.level==2)data[7]++;
+      else if(perso.nom!="Craft Essence" && perso.level==1)data[8]++;
+      else if(perso.nom!="Craft Essence" && perso.level==0)data[9]++;
+      else data[10]++;
+    }
+    console.log("Sur "+tirages+" :");
+    console.log("Perso super boosté 5* : "+data[0]);
+    console.log("Perso super boosté 4* : "+data[1]);
+    console.log("Perso boosté parmis les 10 5* : "+data[2]);
+    console.log("Perso boosté parmis les 10 4* : "+data[3]);
+    console.log("Perso aléatoire 5* : "+data[4]);
+    console.log("Perso aléatoire 4* : "+data[5]);
+    console.log("Perso aléatoire 3* : "+data[6]);
+    console.log("Perso aléatoire 2* : "+data[7]);
+    console.log("Perso aléatoire 1* : "+data[8]);
+    console.log("Perso aléatoire 0* : "+data[9]);
+    console.log("Craft Eseence : "+data[10]);
   }
 
   public daily()
@@ -267,6 +303,7 @@ export class AppComponent implements OnInit
     this.persosInvoqued = [];
     this.invocs = nb;
     this.summon();
+    this.getTitles();
   }
 
   public summon()
@@ -317,6 +354,9 @@ export class AppComponent implements OnInit
     {
       this.loadPerso();
     }
+    
+
+    //this.testTirages();
   }
 
   loadPerso()
@@ -839,6 +879,11 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>d.nom!="Craft Essence");
     }
+    if(this.recherche!="")
+    {
+      let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
+      data = data.filter((d:any)=>d.nom.toLowerCase().match(regexp));
+    }
     
     this.sorting(data);
     return data;
@@ -856,6 +901,11 @@ export class AppComponent implements OnInit
     if(!this.showEssences)
     {
       data = data.filter((d:any)=>d.nom!="Craft Essence");
+    }
+    if(this.recherche!="")
+    {
+      let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
+      data = data.filter((d:any)=>d.nom.toLowerCase().match(regexp));
     }
 
     this.sorting(data);

@@ -29,6 +29,7 @@
     </div>
 
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >
+      <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;"/>
       <div class="options">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
         <p [class.red]="includesFilter('Archer')" (click)="filter('Archer')">Archer</p>
@@ -182,9 +183,9 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
-        <img draggable="false" (click)="selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
-        <img draggable="false" (click)="selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
       </div>
     </div>
     
