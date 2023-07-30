@@ -36,8 +36,8 @@
         <p [class.red]="includesFilter('Ruler')" (click)="filter('Ruler')">Ruler</p>
         <p [class.red]="includesFilter('Saber')" (click)="filter('Saber')">Saber</p>
         <p [class.red]="includesFilter('Shielder')" (click)="filter('Shielder')">Shielder</p>
-        <p>&nbsp;</p>
-        <p [class.red]="includesFilter('Craft Essence')" (click)="filter('Craft Essence')">Craft Essence</p>
+        <p>____________</p>
+        <p [class.red]="!showEssences" (click)="showEssences=!showEssences">Craft Essence</p>
       </div>
 
       <div class="tab2">
@@ -90,7 +90,7 @@
         <p style="position: absolute;top: 68px;right: 280px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
   
-      <img draggable="false" src="./assets/images/wait.png" *ngIf="state!='recap'&&state!='formation'&&state!='friends'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
+      <img draggable="false" src="./assets/images/wait.png" *ngIf="state=='invocation'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
   
       <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
   
@@ -102,24 +102,24 @@
       </div>
       
       <div style="position:relative;height:505px;left:150px;width:fit-content" *ngIf="state=='banner'">
-        <img draggable="false" style="position:absolute;width:1400px" src="./assets/images/backBanner.png"/>
+        <img draggable="false" style="position:absolute;width:1400px;" src="./assets/images/backBanner.png"/>
         <p  class="nextBann" >Next Banner : {{nextChangeBanner < 10?'0':''}}{{nextChangeBanner}}:{{nextChangeBanners < 10?'0':''}}{{nextChangeBanners}}</p>
-        <div style="position:absolute;left:350px;top:135px">
+        <div style="position:absolute;left:350px;top:135px" (mouseleave)="focus=undefined">
           <div style="display:flex">
             <div *ngFor="let perso of persos5" style="position:relative">
-              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" />
-              <div class="boosted2 row5">
-                <p>{{perso.level}}★</p>
-                <p>{{perso.nom}}</p>
+              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable"/>
+              <div class="boosted2 row5"  style="pointer-events: none;z-index: 3;">
+                <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
+                <p [style.display]="focus==perso?'unset':'none'">{{perso.nom}}</p>
               </div>
             </div>
           </div>
           <div style="display:flex">
             <div *ngFor="let perso of persos4" style="position:relative">
-              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" />
-              <div class="boosted2">
-                <p>{{perso.level}}★</p>
-                <p>{{perso.nom}}</p>
+              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable"/>
+              <div class="boosted2"  style="pointer-events: none;z-index: 3;">
+                <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
+                <p [style.display]="focus==perso?'unset':'none'">{{perso.nom}}</p>
               </div>
             </div>
           </div>
@@ -139,7 +139,7 @@
           </div>
         </div>
         
-        <img draggable="false" style="box-shadow: green 0px 0px 25px;position:absolute;width:1400px" src="./assets/images/frontBanner.png" />
+        <img draggable="false" style="box-shadow: green 0px 0px 25px;position:absolute;width:1400px;pointer-events: none;" src="./assets/images/frontBanner.png" />
   
         <div style="position:absolute;left:410px;bottom:-10%;display:flex;">
           <img draggable="false" [class.disabled]="cantInvoq(1)" class="summon" style="margin-right:50px;" src="./assets/images/summon1.png" (click)="startSummon(1)"/>

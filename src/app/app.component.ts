@@ -65,6 +65,7 @@ export class AppComponent implements OnInit
   public nextChangeBanners : any;
   public nextSQ : any;
   public nextSQs : any;
+  public user: any;
 
   public vid: any;
   public load: boolean = false;
@@ -86,10 +87,13 @@ export class AppComponent implements OnInit
   public users: any;
   public banner: any;
   public bannerInterval: any;
+  public dailyInterval: any;
 
   public timerBanner: any = 5000000;
   public timerQuartz: any = 5000000;
   public timerInterval: any;
+  public showEssences = false;
+  public focus: any;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -102,22 +106,15 @@ export class AppComponent implements OnInit
 
   ngOnInit(){
     //son vidéo servant ao
-    //partager site
     //defis
     //choix favori
-    //button refresh friends
-    //enlevere waiting
     //bouton son
-    //timings
-    //10 par jours
     //video + rapide
     //voir servants en + grand
-    //quartz dans friends
-    //filter inverse
-    //verifier pokedex
     //voir pokedex autres avec option desactiver
     //craft essence
     //succès
+    //hover invoc display name
 
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
@@ -154,6 +151,24 @@ export class AppComponent implements OnInit
     document.oncontextmenu = function () {
       return false;
     }
+  }
+
+  public daily()
+  {
+    let date = new Date(this.user.daily);
+    let now = new Date(Date.now());
+    if(date.getDate()!=now.getDate())
+    {
+      this.spendQuartz(-30);
+    }
+    let time = (23-now.getHours())*1000*60*60+(59-now.getMinutes())*1000*60+(60-now.getSeconds())*1000;
+    this.timerInterval = setInterval(() => {
+      this.spendQuartz(-30);
+      clearInterval(this.timerInterval);
+      this.timerInterval = setInterval(() => {
+        this.spendQuartz(-30);
+    },1000*60*60*24);
+  },time);
   }
 
   public generateBanner()
@@ -462,6 +477,7 @@ export class AppComponent implements OnInit
       }
       else
       {
+        this.user = data[0];
         this.quartz = data[0].quartz;
         this.id = data[0].id;
         this.score = data[0].score;
@@ -470,6 +486,7 @@ export class AppComponent implements OnInit
         this.state = "banner";
         AppComponent.son.play();
         this.timerQuartz = 400000;
+        this.daily();
       }
     });
   }
@@ -517,6 +534,25 @@ export class AppComponent implements OnInit
 
   spendQuartz(qte:number)
   {
+    if(qte==-30)
+    {
+      const dataToSend = {
+        id:this.id
+      }
+      from(
+        fetch(
+          'https://www.chiya-no-yuuki.fr/FATEdaily',
+          {
+            body: JSON.stringify(dataToSend),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            mode: 'no-cors',
+          }
+        )
+      );
+    }
     this.quartz-=qte;
     const dataToSend = {
       nom:this.pseudo,
@@ -723,18 +759,15 @@ export class AppComponent implements OnInit
   getData()
   {
     let data = this.userData;
-    for(let i=0;i<this.filters.length;i++)
+    if(this.filters.length>0)
     {
-      let filter = this.filters[i];
-      if(filter=="Craft Essence")
-      {
-        data = data.filter((d:any)=>d.nom!="Craft Essence");
-      }
-      else
-      {
-        data = data.filter((d:any)=>d.classe!=filter);
-      }
+      data = data.filter((d:any)=>this.filters.includes(d.classe));
     }
+    if(!this.showEssences)
+    {
+      data = data.filter((d:any)=>d.nom!="Craft Essence");
+    }
+    
     this.sorting(data);
     return data;
   }
@@ -742,19 +775,17 @@ export class AppComponent implements OnInit
   getNoData()
   {
     let data = this.data;
-    data = data.filter((d:any)=>!this.userData.includes(d.id));
-    for(let i=0;i<this.filters.length;i++)
+    data = data.filter((d:any)=>!this.userData.find((e:any)=>e.id==d.id));
+
+    if(this.filters.length>0)
     {
-      let filter = this.filters[i];
-      if(filter=="Craft Essence")
-      {
-        data = data.filter((d:any)=>d.nom!="Craft Essence");
-      }
-      else
-      {
-        data = data.filter((d:any)=>d.classe!=filter);
-      }
+      data = data.filter((d:any)=>this.filters.includes(d.classe));
     }
+    if(!this.showEssences)
+    {
+      data = data.filter((d:any)=>d.nom!="Craft Essence");
+    }
+
     this.sorting(data);
     return data;
   }
@@ -772,7 +803,7 @@ export class AppComponent implements OnInit
   }
 
   includesFilter(filter:string){
-    return this.filters.includes(filter);
+    return !this.filters.includes(filter);
   }
 
   sorting(data:any)

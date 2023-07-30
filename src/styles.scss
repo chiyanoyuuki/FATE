@@ -244,3 +244,9 @@ top: -35px;
 text-shadow: 4px 0 green, 0 2px green, 2px 0 green, 2px 2px green;
 color: white;
 }
+
+.clickable:hover
+{
+    opacity:0.8;
+    cursor:pointer;
+}
