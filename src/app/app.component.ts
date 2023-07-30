@@ -538,6 +538,12 @@ export class AppComponent implements OnInit
     return this.titles.includes(id);
   }
 
+  golden(id:any)
+  {
+    let lessthan4 = this.data.find((d:any)=>d.id==id).level<4;
+    return this.titles.includes(id) && !lessthan4;
+  }
+
   getUsers(){
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUsers').subscribe(data=>
     {
