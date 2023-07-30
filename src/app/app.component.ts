@@ -530,6 +530,7 @@ export class AppComponent implements OnInit
         this.score = data[0].score;
         this.getUserData(false);
         this.getUsers();
+        this.conn();
         this.getTitles();
         this.getShop();
         this.state = "banner";
@@ -538,6 +539,26 @@ export class AppComponent implements OnInit
         this.daily();
       }
     });
+  }
+
+  conn()
+  {
+    const dataToSend = {
+      id:this.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEconn',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
   }
 
   getTitles()
@@ -658,9 +679,9 @@ export class AppComponent implements OnInit
     }
   }
 
-  first(id:any)
+  first(serv:any)
   {
-    return this.titles.includes(id);
+    return this.titles.includes(serv.id) || (serv.level < 4&&serv.nom!="Craft Essence");
   }
 
   golden(id:any)
@@ -675,16 +696,47 @@ export class AppComponent implements OnInit
       this.users = data;
 
       this.users.forEach((u:any)=>{
-        let date = new Date(u.last);
-        let now = new Date(Date.now());
-        if(date.getDate()==now.getDate()) u.last = (date.getHours()<10?'0':'')+date.getHours() + ":" + (date.getMinutes()<10?'0':'')+date.getMinutes();
-        else if(date.getDate()==now.getDate()-1) u.last = date.getDate() + " " + date.getMonth() + " " + (date.getHours()<10?'0':'')+date.getHours() + ":" + (date.getMinutes()<10?'0':'')+date.getMinutes();
-        else u.last = "Il y a plus d'un jour";
+        let ecart = this.getEcart(u.last,false,true,false);
+        u.last = ecart;
+        ecart = this.getEcart(u.conn,false,false,false);
+        let ecartActivite = this.getEcart(u.maj,false,false,true);
+        if(ecartActivite as number > 7) ecart = "Déconnecté"
+        u.conn = ecart;
       });      
 
       this.users.sort((a: any,b: any) => b.score - a.score);
       this.getAllTitles();
     });
+  }
+
+  getEcart(date:any,getSec:boolean, ilya: boolean, getmin: boolean){
+    date = new Date(date);
+    let now = new Date(Date.now());
+    let ecart = now.getTime()-date.getTime();
+    let jour = 1000*60*60*24;
+    let jours = Math.floor(ecart / jour);
+    ecart = ecart - jours * jour;
+    let heure = 1000*60*60;
+    let heures = Math.floor(ecart / heure);
+    ecart = ecart - heures * heure;
+    let minute = 1000*60;
+    let minutes = Math.floor(ecart / minute);
+    ecart = ecart - minutes * minute;
+    let seconde = 1000;
+    let secondes = Math.floor(ecart / seconde);
+    let retour = "";
+
+    console.log(jours,heures,minutes,secondes);
+    if(jours>0)   retour += (jours<10?'0':'') + jours + ' jour' + (jours>1?'s':'') + ' ';
+    else if(ilya) retour += "Il y a ";
+    retour += (heures<10?'0':'') + heures + 'h';
+    retour += (minutes<10?'0':'') + minutes + 'm';
+    if(getSec)  retour += (secondes<10?'0':'') + secondes + 's';
+
+    if(jours==0&&heures==0&&minutes<5&&ilya)retour = "A l'instant"
+
+    if(getmin)return minutes;
+    return retour;
   }
 
   playButton(){
