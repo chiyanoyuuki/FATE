@@ -54,6 +54,7 @@ export class AppComponent implements OnInit
   public static son: any;
   public sonbtn: any;
   public titles: any;
+  public allTitles: any;
 
   public pseudo = "";
   public mdp = "";
@@ -115,8 +116,8 @@ export class AppComponent implements OnInit
     //voir pokedex autres avec option desactiver
     //craft essence
     //succès
-    //titres
     //token garde compte
+    //griser grosses images
 
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
@@ -504,8 +505,25 @@ export class AppComponent implements OnInit
         return tmp;
       });
       this.titles = this.titles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
-      console.log(this.titles);
     });
+  }
+
+  getAllTitles()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEallTitles').subscribe(data=>
+    {
+      this.allTitles = data.map((x:any)=>
+      {
+        let tmp = this.data.find((y:any)=>y.id==x.servant_id).id;
+        return tmp;
+      });
+      this.titles = this.titles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
+    });
+  }
+
+  alreadyPulled()
+  {
+    return this.allTitles.includes(this.selectedServ.id);
   }
 
   setTitle()
@@ -549,6 +567,7 @@ export class AppComponent implements OnInit
     {
       this.users = data;
       this.users.sort((a: any,b: any) => b.score - a.score);
+      this.getAllTitles();
     });
   }
 
@@ -841,6 +860,11 @@ export class AppComponent implements OnInit
 
     this.sorting(data);
     return data;
+  }
+
+  isNoData()
+  {
+    return this.getNoData().find((d:any)=>d.id==this.selectedServ.id)!=undefined;
   }
 
   filter(filter:string)
