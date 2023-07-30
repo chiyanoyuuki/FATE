@@ -46,7 +46,7 @@
         <p [class.red]="includesFilter('Ruler')" (click)="filter('Ruler')">Ruler</p>
         <p [class.red]="includesFilter('Saber')" (click)="filter('Saber')">Saber</p>
         <p [class.red]="includesFilter('Shielder')" (click)="filter('Shielder')">Shielder</p>
-        <p>____________</p>
+        <p class="noClickable">____________</p>
         <p [class.red]="!showEssences" (click)="showEssences=!showEssences">Craft Essence</p>
       </div>
 
@@ -75,7 +75,7 @@
 
     <div *ngIf="state=='friends'">
       <button (click)="getUsers()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
-      <div class="containerScore">
+      <div class="containerScore" style="left:11%;width:1200px">
         <div style="width:100%">
           <div *ngFor="let user of users;let i=index" >
             <div style="display:flex;">
@@ -86,8 +86,13 @@
               <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
                 <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
               </div>
-              <p style="position: absolute;left: 530px;padding-top: 4px;font-size:30px;text-align: left;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
-              <p style="position: absolute;left: 530px;padding-top: 34px;font-size:14px;text-align: left;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>
+              <div style="position: absolute;left: 530px;padding-top: 4px;text-align: left;width:280px">
+                <p style="text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
+                <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>  
+              </div>
+              <div style="position: absolute;left: 820px;padding-top: 4px;text-align: left;width:280px;opacity: 0.4;">
+                <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">Dernière invocation : {{user.last}}</p>  
+              </div>
             </div>
           </div>
         </div>
@@ -107,12 +112,53 @@
   
       <img draggable="false" src="./assets/images/wait.png" *ngIf="state=='invocation'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
   
-      <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
+      <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'||state=='shop'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
   
       <div class="recap" *ngIf="state=='recap'" style="display:flex;justify-content: center;top: 270px;position: absolute;width: 100%;">
         <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="{{perso.img1}}"/>
         <div style="position: absolute;">
           <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="./assets/images/borders/{{perso.level}}.png"/>
+        </div>
+      </div>
+      
+      <div *ngIf="state=='shop'" style="opacity:0.4">
+        <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;top:-10px"/>
+        <div class="options" style="width:190px;">
+          <p [class.red]="filterSell!=''" (click)="filterSell=''">Tout Voir</p>
+          <p [class.red]="filterSell!='Mes Ventes'" (click)="filterSell='Mes Ventes'">Mes Ventes</p>
+          <p [class.red]="filterSell!='Achat Quartz'" (click)="filterSell='Achat Quartz'">Achat Quartz</p>
+          <p [class.red]="filterSell!='Achat Echanges'" (click)="filterSell='Achat Echanges'">Achat Echanges</p>
+          <p class="noClickable">____________</p>
+          <p [class.red]="!filterSellAvailable" (click)="filterSellAvailable=!filterSellAvailable">Achats Possibles</p>
+          <p class="noClickable">____________</p>
+          <button (click)="createVente=true">Vendre</button>
+        </div>
+        <div style="display:flex;justify-content: center;">
+          <div style="max-width: 79%;overflow-x: scroll;position: relative;top:-10px;">
+            <div style="display:flex;">
+              <div *ngFor="let sell of getShops()" class="sell">
+                <p>{{sell.nom}}</p>
+                <div style="position:relative;height:213px" class="clickable" (click)="selectedServ=sell.servant">
+                  <img draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{sell.servant.img1}}"/>
+                  <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:35px;" src="./assets/images/borders/{{sell.servant.level}}.png"/>
+                  <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                  white-space: break-spaces;line-height: 10px;left:35px">{{sell.servant.nom}}</p>
+                </div>
+                <p>Contre :</p>
+                <div *ngIf="sell.servantPrice" style="position:relative;height:213px"  class="clickable" (click)="selectedServ=sell.servantPrice">
+                  <img draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{sell.servantPrice.img1}}"/>
+                  <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:35px;" src="./assets/images/borders/{{sell.servantPrice.level}}.png"/>
+                  <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                  white-space: break-spaces;line-height: 10px;left:35px">{{sell.servantPrice.nom}}</p>
+                </div>
+                <div *ngIf="sell.price_quartz!=-1" class="score" style="left:20px;margin-top:10px;width:175px;margin-bottom:158px;top:65px">
+                  <p class="sc" style="top:-3px">{{sell.price_quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
+                </div>
+                <button *ngIf="sell.nom!=user.nom" [class.disabledButton]="!got(sell.price_quartz,sell.servantPrice)">Acheter</button>
+                <button *ngIf="sell.nom==user.nom">Annuler</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
@@ -186,9 +232,10 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
-        <img draggable="false" (click)="recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
-        <img draggable="false" (click)="recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
       </div>
     </div>
     

@@ -56,6 +56,7 @@ export class AppComponent implements OnInit
   public titles: any;
   public allTitles: any;
   public recherche = "";
+  public shop: any;
 
   public pseudo = "";
   public mdp = "";
@@ -91,6 +92,8 @@ export class AppComponent implements OnInit
   public banner: any;
   public bannerInterval: any;
   public dailyInterval: any;
+  public filterSell = "";
+  public filterSellAvailable = false;
 
   public timerBanner: any = 5000000;
   public timerQuartz: any = 5000000;
@@ -104,11 +107,14 @@ export class AppComponent implements OnInit
   public static show: boolean = false;
   public static interval: any;
 
+  public createVente = false;
+
   constructor(private http: HttpClient){
 
   }
 
   ngOnInit(){
+    //temps de co
     //son vidéo servant ao
     //defis
     //choix favori
@@ -118,7 +124,6 @@ export class AppComponent implements OnInit
     //craft essence
     //succès
     //token garde compte
-    //griser grosses images
 
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
@@ -163,7 +168,6 @@ export class AppComponent implements OnInit
     let data = [0,0,0,0,0,0,0,0,0,0,0];
     for(let i=0;i<tirages;i++)
     {
-      if(i%1000==0)console.log(i);
       let perso = this.persosToInvoq.shift();
       this.loadPerso();
       if(perso==this.perso5)data[0]++;
@@ -178,7 +182,7 @@ export class AppComponent implements OnInit
       else if(perso.nom!="Craft Essence" && perso.level==0)data[9]++;
       else data[10]++;
     }
-    console.log("Sur "+tirages+" :");
+    console.log("Sur "+tirages+" tirages :");
     console.log("Perso super boosté 5* : "+data[0]);
     console.log("Perso super boosté 4* : "+data[1]);
     console.log("Perso boosté parmis les 10 5* : "+data[2]);
@@ -527,6 +531,7 @@ export class AppComponent implements OnInit
         this.getUserData(false);
         this.getUsers();
         this.getTitles();
+        this.getShop();
         this.state = "banner";
         AppComponent.son.play();
         this.timerQuartz = 400000;
@@ -557,8 +562,70 @@ export class AppComponent implements OnInit
         let tmp = this.data.find((y:any)=>y.id==x.servant_id).id;
         return tmp;
       });
-      this.titles = this.titles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
+      this.allTitles = this.allTitles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
+      this.allTitles = this.allTitles.filter((d:any)=>this.data.find((x:any)=>x.id==d).level>3);
     });
+  }
+
+  got(quartz:number,servant:any)
+  {
+    if(quartz!=-1)
+    {
+      return this.quartz>=quartz;
+    }
+    else
+    {
+      let tmp = this.getData();
+      return tmp.find((d:any)=>d.id==servant.id);
+    }
+  }
+
+  getShops()
+  {
+    let shop = this.shop;
+    if(this.filterSell=="Mes Ventes")
+    {
+      shop = shop.filter((s:any)=>s.nom==this.user.nom);
+    }
+    else if(this.filterSell=="Achat Quartz")
+    {
+      shop = shop.filter((s:any)=>s.price_quartz!=-1&&s.nom!=this.user.nom);
+    }
+    else if(this.filterSell=="Achat Echanges")
+    {
+      shop = shop.filter((s:any)=>s.servantPrice&&s.nom!=this.user.nom);
+    }
+
+    if(this.filterSellAvailable)
+    {
+      shop = shop.filter((s:any)=>this.got(s.price_quartz,s.servantPrice)&&s.nom!=this.user.nom);
+    }
+
+    if(this.recherche!="")
+    {
+      let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
+      shop = this.shop.filter((s:any)=>
+        s.nom.toLowerCase().match(regexp) ||
+        s.servant.nom.toLowerCase().match(regexp) ||
+        (s.servantPrice && s.servantPrice.nom.toLowerCase().match(regexp))
+      );
+    }
+    shop.sort((a: any,b: any) => 
+    {
+      if(b.servant.level>a.servant.level)
+      {
+        return 1;
+      }
+      else if(b.servant.level<a.servant.level)
+      {
+        return -1;
+      }
+      else
+      {
+        return a.servant.nom > b.servant.nom;
+      }
+    });
+    return shop;
   }
 
   alreadyPulled()
@@ -606,6 +673,15 @@ export class AppComponent implements OnInit
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUsers').subscribe(data=>
     {
       this.users = data;
+
+      this.users.forEach((u:any)=>{
+        let date = new Date(u.last);
+        let now = new Date(Date.now());
+        if(date.getDate()==now.getDate()) u.last = (date.getHours()<10?'0':'')+date.getHours() + ":" + (date.getMinutes()<10?'0':'')+date.getMinutes();
+        else if(date.getDate()==now.getDate()-1) u.last = date.getDate() + " " + date.getMonth() + " " + (date.getHours()<10?'0':'')+date.getHours() + ":" + (date.getMinutes()<10?'0':'')+date.getMinutes();
+        else u.last = "Il y a plus d'un jour";
+      });      
+
       this.users.sort((a: any,b: any) => b.score - a.score);
       this.getAllTitles();
     });
@@ -683,6 +759,20 @@ export class AppComponent implements OnInit
         }
       )
     );
+  }
+
+  getShop()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEshop').subscribe(data=>
+    {
+      this.shop = data.map((x:any)=>
+      {
+        let tmp = x;
+        tmp.servant = this.data.find((y:any)=>y.id==x.servant_id);
+        if(tmp.price_servant_id!=-1)tmp.servantPrice = this.data.find((y:any)=>y.id==x.price_servant_id);
+        return tmp;
+      });
+    });
   }
 
   addServant(perso:any)
