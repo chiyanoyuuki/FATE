@@ -121,7 +121,7 @@
         </div>
       </div>
       
-      <div *ngIf="state=='shop'" style="opacity:0.4">
+      <div *ngIf="state=='shop'">
         <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;top:-10px"/>
         <div class="options" style="width:190px;">
           <p [class.red]="filterSell!=''" (click)="filterSell=''">Tout Voir</p>
