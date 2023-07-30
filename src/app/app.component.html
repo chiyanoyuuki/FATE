@@ -19,6 +19,15 @@
       </div>
     </div>
 
+    <div *ngIf="selectedServ!=undefined" class="bigCard">
+      <div class="clickable" (click)="selectedServ=undefined">
+        <img [class.golden]="first(selectedServ.id)" draggable="false" style="width:320px;height:100%;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{selectedServ.img1}}"/>
+        <img draggable="false" style="width:320px;height:100%;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{selectedServ.level}}.png"/>
+        <p style="white-space: break-spaces;line-height: 22px;bottom: 28px;position: absolute;font-size: 30px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;width:100%">{{selectedServ.nom}}</p>
+      </div>
+      <p *ngIf="first(selectedServ.id)" class="clickable useTitle" (click)="setTitle()">Use as Title</p>
+    </div>
+
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >
       <div class="options">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
@@ -42,8 +51,8 @@
 
       <div class="tab2">
         <div class="tab">
-          <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;">
-            <img draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}"/>
+          <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;" class="clickable" (click)="selectedServ=perso">
+            <img [class.golden]="first(perso.id)" draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}" />
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
             <p style="bottom: 0px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
               background-color: #aa2002;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{perso.qte}}</p>
@@ -53,7 +62,7 @@
         </div>
         
         <div class="tab">
-          <div *ngFor="let perso of getNoData();let i=index" style="position:relative;margin-right:10px;filter: grayscale(200%);opacity: 0.6;">
+          <div *ngFor="let perso of getNoData();let i=index" style="position:relative;margin-right:10px;filter: grayscale(200%);opacity: 0.6;" class="clickable2" (click)="selectedServ=perso">
             <img draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px" src="{{perso.img1}}"/>
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
             <p style="width:130px;top: -33px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -75,7 +84,8 @@
             <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
               <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
             </div>
-            <p style="position: absolute;left: 530px;padding-top: 10px;font-size:30px;text-align: left;" [style.color]="user.id==id?'#bb9930':'#aa2020'">{{user.nom}}</p>
+            <p style="position: absolute;left: 530px;padding-top: 4px;font-size:30px;text-align: left;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
+            <p style="position: absolute;left: 530px;padding-top: 34px;font-size:14px;text-align: left;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>
           </div>
         </div>
       </div>
@@ -86,6 +96,7 @@
       <div class="header" style="box-shadow: white 1px 1px 10px;width: 99%;height: 90px;background-color: rgba(100,150,200,0.8);border: 3px ridge #555;display:flex;justify-content: space-around;margin-bottom:20px;">
         <div><p>{{score}}</p><img draggable="false" src="./assets/images/graal.png"/></div>
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
+        <p style="color: black;text-shadow: 4px 0 white, 0 1px white, 1px 0 white, 0 -1px white;padding-top: 55px;font-size: 20px;position: absolute;">{{user.title}}</p>
         <div><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
         <p style="position: absolute;top: 68px;right: 280px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
@@ -107,7 +118,7 @@
         <div style="position:absolute;left:350px;top:135px" (mouseleave)="focus=undefined">
           <div style="display:flex">
             <div *ngFor="let perso of persos5" style="position:relative">
-              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable"/>
+              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="selectedServ=perso"/>
               <div class="boosted2 row5"  style="pointer-events: none;z-index: 3;">
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.nom}}</p>
@@ -116,7 +127,7 @@
           </div>
           <div style="display:flex">
             <div *ngFor="let perso of persos4" style="position:relative">
-              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable"/>
+              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="selectedServ=perso"/>
               <div class="boosted2"  style="pointer-events: none;z-index: 3;">
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.nom}}</p>
@@ -171,9 +182,9 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
-        <img draggable="false" (click)="playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
-        <img draggable="false" (click)="playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
       </div>
     </div>
     

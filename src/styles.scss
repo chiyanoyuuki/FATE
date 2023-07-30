@@ -250,3 +250,34 @@ color: white;
     opacity:0.8;
     cursor:pointer;
 }
+
+.clickable2:hover
+{
+    opacity:0.4!important;
+    cursor:pointer;
+}
+
+.bigCard{
+    position: absolute;
+z-index: 5;
+left: 620px;
+height: 500px;
+top:120px;
+}
+
+.golden{
+    border: 3px ridge gold !important;
+    box-shadow: gold -9px 8px 15px !important;
+}
+
+.bigCard .useTitle{
+    position: absolute;
+width: 98%;
+text-align: center;
+bottom: -35px;
+background-color: rgba(20,20,20,0.9);
+box-shadow: black 10px 10px 10px;
+border: 3px ridge #bbb;
+color: white;
+text-shadow: 4px 0 black , 0 2px black , 2px 0 black , 2px 2px black;
+}

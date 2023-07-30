@@ -53,6 +53,7 @@ export class AppComponent implements OnInit
   public static growstate: string = '0';
   public static son: any;
   public sonbtn: any;
+  public titles: any;
 
   public pseudo = "";
   public mdp = "";
@@ -94,6 +95,7 @@ export class AppComponent implements OnInit
   public timerInterval: any;
   public showEssences = false;
   public focus: any;
+  public selectedServ: any;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -110,11 +112,11 @@ export class AppComponent implements OnInit
     //choix favori
     //bouton son
     //video + rapide
-    //voir servants en + grand
     //voir pokedex autres avec option desactiver
     //craft essence
     //succès
-    //hover invoc display name
+    //titres
+    //token garde compte
 
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
@@ -483,12 +485,57 @@ export class AppComponent implements OnInit
         this.score = data[0].score;
         this.getUserData(false);
         this.getUsers();
+        this.getTitles();
         this.state = "banner";
         AppComponent.son.play();
         this.timerQuartz = 400000;
         this.daily();
       }
     });
+  }
+
+  getTitles()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEtitles?id=' + this.id).subscribe(data=>
+    {
+      this.titles = data.map((x:any)=>
+      {
+        let tmp = this.data.find((y:any)=>y.id==x.servant_id).id;
+        return tmp;
+      });
+      this.titles = this.titles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
+      console.log(this.titles);
+    });
+  }
+
+  setTitle()
+  {
+    if(this.user.title!=this.selectedServ.nom)
+    {
+      this.user.title = "Master of " + this.selectedServ.nom;
+      const dataToSend = {
+        id:this.id,
+        title:"Master of " + this.selectedServ.nom
+      }
+      from(
+        fetch(
+          'https://www.chiya-no-yuuki.fr/FATEsetTitle',
+          {
+            body: JSON.stringify(dataToSend),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            mode: 'no-cors',
+          }
+        )
+      );
+    }
+  }
+
+  first(id:any)
+  {
+    return this.titles.includes(id);
   }
 
   getUsers(){
