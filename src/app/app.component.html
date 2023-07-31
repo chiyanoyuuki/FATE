@@ -74,13 +74,17 @@
       </div>
     </div>
 
+    <div *ngIf="profile">
+      
+    </div>
+
     <div *ngIf="state=='friends'">
       <button (click)="getUsers()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
       <p style="position:absolute;left: 970px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1210px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1200px">
         <div style="width:100%">
-          <div *ngFor="let user of users;let i=index" >
+          <div *ngFor="let user of users;let i=index"  class="clickable" (click)="profile=user.id">
             <div style="display:flex;">
               <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{(i+1)}}</p>
               <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
@@ -321,6 +325,7 @@
         <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
         <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
         <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
+        <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?profile='id':null" src="./assets/images/profileButton.png"/>
       </div>
     </div>
     

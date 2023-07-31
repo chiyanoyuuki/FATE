@@ -114,6 +114,7 @@ export class AppComponent implements OnInit
   public success: any[] = [];
   public successToClaim: any[] = [];
   public notPulled = false;
+  public profile: any = undefined;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -569,14 +570,15 @@ export class AppComponent implements OnInit
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
+      let nbt = this.titles.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
       
-      let cpt = 1;
+      let cpt=1;
       if(!data.find((d:any)=>d.id==cpt))
       {
         this.addSuccess(cpt);
         this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
       }
-      cpt++;
+      cpt=2;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb>0)
@@ -585,7 +587,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=3;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb4>0)
@@ -594,7 +596,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=4;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb5>0)
@@ -603,7 +605,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=5;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb4>4)
@@ -612,7 +614,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=6;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb4>9)
@@ -621,7 +623,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=7;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb4>19)
@@ -630,7 +632,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=8;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb5>4)
@@ -639,7 +641,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=9;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb5>9)
@@ -648,7 +650,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=10;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb5>19)
@@ -657,7 +659,7 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=11;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(this.userData.find((d:any)=>d.id==107))
@@ -666,10 +668,46 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      cpt++;
+      cpt=12;
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(this.userData.find((d:any)=>d.id==0))
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=14;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=15;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>4)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=16;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=17;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>19)
         {
           this.addSuccess(cpt);
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
@@ -1327,6 +1365,7 @@ export class AppComponent implements OnInit
     if(!this.persoToSell) data = this.getData().filter((d:any)=>(d.level>3||d.level==0)&&d.nom!="Craft Essence");
     else data = this.data.filter((d:any)=>d.nom!="Craft Essence");
     let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
+    console.log(regexp);
     if(this.recherche!="")data = data.filter((d:any)=>d.nom.match(regexp));
     this.sorting(data);
     return data;

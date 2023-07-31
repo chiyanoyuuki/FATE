@@ -76,5 +76,29 @@
         "nom":"Bad Luck ? Try Again", 
         "desc":"Tirer 10 Craft Essence en une fois",
         "recompense":30
+    },
+    { 
+        "id":14, 
+        "nom":"Starting from the bottom", 
+        "desc":"Avoir 1 titre de servant",
+        "recompense":10
+    },
+    { 
+        "id":15, 
+        "nom":"Little influencer", 
+        "desc":"Avoir 5 titres de servant",
+        "recompense":20
+    },
+    { 
+        "id":16, 
+        "nom":"What about a break ?", 
+        "desc":"Avoir 10 titres de servant",
+        "recompense":40
+    },
+    { 
+        "id":17, 
+        "nom":"Write a book with all those titles", 
+        "desc":"Avoir 20 titres de servant",
+        "recompense":60
     }
 ]
