@@ -1136,7 +1136,7 @@ export class AppComponent implements OnInit
   getSellServant()
   {
     let data:any;
-    if(!this.persoToSell) data = this.getData().filter((d:any)=>d.level>3&&d.nom!="Craft Essence");
+    if(!this.persoToSell) data = this.getData().filter((d:any)=>(d.level>3||d.level==0)&&d.nom!="Craft Essence");
     else data = this.data.filter((d:any)=>d.nom!="Craft Essence");
     this.sorting(data);
     return data;
@@ -1181,7 +1181,7 @@ export class AppComponent implements OnInit
   {
     if(this.sellType=="quartz")
     {
-      if(!this.sellQuartz.match(/^[0-9]+$/) || parseInt(this.sellQuartz)>9999)
+      if(!this.sellQuartz.match(/^[0-9]+$/) || parseInt(this.sellQuartz)>9999 || parseInt(this.sellQuartz)<0)
         return true;
     }
     else
