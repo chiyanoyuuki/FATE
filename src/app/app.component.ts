@@ -521,6 +521,14 @@ export class AppComponent implements OnInit
     });
   }
 
+  refreshUser()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUser?nom=' + this.pseudo + '&mdp=' + this.mdp).subscribe(data=>
+    {
+        this.quartz = data[0].quartz;
+    });
+  }
+
   conn()
   {
     const dataToSend = {
@@ -577,7 +585,10 @@ export class AppComponent implements OnInit
     else if(servant)
     {
       let tmp = this.getData();
-      return tmp.find((d:any)=>d.id==servant.id);
+      tmp = tmp.find((d:any)=>d.id==servant.id);
+      if(!tmp)return false;
+      if(servant.level>3 && this.titles.includes(servant.id) && servant.qte == 1) return false;
+      return true;
     }
     else
     {

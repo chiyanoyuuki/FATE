@@ -111,7 +111,7 @@
         <div><p>{{score}}</p><img draggable="false" src="./assets/images/graal.png"/></div>
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
         <p style="color: black;text-shadow: 4px 0 white, 0 1px white, 1px 0 white, 0 -1px white;padding-top: 55px;font-size: 20px;position: absolute;">{{user.title}}</p>
-        <div><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
+        <div class="clickable" (click)="refreshUser()"><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
         <p style="position: absolute;top: 68px;left: 70%;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
   
