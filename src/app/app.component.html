@@ -148,7 +148,7 @@
                   white-space: break-spaces;line-height: 10px;left:3px">{{persoToSell.nom}}</p>
             </div>
             <div *ngIf="persoToSell" class="blocSell">
-              <p class="clickable" [class.disabledButton]="!isTitleSellToggable()" [class.red]="!sellWithTitle" (click)="sellWithTitle=!sellWithTitle">Sell with Title</p>
+              <p class="clickable" [class.disabledButton]="disableTitleToggle()" [class.red]="!sellWithTitle" (click)="sellWithTitle=!sellWithTitle">Sell with Title</p>
               <p class="clickable" [class.red]="sellType!='trade'" (click)="sellType='trade'" style="margin-top:30px">Trade a Servant</p>
               <p class="clickable" [class.red]="sellType!='quartz'" (click)="sellType='quartz'">Sell for Quartz</p>
             </div>

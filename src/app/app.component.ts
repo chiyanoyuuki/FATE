@@ -1166,10 +1166,11 @@ export class AppComponent implements OnInit
     this.persoToExchange = servant;
   }
 
-  isTitleSellToggable()
+  disableTitleToggle()
   {
-    if(!this.titles.includes(this.persoToSell))return false;
-    return this.titles.includes(this.persoToSell)&&this.persoToSell.qte==1;
+    if(!this.titles.includes(this.persoToSell.id))return true;
+    if(this.persoToSell.qte==1)return true;
+    return false;
   }
 
   isTitleSellToggable2()
