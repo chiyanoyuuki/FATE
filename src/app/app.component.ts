@@ -570,7 +570,12 @@ export class AppComponent implements OnInit
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
-      let nbt = this.titles.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
+      let tmp = this.titles;
+        tmp = tmp.map((x:any)=>
+        {
+          return this.data.find((y:any)=>y.id==x);
+        });
+      let nbt = tmp.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
       
       let cpt=1;
       if(!data.find((d:any)=>d.id==cpt))
