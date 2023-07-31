@@ -562,9 +562,9 @@ export class AppComponent implements OnInit
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSuccess?id=' + this.id).subscribe(data=>
     {
-      if(stop)return;
       this.successToClaim = data.filter((d:any)=>d.claimed==0);
       this.successToClaim = this.successToClaim.map((s:any)=>{return this.succ.find((c:any)=>c.id==s.id)});
+      if(stop)return;
 
       
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
@@ -576,6 +576,7 @@ export class AppComponent implements OnInit
           return this.data.find((y:any)=>y.id==x);
         });
       let nbt = tmp.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
+      let nbs = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       
       let cpt=1;
       if(!data.find((d:any)=>d.id==cpt))
@@ -718,7 +719,60 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-
+      cpt=18;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbs>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=19;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbs>19)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=20;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbs>39)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=21;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbs>59)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=22;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbs>79)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=23;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbs>99)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
       this.checkSuccess(true);
     });
   }

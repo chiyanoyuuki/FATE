@@ -100,5 +100,41 @@
         "nom":"Write a book with all those titles", 
         "desc":"Avoir 20 titres de servant",
         "recompense":60
+    },
+    { 
+        "id":18, 
+        "nom":"A little group of friends", 
+        "desc":"Avoir 10 servants",
+        "recompense":10
+    },
+    { 
+        "id":19, 
+        "nom":"Almost a team", 
+        "desc":"Avoir 20 servants",
+        "recompense":20
+    },
+    { 
+        "id":20, 
+        "nom":"A big classroom", 
+        "desc":"Avoir 40 servants",
+        "recompense":40
+    },
+    { 
+        "id":21, 
+        "nom":"A big classroom", 
+        "desc":"Avoir 60 servants",
+        "recompense":60
+    },
+    { 
+        "id":22, 
+        "nom":"A big classroom", 
+        "desc":"Avoir 80 servants",
+        "recompense":80
+    },
+    { 
+        "id":23, 
+        "nom":"A big classroom", 
+        "desc":"Avoir 100 servants",
+        "recompense":100
     }
 ]
