@@ -108,6 +108,28 @@
     
     <div *ngIf="state!='connection'">
       <div class="header" style="box-shadow: white 1px 1px 10px;width: 99%;height: 90px;background-color: rgba(100,150,200,0.8);border: 3px ridge #555;display:flex;justify-content: space-around;margin-bottom:20px;">
+
+          <img class="clickable" (click)="succesOpen=!succesOpen" draggable="false" src="./assets/images/succes.png" style="position: absolute;left: 15px;width: 80px;"/>
+          <p *ngIf="successToClaim.length>0" style="top: 55px;position: absolute;font-size: 20px;width: 29px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+          background-color: #aa2002;border-radius: 20px;border: 2px ridge #202020;left: 70px;z-index: 2;">{{successToClaim.length}}</p>
+
+          <div class="succes" *ngIf="succesOpen" style="overflow-y:scroll">
+            <p>Succès</p>
+            <div class="descSucces" *ngFor="let success of successToClaim" style="padding:10px;margin: auto;width: 75%;height: 70px;position: relative;margin-bottom:10px">
+              <p style="text-decoration: underline;font-size: 15px;">{{success.nom}}</p>
+              <p style="height:55%;text-align: left;">{{success.desc}}</p>
+              <div class="nostyle" style="left: 10px;bottom: 4px;height: 20px;">
+                <p class="clickable" style="text-shadow: 1px 0 green, 0 1px green, 1px 0 green, 0 -1px green;
+                font-size: 18px;" (click)="claimSuccess(success)">Claim</p>
+              </div>
+              <div class="nostyle">
+                <p style="font-size:20px;text-align: right;top:4px;right:30px;">{{success.recompense}}</p>
+                <img style="width:30px;height:30px;top:3px;left:25px;" draggable="false" src="./assets/images/quartz.png"/>
+              </div>
+            </div>
+          </div>
+
+        
         <div><p>{{score}}</p><img draggable="false" src="./assets/images/graal.png"/></div>
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
         <p style="color: black;text-shadow: 4px 0 white, 0 1px white, 1px 0 white, 0 -1px white;padding-top: 55px;font-size: 20px;position: absolute;">{{user.title}}</p>
@@ -293,10 +315,10 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
-        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
-        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
-        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
+        <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="succesOpen=false;createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
       </div>
     </div>
     

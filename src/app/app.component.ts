@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import DATA from '../assets/data.json';
+import SUCC from '../assets/succes.json';
 import { HttpClient } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
 import {
@@ -80,6 +81,7 @@ export class AppComponent implements OnInit
   public perso5: any;
   public persos5: any[] = [];
   public data: any = DATA;
+  public succ: any = SUCC;
   public state: string = "connection";
   public video: string = "";
   public timing: number;
@@ -108,6 +110,9 @@ export class AppComponent implements OnInit
   public sellType = "trade";
   public exchangeWithTitle: any;
   public sellQuartz="";
+  public succesOpen = false;
+  public success: any[] = [];
+  public successToClaim: any[] = [];
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -517,8 +522,111 @@ export class AppComponent implements OnInit
         AppComponent.son.play();
         this.timerQuartz = 400000;
         this.daily();
+        this.checkSuccess(false);
       }
     });
+  }
+
+  addSuccess(id:any)
+  {
+    const dataToSend = {
+      id:id,
+      userid:this.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEaddSuccess',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
+  }
+
+  checkSuccess(stop:boolean)
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSuccess?id=' + this.id).subscribe(data=>
+    {
+      if(stop)return;
+      this.successToClaim = data.filter((d:any)=>d.claimed==0);
+      this.successToClaim = this.successToClaim.map((s:any)=>{return this.succ.find((c:any)=>c.id==s.id)});
+
+      
+      let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
+      let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
+      let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
+      
+      if(!data.find((d:any)=>d.id==1))
+      {
+        this.addSuccess(1);
+      }
+      if(!data.find((d:any)=>d.id==2))
+      {
+        if(nb>0)this.addSuccess(2);
+      }
+      if(!data.find((d:any)=>d.id==3))
+      {
+        if(nb4>0)this.addSuccess(3);
+      }
+      if(!data.find((d:any)=>d.id==4))
+      {
+        if(nb5>0)this.addSuccess(4);
+      }
+      if(!data.find((d:any)=>d.id==5))
+      {
+        if(nb4>4)this.addSuccess(5);
+      }
+      if(!data.find((d:any)=>d.id==6))
+      {
+        if(nb4>9)this.addSuccess(6);
+      }
+      if(!data.find((d:any)=>d.id==7))
+      {
+        if(nb4>19)this.addSuccess(7);
+      }
+      if(!data.find((d:any)=>d.id==8))
+      {
+        if(nb5>4)this.addSuccess(8);
+      }
+      if(!data.find((d:any)=>d.id==9))
+      {
+        if(nb5>9)this.addSuccess(9);
+      }
+      if(!data.find((d:any)=>d.id==10))
+      {
+        if(nb5>19)this.addSuccess(10);
+      }
+
+      this.checkSuccess(true);
+    });
+  }
+
+  claimSuccess(success:any)
+  {
+    this.successToClaim.splice(this.successToClaim.indexOf(success),1);
+    this.spendQuartz(success.recompense*-1);
+    const dataToSend = {
+      id:success.id,
+      userid:this.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEclaimSuccess',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
   }
 
   refreshUser()
