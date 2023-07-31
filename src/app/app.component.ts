@@ -179,15 +179,23 @@ export class AppComponent implements OnInit
     if(date.getDate()!=now.getDate())
     {
       this.spendQuartz(-30);
+      const dataToSend = {
+        id:this.id
+      }
+      from(
+        fetch(
+          'https://www.chiya-no-yuuki.fr/FATEdaily',
+          {
+            body: JSON.stringify(dataToSend),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            mode: 'no-cors',
+          }
+        )
+      );
     }
-    let time = (23-now.getHours())*1000*60*60+(59-now.getMinutes())*1000*60+(60-now.getSeconds())*1000;
-    this.timerInterval = setInterval(() => {
-      this.spendQuartz(-30);
-      clearInterval(this.timerInterval);
-      this.timerInterval = setInterval(() => {
-        this.spendQuartz(-30);
-    },1000*60*60*24);
-  },time);
   }
 
   public generateBanner()
@@ -804,25 +812,6 @@ export class AppComponent implements OnInit
 
   spendQuartz(qte:number)
   {
-    if(qte==-30)
-    {
-      const dataToSend = {
-        id:this.id
-      }
-      from(
-        fetch(
-          'https://www.chiya-no-yuuki.fr/FATEdaily',
-          {
-            body: JSON.stringify(dataToSend),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-            mode: 'no-cors',
-          }
-        )
-      );
-    }
     this.quartz-=qte;
     const dataToSend = {
       nom:this.pseudo,
