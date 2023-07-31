@@ -209,23 +209,23 @@ export class AppComponent implements OnInit
     this.persos4 = [];
 
     let persos = this.data.filter((d:any)=>d.level==5&&d.nom!="Craft Essence");
-    let alea = Math.round(Math.random()*persos.length);
+    let alea = Math.floor(Math.random()*persos.length);
     this.perso5 = persos[alea];
     persos.splice(alea,1);
     for(let i=0;i<10;i++)
     {
-      alea = Math.round(Math.random()*persos.length);
+      alea = Math.floor(Math.random()*persos.length);
       this.persos5.push(persos[alea]);
       persos.splice(alea,1);
     }
 
     persos = this.data.filter((d:any)=>d.level==4&&d.nom!="Craft Essence");
-    alea = Math.round(Math.random()*persos.length);
+    alea = Math.floor(Math.random()*persos.length);
     this.perso4 = persos[alea];
     persos.splice(alea,1);
     for(let i=0;i<10;i++)
     {
-      alea = Math.round(Math.random()*persos.length);
+      alea = Math.floor(Math.random()*persos.length);
       this.persos4.push(persos[alea]);
       persos.splice(alea,1);
     }
@@ -288,11 +288,11 @@ export class AppComponent implements OnInit
       return;
     }
     this.sonbtn.play();
-    this.spendQuartz(nb*3);
     for(let i=0;i<nb;i++)
     {
       this.addServant(this.id,this.persosToInvoq[i],1);
     }
+    this.spendQuartz(nb*3);
     this.addpull(nb);
     this.persosInvoqued = [];
     this.invocs = nb;
@@ -324,14 +324,14 @@ export class AppComponent implements OnInit
     }
     else if(AppComponent.perso.level==5)
     {
-      let rdm2 = Math.round(Math.random()*3);
+      let rdm2 = Math.floor(Math.random()*3);
       if(rdm2==0){this.video = "rainbow";}
       else if(rdm2==1){this.video = "gold";}
       else if(rdm2==2){this.video = "3star";}
     }
     else if(AppComponent.perso.level==4)
     {
-      let rdm2 = Math.round(Math.random()*2);
+      let rdm2 = Math.floor(Math.random()*2);
       if(rdm2==0){this.video = "gold";}
       else if(rdm2==1){this.video = "3star";}
     }
@@ -353,7 +353,7 @@ export class AppComponent implements OnInit
   loadPerso()
   {
     let perso: any;
-    let rdm = Math.round(Math.random()*1000);
+    let rdm = Math.floor(Math.random()*1000);
     if(rdm==666)
     {
       let persos = this.data.filter((d:any)=>d.level==0&&d.nom!="Craft Essence");
@@ -361,27 +361,27 @@ export class AppComponent implements OnInit
     }
     else
     {
-      rdm = Math.round(Math.random()*100);
+      rdm = Math.floor(Math.random()*100);
       //5*
       if(rdm<2)
       {
-        let rdm2 = Math.round(Math.random()*2);
+        let rdm2 = Math.floor(Math.random()*2);
         if(rdm2==0)
         {
           perso = this.perso5;
         }
         else
         {
-          let rdm3 = Math.round(Math.random()*2);
+          let rdm3 = Math.floor(Math.random()*2);
           if(rdm3==0)
           {
-            let rdm4 = Math.round(Math.random()*10);
+            let rdm4 = Math.floor(Math.random()*10);
             perso = this.persos5[rdm4];
           }
           else
           {
             let persos = this.data.filter((d:any)=>d.level==5&&d.nom!="Craft Essence");
-            let alea = Math.round(Math.random()*persos.length);
+            let alea = Math.floor(Math.random()*persos.length);
             perso = persos[alea];
           }
         }
@@ -389,23 +389,23 @@ export class AppComponent implements OnInit
       //4*
       else if(rdm<7)
       {
-        let rdm2 = Math.round(Math.random()*2);
+        let rdm2 = Math.floor(Math.random()*2);
         if(rdm2==0)
         {
           perso = this.perso4;
         }
         else
         {
-          let rdm3 = Math.round(Math.random()*2);
+          let rdm3 = Math.floor(Math.random()*2);
           if(rdm3==0)
           {
-            let rdm4 = Math.round(Math.random()*10);
+            let rdm4 = Math.floor(Math.random()*10);
             perso = this.persos4[rdm4];
           }
           else
           {
             let persos = this.data.filter((d:any)=>d.level==4&&d.nom!="Craft Essence");
-            let alea = Math.round(Math.random()*persos.length);
+            let alea = Math.floor(Math.random()*persos.length);
             perso = persos[alea];
           }
         }
@@ -413,7 +413,7 @@ export class AppComponent implements OnInit
       else if(rdm<55)
       {
         let persos = this.data.filter((d:any)=>(d.level==3||d.level==2||d.level==1)&&d.nom!="Craft Essence");
-        let alea = Math.round(Math.random()*persos.length);
+        let alea = Math.floor(Math.random()*persos.length);
         perso = persos[alea];
       }
       else if(rdm<=61)
@@ -426,7 +426,7 @@ export class AppComponent implements OnInit
       }
       else
       {
-        let rdm2 = Math.round(Math.random()*3);
+        let rdm2 = Math.floor(Math.random()*3);
         if(rdm2==0)perso = this.data.filter((d:any)=>d.nom=="Craft Essence"&&d.level==3)[0];
         else if(rdm2==1)perso = this.data.filter((d:any)=>d.nom=="Craft Essence"&&d.level==2)[0];
         else if(rdm2==2)perso = this.data.filter((d:any)=>d.nom=="Craft Essence"&&d.level==1)[0];
