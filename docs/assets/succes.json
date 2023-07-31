@@ -58,5 +58,23 @@
         "nom":"I mean, bro ?",
         "desc":"Obtenir 20 servant 5*",
         "recompense":50
+    },
+    { 
+        "id":11, 
+        "nom":"Seed of corruption", 
+        "desc":"Obtenir Angra Mainyu", 
+        "recompense":30
+    },
+    { 
+        "id":12, 
+        "nom":"Chaldea's first step", 
+        "desc":"Obtenir Mash Krieglight", 
+        "recompense":10
+    },
+    { 
+        "id":13, 
+        "nom":"Bad Luck ? Try Again", 
+        "desc":"Tirer 10 Craft Essence en une fois",
+        "recompense":30
     }
 ]

@@ -174,7 +174,7 @@ button:hover{
 
 .options{
     position: absolute;
-width: 110px;
+width: 160px;
 background-color: rgba(20,20,20,0.9);
 box-shadow: black 10px 10px 10px;
 border: 3px ridge #bbb;
@@ -183,6 +183,7 @@ left: -3px;
 padding-left: 20px;
 padding: 20px;
 overflow:hidden;
+top: -25px;
 }
 
 .options p{
@@ -300,7 +301,7 @@ text-shadow: 4px 0 black , 0 2px black , 2px 0 black , 2px 2px black;
     width: 200px;
     max-width: 200px;
     min-width: 200px;
-height: 530px;
+height: 590px;
 background-color: rgba(20,20,20,0.9);
 box-shadow: black 10px 10px 10px;
 border: 3px ridge #bbb;

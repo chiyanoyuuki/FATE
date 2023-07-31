@@ -113,6 +113,7 @@ export class AppComponent implements OnInit
   public succesOpen = false;
   public success: any[] = [];
   public successToClaim: any[] = [];
+  public notPulled = false;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -287,6 +288,14 @@ export class AppComponent implements OnInit
     }
     this.sonbtn.play();
     this.spendQuartz(nb*3);
+    if(!this.success.find((d:any)=>d.id==13))
+    {
+      if(this.persosToInvoq.filter((p:any)=>p.nom=="Craft Essence").length==10)
+      {
+        this.addSuccess(13);
+        this.successToClaim.push(this.succ.find((c:any)=>c.id==13));
+      }
+    }
     for(let i=0;i<nb;i++)
     {
       this.addServant(this.id,this.persosToInvoq[i],1);
@@ -561,45 +570,110 @@ export class AppComponent implements OnInit
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
       
-      if(!data.find((d:any)=>d.id==1))
+      let cpt = 1;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        this.addSuccess(1);
+        this.addSuccess(cpt);
+        this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
       }
-      if(!data.find((d:any)=>d.id==2))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb>0)this.addSuccess(2);
+        if(nb>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==3))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb4>0)this.addSuccess(3);
+        if(nb4>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==4))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb5>0)this.addSuccess(4);
+        if(nb5>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==5))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb4>4)this.addSuccess(5);
+        if(nb4>4)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==6))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb4>9)this.addSuccess(6);
+        if(nb4>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==7))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb4>19)this.addSuccess(7);
+        if(nb4>19)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==8))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb5>4)this.addSuccess(8);
+        if(nb5>4)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==9))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb5>9)this.addSuccess(9);
+        if(nb5>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
-      if(!data.find((d:any)=>d.id==10))
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nb5>19)this.addSuccess(10);
+        if(nb5>19)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(this.userData.find((d:any)=>d.id==107))
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt++;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(this.userData.find((d:any)=>d.id==0))
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
       }
 
       this.checkSuccess(true);
@@ -726,13 +800,15 @@ export class AppComponent implements OnInit
       shop = shop.filter((s:any)=>this.got(s.price_quartz,s.servantPrice,s.servantPriceWithTitle)&&s.nom!=this.user.nom);
     }
 
-    if(this.recherche!="")
+    if(this.recherche!=""&&!this.createVente)
     {
       let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
       shop = this.shop.filter((s:any)=>
         s.nom.toLowerCase().match(regexp) ||
-        s.servant.nom.toLowerCase().match(regexp) ||
-        (s.servantPrice && s.servantPrice.nom.toLowerCase().match(regexp))
+        (s.servant && s.servant.nom.toLowerCase().match(regexp)) ||
+        (s.servantPrice && s.servantPrice.nom.toLowerCase().match(regexp)) ||
+        (s.servantWithTitle && s.servantWithTitle.nom.toLowerCase().match(regexp)) ||
+        (s.servantPriceWithTitle && s.servantPriceWithTitle.nom.toLowerCase().match(regexp))
       );
     }
 
@@ -1188,6 +1264,12 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>d.nom!="Craft Essence");
     }
+    if(this.notPulled)
+    {
+      data = data.filter((d:any)=>!this.allTitles.includes(d.id)&&d.level>3);
+    }
+
+
     if(this.recherche!="")
     {
       let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
@@ -1244,6 +1326,8 @@ export class AppComponent implements OnInit
     let data:any;
     if(!this.persoToSell) data = this.getData().filter((d:any)=>(d.level>3||d.level==0)&&d.nom!="Craft Essence");
     else data = this.data.filter((d:any)=>d.nom!="Craft Essence");
+    let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
+    if(this.recherche!="")data = data.filter((d:any)=>d.nom.match(regexp));
     this.sorting(data);
     return data;
   }

@@ -30,7 +30,7 @@
 
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >
       <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;"/>
-      <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false)">Refresh</button>
+      <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false);getTitles()">Refresh</button>
       <div class="options">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
         <p [class.red]="includesFilter('Archer')" (click)="filter('Archer')">Archer</p>
@@ -48,10 +48,11 @@
         <p [class.red]="includesFilter('Saber')" (click)="filter('Saber')">Saber</p>
         <p [class.red]="includesFilter('Shielder')" (click)="filter('Shielder')">Shielder</p>
         <p [class.red]="!showEssences" (click)="showEssences=!showEssences"  style="margin-top:30px">Craft Essence</p>
+        <p [class.red]="!notPulled" (click)="notPulled=!notPulled">Not Pulled</p>
       </div>
 
       <div class="tab2">
-        <div class="tab">
+        <div class="tab" *ngIf="!notPulled">
           <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;" class="clickable" (click)="selectedServ=perso">
             <img [class.golden]="golden(perso.id)" draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}" />
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
@@ -63,10 +64,10 @@
         </div>
         
         <div class="tab">
-          <div *ngFor="let perso of getNoData();let i=index" style="position:relative;margin-right:10px;filter: grayscale(200%);opacity: 0.6;" class="clickable2" (click)="selectedServ=perso">
+          <div *ngFor="let perso of getNoData();let i=index" style="height:fit-content;position:relative;margin-right:10px;filter: grayscale(200%);opacity: 0.6;" class="clickable2" (click)="selectedServ=perso">
             <img draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}"/>
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px;" src="./assets/images/borders/{{perso.level}}.png"/>
-            <p style="width:130px;top: -33px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+            <p style="height:0px;width:130px;top: -33px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
             white-space: break-spaces;line-height: 10px;">{{perso.nom}}</p>
           </div>
         </div>
@@ -151,6 +152,7 @@
       <div *ngIf="state=='shop'">
         <div *ngIf="createVente" class="creatVente">
           <p style="text-align: center;">{{sellType=='quartz'&&persoToSell?'-':'Selectionnez le Servant que vous souhaitez '+(!persoToSell?'échanger':'vendre')}}</p>
+          <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 3%;position: relative;width:200px;top:-10px"/>
           <div style="display:flex;justify-content: center;height:270px;">
             <div style="display:flex;overflow-x:scroll;overflow-y:hidden;padding:20px;" [style.display]="sellType=='quartz'&&persoToSell?'none':'flex'">
               <div *ngFor="let servant of getSellServant()" style="height:207px;position:relative;height:213px"  class="clickable" (click)="clickSellPerso(servant)">
@@ -194,9 +196,9 @@
             <button [class.disabledButton]="isDisabledSell()" style="width:200px;margin-top:0px;" (click)="sellServant()">Vendre</button>
           </div>
         </div>
-        <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;top:-10px"/>
+        <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 26%;position: relative;width:200px;top:-8px"/>
         <button style="position: absolute;left: 65%;top: 95px;width: 200px;" (click)="getShop()">Refresh</button>
-        <div class="options" style="width:190px;">
+        <div class="options" style="width:190px;top:95px;">
           <p [class.red]="filterSell!=''" (click)="filterSell=''">Tout Voir</p>
           <p [class.red]="filterSell!='Mes Ventes'" (click)="filterSell='Mes Ventes'">Mes Ventes</p>
           <p [class.red]="filterSell!='Achat Quartz'" (click)="filterSell='Achat Quartz'">Achat Quartz</p>
@@ -221,7 +223,7 @@
                   <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
                   white-space: break-spaces;line-height: 10px;left:35px">{{sell.servantWithTitle.nom}}</p>
                 </div>
-                <p>Contre :</p>
+                <p style="margin: 20px 0px;">Contre :</p>
                 <div *ngIf="sell.servantPrice" style="position:relative;height:213px"  class="clickable" (click)="selectedServ=sell.servantPrice">
                   <img draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{sell.servantPrice.img1}}"/>
                   <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:35px;" src="./assets/images/borders/{{sell.servantPrice.level}}.png"/>
@@ -234,7 +236,7 @@
                   <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
                   white-space: break-spaces;line-height: 10px;left:35px">{{sell.servantPriceWithTitle.nom}}</p>
                 </div>
-                <div *ngIf="sell.price_quartz!=-1" class="score" style="left:20px;margin-top:10px;width:175px;margin-bottom:158px;top:65px">
+                <div *ngIf="sell.price_quartz!=-1" class="score" style="left:20px;margin-top:10px;width:175px;margin-bottom:170px;top:65px">
                   <p class="sc" style="top:-3px">{{sell.price_quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
                 </div>
                 <button *ngIf="sell.nom!=user.nom" [class.disabledButton]="!got(sell.price_quartz,sell.servantPrice,sell.servantPriceWithTitle)" (click)="buyServ(sell)">Acheter</button>
