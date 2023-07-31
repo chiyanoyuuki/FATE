@@ -289,14 +289,6 @@ export class AppComponent implements OnInit
     }
     this.sonbtn.play();
     this.spendQuartz(nb*3);
-    if(!this.success.find((d:any)=>d.id==13))
-    {
-      if(this.persosToInvoq.filter((p:any)=>p.nom=="Craft Essence").length==10)
-      {
-        this.addSuccess(13);
-        this.successToClaim.push(this.succ.find((c:any)=>c.id==13));
-      }
-    }
     for(let i=0;i<nb;i++)
     {
       this.addServant(this.id,this.persosToInvoq[i],1);
@@ -563,6 +555,7 @@ export class AppComponent implements OnInit
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSuccess?id=' + this.id).subscribe(data=>
     {
       this.successToClaim = data.filter((d:any)=>d.claimed==0);
+      if(!this.successToClaim) this.successToClaim = [];
       this.successToClaim = this.successToClaim.map((s:any)=>{return this.succ.find((c:any)=>c.id==s.id)});
       if(stop)return;
 
