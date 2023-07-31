@@ -564,10 +564,14 @@ export class AppComponent implements OnInit
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
       let tmp = this.titles;
+      if(tmp)
+      {
         tmp = tmp.map((x:any)=>
         {
           return this.data.find((y:any)=>y.id==x);
         });
+      }
+        
       let nbt = tmp.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
       let nbs = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       
@@ -1417,7 +1421,6 @@ export class AppComponent implements OnInit
     if(!this.persoToSell) data = this.getData().filter((d:any)=>(d.level>3||d.level==0)&&d.nom!="Craft Essence");
     else data = this.data.filter((d:any)=>d.nom!="Craft Essence");
     let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
-    console.log(regexp);
     if(this.recherche!="")data = data.filter((d:any)=>d.nom.match(regexp));
     this.sorting(data);
     return data;
