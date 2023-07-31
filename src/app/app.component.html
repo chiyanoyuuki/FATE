@@ -153,7 +153,7 @@
               <p class="clickable" [class.red]="sellType!='quartz'" (click)="sellType='quartz'">Sell for Quartz</p>
             </div>
             <div *ngIf="persoToExchange&&sellType=='trade'" class="blocSell">
-              <p class="clickable" [class.red]="!exchangeWithTitle" (click)="exchangeWithTitle=!exchangeWithTitle">Exchange with Title</p>
+              <p class="clickable" [class.disabledButton]="!isTitleSellToggable2()" [class.red]="!exchangeWithTitle" (click)="exchangeWithTitle=!exchangeWithTitle">Exchange with Title</p>
             </div>
             <div style="position: relative;" *ngIf="persoToExchange&&sellType=='trade'"  class="clickable" (click)="persoToExchange=undefined">
               <img [class.golden]="exchangeWithTitle" draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{persoToExchange.img1}}"/>
@@ -293,7 +293,7 @@
         <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
         <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
         <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
-        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/shopButton.png"/>
+        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
       </div>
     </div>
     

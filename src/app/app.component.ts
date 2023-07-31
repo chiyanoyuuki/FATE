@@ -57,6 +57,7 @@ export class AppComponent implements OnInit
   public allTitles: any;
   public recherche = "";
   public shop: any;
+  public majInterval: any;
 
   public pseudo = "";
   public mdp = "";
@@ -130,6 +131,7 @@ export class AppComponent implements OnInit
     //craft essence
     //succès
     //token garde compte
+    //refresh auto donnees
 
     //BUG DAILY PLUSIEURS ONGLEETS MEME COMPTE
 
@@ -1161,16 +1163,18 @@ export class AppComponent implements OnInit
         this.sellWithTitle = false;
       }
     }
-    else if(!this.persoToExchange)
-    {
-      this.persoToExchange = servant;
-    }
+    this.persoToExchange = servant;
   }
 
   isTitleSellToggable()
   {
     if(!this.titles.includes(this.persoToSell))return false;
     return this.titles.includes(this.persoToSell)&&this.persoToSell.qte==1;
+  }
+
+  isTitleSellToggable2()
+  {
+    return this.persoToExchange.level>3;
   }
 
   isDisabledSell()
@@ -1250,203 +1254,228 @@ export class AppComponent implements OnInit
 
         this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSellData?id1='+this.id+'&id2='+sell.user_id+'&servid1='+servid1+'&servid2='+servid2).subscribe(data=>
         {
-          //Dans le cas d'une demande d'échange sans titre
-          if(sell.servantPrice)
-          {
-            let qteVenduAcheteur = data.find((d:any)=>d.servant_id==sell.price_servant_id&&d.user_id==this.id).qte;
-            //Si l'acheteur n'a qu'1 exemplaire
-            if(qteVenduAcheteur==1)
-            {
-              this.removeServant(this.id,sell.servantPrice);
-            }
-            else
-            {
-              this.addServant(this.id,sell.servantPrice,-1);
-            }
-            this.addServant(sell.user_id,sell.servantPrice,1);
-          }
-          //Dans le cas d'une demande d'échange avec titre
-          else
-          {
-            let qteVenduAcheteur = data.find((d:any)=>d.servant_id==sell.price_servant_id_with_title&&d.user_id==this.id).qte;
-            let qteVenduVendeur = data.find((d:any)=>d.servant_id==sell.price_servant_id_with_title&&d.user_id==sell.user_id).qte;
-            //Si l'acheteur n'a qu'1 exemplaire
-            if(qteVenduAcheteur==1)
-            {
-              //Si le vendeur a déjà un exemplaire
-              if(qteVenduVendeur)
-              {
-                const dataToSend = {
-                  userid:sell.user_id,
-                  servantid:sell.servantPriceWithTitle.id,
-                  level:sell.servantPriceWithTitle.level,
-                  qte:1
-                }
-                from(
-                  fetch(
-                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
-                    {
-                      body: JSON.stringify(dataToSend),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      method: 'POST',
-                      mode: 'no-cors',
-                    }
-                  )
-                ).subscribe(d=>{
-                  this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,true);
-                });
-              }
-              //Si le vendeur n'a pas d'exemplaire
-              else
-              {
-                this.swapServant(this.id,sell.servantPriceWithTitle,sell.user_id);
-              }
-            } 
-            //Si l'acheteur a plus d'1 exemplaire
-            else
-            {
-              //Si le vendeur a déjà un exemplaire
-              if(qteVenduVendeur)
-              {
-                this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,false);
-                this.addServant(sell.user_id,sell.servantPriceWithTitle,1);
-                this.addServant(this.id,sell.servantPriceWithTitle,-1);
-              }
-              //Si le vendeur n'a pas d'exemplaire
-              else
-              {
-                const dataToSend = {
-                  userid:sell.user_id,
-                  servantid:sell.servantPriceWithTitle.id,
-                  level:sell.servantPriceWithTitle.level,
-                  qte:1
-                }
-                from(
-                  fetch(
-                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
-                    {
-                      body: JSON.stringify(dataToSend),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      method: 'POST',
-                      mode: 'no-cors',
-                    }
-                  )
-                ).subscribe(d=>{
-                  this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,false);
-                  this.addServant(this.id,sell.servantPriceWithTitle,-1);
-                });
-              }
-            }
-          }
+          if(sell.price_quartz==-1)this.venteServ(sell,data);
+          this.donServ(sell,data);
 
-          //Dans le cas d'une vente sans titre
-          if(sell.servant)
-          {
-            let qteVenduVendeur = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==sell.user_id).qte;
-            //Si le vendeur n'a qu'1 exemplaire
-            if(qteVenduVendeur==1)
+          
+          this.majInterval = setInterval(() => {
+            this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUser?nom=' + this.pseudo + '&mdp=' + this.mdp).subscribe(data=>
             {
-              this.removeServant(sell.user_id,sell.servant);
-              this.addServant(this.id,sell.servant,1);
-            }
-            //Si le vendeur a plus d'1 exemplaire
-            else
-            {
-              this.addServant(sell.user_id,sell.servant,-1);
-              this.addServant(this.id,sell.servant,1);
-            }
-          }
-          //Dans le cas d'une vente avec titre
-          else
-          {
-            let qteVenduAcheteur = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==this.id);
-            let qteVenduVendeur = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==sell.user_id).qte;
-            //Si le vendeur n'a qu'1 exemplaire
-            if(qteVenduVendeur==1)
-            {
-              //Si l'acheteur a déjà 1 exemplaire
-              if(qteVenduAcheteur)
-              {
-                this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,true);
-                this.addServant(this.id,sell.servantWithTitle,1);
-              }
-              //Si l'acheteur n'a pas d'exemplaire
-              else
-              {
-                const dataToSend = {
-                  userid:this.id,
-                  servantid:sell.servantWithTitle.id,
-                  level:sell.servantWithTitle.level,
-                  qte:1
-                }
-                from(
-                  fetch(
-                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
-                    {
-                      body: JSON.stringify(dataToSend),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      method: 'POST',
-                      mode: 'no-cors',
-                    }
-                  )
-                ).subscribe(d=>{
-                  this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,true);
-                });
-              }
-            }
-            //Si le vendeur a plus d'1 exemplaire
-            else
-            {
-              //Si l'acheteur a déjà 1 exemplaire
-              if(qteVenduAcheteur)
-              {
-                this.addServant(sell.user_id,sell.servantWithTitle,-1);
-                this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
-                this.addServant(this.id,sell.servantWithTitle,1);
-              }
-              //Si l'acheteur n'a pas d'exemplaire
-              else
-              {
-                const dataToSend = {
-                  userid:this.id,
-                  servantid:sell.servantWithTitle.id,
-                  level:sell.servantWithTitle.level,
-                  qte:1
-                }
-                from(
-                  fetch(
-                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
-                    {
-                      body: JSON.stringify(dataToSend),
-                      headers: {
-                        'Content-Type': 'application/json',
-                      },
-                      method: 'POST',
-                      mode: 'no-cors',
-                    }
-                  )
-                ).subscribe(d=>{
-                  this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
-                  this.addServant(sell.user_id,sell.servantWithTitle,-1);
-                });
-              }
-            }
-          }
+                this.user = data[0];
+                this.quartz = data[0].quartz;
+                this.id = data[0].id;
+                this.score = data[0].score;
+                this.getUserData(true);
+                this.getTitles();
+            });
+            clearInterval(this.majInterval);
+        },300);
         });
   }
 
-  swapTitle(buyerid:any, servant:any, sellerid:any, remove:boolean)
+  venteServ(sell:any,data:any)
+  {
+    //SERVANT CONTRE SERVANT PRIX
+    if(sell.servantPrice)
+    {
+      let idqte = data.find((d:any)=>d.servant_id==sell.servantPrice.id&&d.user_id==this.id).qte;
+      //ID SERVANT = 1
+      if(idqte==1)
+      {
+        this.removeServant(this.id,sell.servantPrice);
+      }
+      //ID SERVANT > 1
+      else
+      {
+        this.addServant(this.id,sell.servantPrice,-1);
+      }
+      this.addServant(sell.user_id,sell.servantPrice,1);
+    }
+    //SERVANT CONTRE TITRE PRIX
+    else
+    {
+      let idqte = data.find((d:any)=>d.servant_id==sell.servantPriceWithTitle.id&&d.user_id==this.id).qte;
+      let sellqte = data.find((d:any)=>d.servant_id==sell.servantPriceWithTitle.id&&d.user_id==sell.user_id);
+      //ID TITRE = 1
+      if(idqte==1)
+      {
+        //SELL TITRE > 0
+        if(sellqte)
+        {
+          this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,true);
+          this.addServant(sell.user_id,sell.servantPriceWithTitle,1);
+        }
+        //SELL TITRE = 0
+        else
+        {
+          const dataToSend = {
+            userid:sell.user_id,
+            servantid:sell.servantPriceWithTitle.id,
+            level:sell.servantPriceWithTitle.level,
+            qte:1
+          }
+          from(
+            fetch(
+              'https://www.chiya-no-yuuki.fr/FATEaddServant',
+              {
+                body: JSON.stringify(dataToSend),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                mode: 'no-cors',
+              }
+            )
+          ).subscribe(d=>{
+            this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,true);
+          });
+        }
+      } 
+      //ID TITRE > 1
+      else
+      {
+        //SELL TITRE > 0
+        if(sellqte)
+        {
+          this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,false);
+          this.addServant(sell.user_id,sell.servantPriceWithTitle,1);
+          this.addServant(this.id,sell.servantPriceWithTitle,-1);
+        }
+        //SELL TITRE = 0
+        else
+        {
+          const dataToSend = {
+            userid:sell.user_id,
+            servantid:sell.servantPriceWithTitle.id,
+            level:sell.servantPriceWithTitle.level,
+            qte:1
+          }
+          from(
+            fetch(
+              'https://www.chiya-no-yuuki.fr/FATEaddServant',
+              {
+                body: JSON.stringify(dataToSend),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                mode: 'no-cors',
+              }
+            )
+          ).subscribe(d=>{
+            this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,false);
+            this.addServant(this.id,sell.servantPriceWithTitle,-1);
+          });
+        }
+      }
+    }
+  }
+
+  donServ(sell:any,data:any)
+  {
+    //SERVANT CONTRE SERVANT DON
+    if(sell.servant)
+    {
+      let sellqte = data.find((d:any)=>d.servant_id==sell.servant.id&&d.user_id==sell.user_id).qte;
+      //SELL SERVANT = 1
+      if(sellqte==1)
+      {
+        this.removeServant(sell.user_id,sell.servant);
+        this.addServant(this.id,sell.servant,1);
+      }
+      //SELL SERVANT > 1
+      else
+      {
+        this.addServant(sell.user_id,sell.servant,-1);
+        this.addServant(this.id,sell.servant,1);
+      }
+    }
+    //TITRE CONTRE SERVANT DON
+    else
+    {
+      let idqte = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==this.id);
+      let sellqte = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==sell.user_id).qte;
+      //SELL QTE = 1
+      if(sellqte==1)
+      {
+        //ID QTE > 0
+        if(idqte)
+        {
+          this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,true);
+          this.addServant(this.id,sell.servantWithTitle,1);
+        }
+        //ID QTE = 0
+        else
+        {
+          const dataToSend = {
+            userid:this.id,
+            servantid:sell.servantWithTitle.id,
+            level:sell.servantWithTitle.level,
+            qte:1
+          }
+          from(
+            fetch(
+              'https://www.chiya-no-yuuki.fr/FATEaddServant',
+              {
+                body: JSON.stringify(dataToSend),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                mode: 'no-cors',
+              }
+            )
+          ).subscribe(d=>{
+            this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,true);
+          });
+        }
+      }
+      //SELL QTE > 1
+      else
+      {
+        //ID QTE > 0
+        if(idqte)
+        {
+          this.addServant(sell.user_id,sell.servantWithTitle,-1);
+          this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
+          this.addServant(this.id,sell.servantWithTitle,1);
+        }
+        //ID QTE = 0
+        else
+        {
+          const dataToSend = {
+            userid:this.id,
+            servantid:sell.servantWithTitle.id,
+            level:sell.servantWithTitle.level,
+            qte:1
+          }
+          from(
+            fetch(
+              'https://www.chiya-no-yuuki.fr/FATEaddServant',
+              {
+                body: JSON.stringify(dataToSend),
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                mode: 'no-cors',
+              }
+            )
+          ).subscribe(d=>{
+            this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
+            this.addServant(sell.user_id,sell.servantWithTitle,-1);
+          });
+        }
+      }
+    }
+  }
+
+  swapTitle(donnetitre:any, servant:any, recoitTitre:any, remove:boolean)
   {
     const dataToSend = {
-      buyerid:buyerid,
+      givetitle:donnetitre,
       servantid:servant.id,
-      sellerid:sellerid
+      gettitle:recoitTitre
     }
     from(
       fetch(
@@ -1463,9 +1492,34 @@ export class AppComponent implements OnInit
     ).subscribe(d=>{
       if(remove)
       {
-        this.removeServant(this.id,servant);
+        this.removeServant(donnetitre,servant);
+      }
+      else
+      {
+        this.removeTitle(donnetitre,servant);
       }
     });
+  }
+
+  removeTitle(donnetitre:any, servant:any)
+  {
+    const dataToSend = {
+      buyerid:donnetitre,
+      servantid:servant.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEremoveTitle',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
   }
 
   swapServant(buyerid:any, servant:any, sellerid:any)
@@ -1489,6 +1543,7 @@ export class AppComponent implements OnInit
       )
     );
   }
+
 
   buyServ(sell:any)
   {
@@ -1527,8 +1582,8 @@ export class AppComponent implements OnInit
             let qte = sell.price_quartz;
             this.spendQuartz(qte);
             const dataToSend = {
-              nom:sell.name,
-              qte:qte
+              nom:sell.nom,
+              qte:(qte*-1)
             }
             from(
               fetch(
@@ -1542,12 +1597,9 @@ export class AppComponent implements OnInit
                   mode: 'no-cors',
                 }
               )
-            );
+            )
           }
-          else
-          {
-            this.buyServ2(sell);
-          }
+          this.buyServ2(sell);
         }
       });
     });
