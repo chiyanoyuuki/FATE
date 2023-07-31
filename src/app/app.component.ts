@@ -143,10 +143,10 @@ export class AppComponent implements OnInit
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
       this.timerQuartz -= 1000;
-      this.nextSQ = Math.round(this.timerQuartz/60000);
-      this.nextSQs = Math.round((this.timerQuartz%60000)/1000);
-      this.nextChangeBanner = Math.round(this.timerBanner/60000);
-      this.nextChangeBanners = Math.round((this.timerBanner%60000)/1000);
+      this.nextSQ = Math.floor(this.timerQuartz/60000);
+      this.nextSQs = Math.floor((this.timerQuartz%60000)/1000);
+      this.nextChangeBanner = Math.floor(this.timerBanner/60000);
+      this.nextChangeBanners = Math.floor((this.timerBanner%60000)/1000);
 
       if(this.timerQuartz<=0)
       {
@@ -524,7 +524,6 @@ export class AppComponent implements OnInit
         AppComponent.son.play();
         this.timerQuartz = 400000;
         this.daily();
-        this.checkSuccess(false);
       }
     });
   }
@@ -550,15 +549,13 @@ export class AppComponent implements OnInit
     );
   }
 
-  checkSuccess(stop:boolean)
+  checkSuccess()
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSuccess?id=' + this.id).subscribe(data=>
     {
       this.successToClaim = data.filter((d:any)=>d.claimed==0);
       if(!this.successToClaim) this.successToClaim = [];
       this.successToClaim = this.successToClaim.map((s:any)=>{return this.succ.find((c:any)=>c.id==s.id)});
-      if(stop)return;
-
       
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
@@ -571,6 +568,7 @@ export class AppComponent implements OnInit
           return this.data.find((y:any)=>y.id==x);
         });
       }
+      else tmp = [];
         
       let nbt = tmp.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
       let nbs = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
@@ -770,7 +768,6 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-      this.checkSuccess(true);
     });
   }
 
@@ -1040,16 +1037,16 @@ export class AppComponent implements OnInit
     let now = new Date(Date.now());
     let ecart = now.getTime()-date.getTime();
     let jour = 1000*60*60*24;
-    let jours = Math.round(ecart / jour);
+    let jours = Math.floor(ecart / jour);
     ecart = ecart - jours * jour;
     let heure = 1000*60*60;
-    let heures = Math.round(ecart / heure);
+    let heures = Math.floor(ecart / heure);
     ecart = ecart - heures * heure;
     let minute = 1000*60;
-    let minutes = Math.round(ecart / minute);
+    let minutes = Math.floor(ecart / minute);
     ecart = ecart - minutes * minute;
     let seconde = 1000;
-    let secondes = Math.round(ecart / seconde);
+    let secondes = Math.floor(ecart / seconde);
     let retour = "";
 
     if(jours>0)   retour += (jours<10?'0':'') + jours + ' jour' + (jours>1?'s':'') + ' ';
