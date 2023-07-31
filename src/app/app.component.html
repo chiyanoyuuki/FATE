@@ -30,6 +30,7 @@
 
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >
       <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;"/>
+      <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false)">Refresh</button>
       <div class="options">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
         <p [class.red]="includesFilter('Archer')" (click)="filter('Archer')">Archer</p>
@@ -87,7 +88,7 @@
               <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
                 <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
               </div>
-              <div style="position: absolute;left: 530px;padding-top: 4px;text-align: left;width:280px">
+              <div style="position: absolute;left: 530px;padding-top: 4px;text-align: left;width:400px">
                 <p style="text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>  
               </div>
@@ -111,7 +112,7 @@
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
         <p style="color: black;text-shadow: 4px 0 white, 0 1px white, 1px 0 white, 0 -1px white;padding-top: 55px;font-size: 20px;position: absolute;">{{user.title}}</p>
         <div><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
-        <p style="position: absolute;top: 68px;left: 1430px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
+        <p style="position: absolute;top: 68px;left: 70%;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
   
       <img draggable="false" src="./assets/images/wait.png" *ngIf="state=='invocation'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
@@ -126,7 +127,6 @@
       </div>
       
       <div *ngIf="state=='shop'">
-        <button style="position: absolute;left: 1000px;top: 97px;width: 200px;" (click)="getShop()">Refresh</button>
         <div *ngIf="createVente" class="creatVente">
           <p style="text-align: center;">{{sellType=='quartz'&&persoToSell?'-':'Selectionnez le Servant que vous souhaitez '+(!persoToSell?'échanger':'vendre')}}</p>
           <div style="display:flex;justify-content: center;height:270px;">
@@ -136,6 +136,8 @@
                 <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:3px;" src="./assets/images/borders/{{servant.level}}.png"/>
                 <p style="width:130px;top: -35px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
                     white-space: break-spaces;line-height: 10px;left:3px">{{servant.nom}}</p>
+                    <p style="bottom: 0px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                    background-color: #aa2002;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{servant.qte}}</p>
               </div>
             </div>
           </div>
@@ -171,6 +173,7 @@
           </div>
         </div>
         <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;top:-10px"/>
+        <button style="position: absolute;left: 65%;top: 95px;width: 200px;" (click)="getShop()">Refresh</button>
         <div class="options" style="width:190px;">
           <p [class.red]="filterSell!=''" (click)="filterSell=''">Tout Voir</p>
           <p [class.red]="filterSell!='Mes Ventes'" (click)="filterSell='Mes Ventes'">Mes Ventes</p>

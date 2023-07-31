@@ -133,8 +133,6 @@ export class AppComponent implements OnInit
     //token garde compte
     //refresh auto donnees
 
-    //BUG DAILY PLUSIEURS ONGLEETS MEME COMPTE
-
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
       this.timerQuartz -= 1000;
@@ -601,7 +599,7 @@ export class AppComponent implements OnInit
     }
     else if(this.filterSell=="Achat Echanges")
     {
-      shop = shop.filter((s:any)=>s.servantPrice&&s.nom!=this.user.nom);
+      shop = shop.filter((s:any)=>(s.servantPrice||s.servantPriceWithTitle)&&s.nom!=this.user.nom);
     }
 
     if(this.filterSellAvailable)
