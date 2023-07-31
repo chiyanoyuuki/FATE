@@ -101,6 +101,12 @@ export class AppComponent implements OnInit
   public showEssences = false;
   public focus: any;
   public selectedServ: any;
+  public persoToSell: any;
+  public persoToExchange: any;
+  public sellWithTitle: any;
+  public sellType = "trade";
+  public exchangeWithTitle: any;
+  public sellQuartz="";
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -124,6 +130,8 @@ export class AppComponent implements OnInit
     //craft essence
     //succès
     //token garde compte
+
+    //BUG DAILY PLUSIEURS ONGLEETS MEME COMPTE
 
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
@@ -160,40 +168,6 @@ export class AppComponent implements OnInit
     document.oncontextmenu = function () {
       return false;
     }
-  }
-
-  testTirages()
-  {
-    let tirages = 100000;
-    let data = [0,0,0,0,0,0,0,0,0,0,0];
-    for(let i=0;i<tirages;i++)
-    {
-      let perso = this.persosToInvoq.shift();
-      this.loadPerso();
-      if(perso==this.perso5)data[0]++;
-      else if(perso==this.perso4)data[1]++;
-      else if(this.persos5.includes(perso))data[2]++;
-      else if(this.persos4.includes(perso))data[3]++;
-      else if(perso.nom!="Craft Essence" && perso.level==5)data[4]++;
-      else if(perso.nom!="Craft Essence" && perso.level==4)data[5]++;
-      else if(perso.nom!="Craft Essence" && perso.level==3)data[6]++;
-      else if(perso.nom!="Craft Essence" && perso.level==2)data[7]++;
-      else if(perso.nom!="Craft Essence" && perso.level==1)data[8]++;
-      else if(perso.nom!="Craft Essence" && perso.level==0)data[9]++;
-      else data[10]++;
-    }
-    console.log("Sur "+tirages+" tirages :");
-    console.log("Perso super boosté 5* : "+data[0]);
-    console.log("Perso super boosté 4* : "+data[1]);
-    console.log("Perso boosté parmis les 10 5* : "+data[2]);
-    console.log("Perso boosté parmis les 10 4* : "+data[3]);
-    console.log("Perso aléatoire 5* : "+data[4]);
-    console.log("Perso aléatoire 4* : "+data[5]);
-    console.log("Perso aléatoire 3* : "+data[6]);
-    console.log("Perso aléatoire 2* : "+data[7]);
-    console.log("Perso aléatoire 1* : "+data[8]);
-    console.log("Perso aléatoire 0* : "+data[9]);
-    console.log("Craft Eseence : "+data[10]);
   }
 
   public daily()
@@ -240,6 +214,7 @@ export class AppComponent implements OnInit
       this.persos4.push(persos[alea]);
       persos.splice(alea,1);
     }
+    this.reinitBanner();
     this.saveBanner();
   }
 
@@ -288,7 +263,7 @@ export class AppComponent implements OnInit
   }
 
   cantInvoq(nb:number){
-    return this.quartz<nb*3;
+    return this.quartz<nb*3 || this.persosToInvoq.length!=10;
   }
 
   startSummon(nb:number)
@@ -301,7 +276,7 @@ export class AppComponent implements OnInit
     this.spendQuartz(nb*3);
     for(let i=0;i<nb;i++)
     {
-      this.addServant(this.persosToInvoq[i]);
+      this.addServant(this.id,this.persosToInvoq[i],1);
     }
     this.addpull(nb);
     this.persosInvoqued = [];
@@ -358,9 +333,6 @@ export class AppComponent implements OnInit
     {
       this.loadPerso();
     }
-    
-
-    //this.testTirages();
   }
 
   loadPerso()
@@ -588,16 +560,21 @@ export class AppComponent implements OnInit
     });
   }
 
-  got(quartz:number,servant:any)
+  got(quartz:number,servant:any,servantWithTitle:any)
   {
     if(quartz!=-1)
     {
       return this.quartz>=quartz;
     }
-    else
+    else if(servant)
     {
       let tmp = this.getData();
       return tmp.find((d:any)=>d.id==servant.id);
+    }
+    else
+    {
+      let tmp = this.getData();
+      return tmp.find((d:any)=>d.id==servantWithTitle.id) && this.titles.includes(servantWithTitle.id);
     }
   }
 
@@ -619,7 +596,7 @@ export class AppComponent implements OnInit
 
     if(this.filterSellAvailable)
     {
-      shop = shop.filter((s:any)=>this.got(s.price_quartz,s.servantPrice)&&s.nom!=this.user.nom);
+      shop = shop.filter((s:any)=>this.got(s.price_quartz,s.servantPrice,s.servantPriceWithTitle)&&s.nom!=this.user.nom);
     }
 
     if(this.recherche!="")
@@ -631,20 +608,72 @@ export class AppComponent implements OnInit
         (s.servantPrice && s.servantPrice.nom.toLowerCase().match(regexp))
       );
     }
+
+    shop = shop.filter((s:any)=>s.bought_user_id==-1);
+
     shop.sort((a: any,b: any) => 
     {
-      if(b.servant.level>a.servant.level)
+      if(a.servant&&b.servant)
       {
-        return 1;
+        if(b.servant.level>a.servant.level)
+        {
+          return 1;
+        }
+        else if(b.servant.level<a.servant.level)
+        {
+          return -1;
+        }
+        else
+        {
+          return a.servant.nom > b.servant.nom;
+        }
       }
-      else if(b.servant.level<a.servant.level)
+      else if(a.servant)
       {
-        return -1;
+        if(b.servantWithTitle.level>a.servant.level)
+        {
+          return 1;
+        }
+        else if(b.servantWithTitle.level<a.servant.level)
+        {
+          return -1;
+        }
+        else
+        {
+          return a.servant.nom > b.servantWithTitle.nom;
+        }
+      }
+      else if(b.servant)
+      {
+        if(b.servant.level>a.servantWithTitle.level)
+        {
+          return 1;
+        }
+        else if(b.servant.level<a.servantWithTitle.level)
+        {
+          return -1;
+        }
+        else
+        {
+          return a.servantWithTitle.nom > b.servant.nom;
+        }
       }
       else
       {
-        return a.servant.nom > b.servant.nom;
+        if(b.servantWithTitle.level>a.servantWithTitle.level)
+        {
+          return 1;
+        }
+        else if(b.servantWithTitle.level<a.servantWithTitle.level)
+        {
+          return -1;
+        }
+        else
+        {
+          return a.servantWithTitle.nom > b.servantWithTitle.nom;
+        }
       }
+      
     });
     return shop;
   }
@@ -726,7 +755,6 @@ export class AppComponent implements OnInit
     let secondes = Math.floor(ecart / seconde);
     let retour = "";
 
-    console.log(jours,heures,minutes,secondes);
     if(jours>0)   retour += (jours<10?'0':'') + jours + ' jour' + (jours>1?'s':'') + ' ';
     else if(ilya) retour += "Il y a ";
     retour += (heures<10?'0':'') + heures + 'h';
@@ -820,20 +848,23 @@ export class AppComponent implements OnInit
       this.shop = data.map((x:any)=>
       {
         let tmp = x;
-        tmp.servant = this.data.find((y:any)=>y.id==x.servant_id);
-        if(tmp.price_servant_id!=-1)tmp.servantPrice = this.data.find((y:any)=>y.id==x.price_servant_id);
+        if(x.servant_id_with_title!=-1)tmp.servantWithTitle = this.data.find((y:any)=>y.id==x.servant_id_with_title);
+        if(x.servant_id!=-1)tmp.servant = this.data.find((y:any)=>y.id==x.servant_id);
+        if(x.price_servant_id!=-1)tmp.servantPrice = this.data.find((y:any)=>y.id==x.price_servant_id);
+        if(x.price_servant_id_with_title!=-1)tmp.servantPriceWithTitle = this.data.find((y:any)=>y.id==x.price_servant_id_with_title);
         return tmp;
       });
     });
   }
 
-  addServant(perso:any)
+
+  addServant(userid:any, perso:any, qte:number)
   {
-    let nb: number = parseInt(perso.id);
     const dataToSend = {
-      userid:this.id,
+      userid:userid,
       servantid:perso.id,
-      level:perso.level
+      level:perso.level,
+      qte:qte
     }
     from(
       fetch(
@@ -877,6 +908,7 @@ export class AppComponent implements OnInit
     tmp = [];
     this.banner.boost4group.forEach((d:any)=>tmp.push(this.data.find((p:any)=>p.id==d)))
     this.persos4 = tmp;
+    this.reinitBanner();
   }
 
   getBanner()
@@ -901,8 +933,12 @@ export class AppComponent implements OnInit
         let restant = 30*60000 - ecart;
         this.timerBanner = restant;
       }
-      this.loadPersos();
     });
+  }
+
+  reinitBanner(){
+    this.persosToInvoq = [];
+    this.loadPersos();
   }
 
   saveBanner()
@@ -1092,5 +1128,449 @@ export class AppComponent implements OnInit
         return a.nom > b.nom;
       }
     });
+  }
+
+  
+  getSellServant()
+  {
+    let data:any;
+    if(!this.persoToSell) data = this.getData().filter((d:any)=>d.level>3&&d.nom!="Craft Essence");
+    else data = this.data.filter((d:any)=>d.nom!="Craft Essence");
+    this.sorting(data);
+    return data;
+  }
+
+  clickSellPerso(servant:any)
+  {
+    if(!this.persoToSell)
+    {
+      this.persoToSell = servant;
+      if(this.titles.includes(this.persoToSell.id))
+      {
+        if(servant.qte==1)
+        {
+          this.sellWithTitle = true;
+        }
+        else
+        {
+          this.sellWithTitle = false;
+        }
+      }
+      else
+      {
+        this.sellWithTitle = false;
+      }
+    }
+    else if(!this.persoToExchange)
+    {
+      this.persoToExchange = servant;
+    }
+  }
+
+  isTitleSellToggable()
+  {
+    if(!this.titles.includes(this.persoToSell))return false;
+    return this.titles.includes(this.persoToSell)&&this.persoToSell.qte==1;
+  }
+
+  isDisabledSell()
+  {
+    if(this.sellType=="quartz")
+    {
+      if(!this.sellQuartz.match(/^[0-9]+$/) || parseInt(this.sellQuartz)>9999)
+        return true;
+    }
+    else
+    {
+      if(!this.persoToExchange)
+        return true;
+    }
+    return false;
+  }
+
+  sellServant()
+  {
+    const dataToSend = {
+      USERID:this.id,
+      SERVANTID:this.sellWithTitle?-1:this.persoToSell.id,
+      SERVANTIDWITHTITLE:!this.sellWithTitle?-1:this.persoToSell.id,
+      PRICEQUARTZ:this.sellType=="quartz"?parseInt(this.sellQuartz):-1,
+      PRICESERVANTID:this.sellType=="trade"&&!this.exchangeWithTitle?this.persoToExchange.id:-1,
+      PRICESERVANTIDWITHTITLE:this.sellType=="trade"&&this.exchangeWithTitle?this.persoToExchange.id:-1,
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEsell',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe(x=>{
+      this.getShop();
+      this.createVente = false;
+    });
+  }
+
+  cancelSell(id:any)
+  {
+    const dataToSend = {
+      id:id,
+      userid:this.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEcancelSell',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe(x=>{
+      this.getShop();
+    });
+  }
+
+  buyServ2(sell:any)
+  {
+    let servid1 = -1;
+        if(sell.servantPrice)servid1=sell.servantPrice.id;
+        else if(sell.servantPriceWithTitle)servid1=sell.servantPriceWithTitle.id;
+        let servid2 = -1;
+        if(sell.servant)servid2=sell.servant.id;
+        else if(sell.servantWithTitle)servid2=sell.servantWithTitle.id;
+
+        this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSellData?id1='+this.id+'&id2='+sell.user_id+'&servid1='+servid1+'&servid2='+servid2).subscribe(data=>
+        {
+          //Dans le cas d'une demande d'échange sans titre
+          if(sell.servantPrice)
+          {
+            let qteVenduAcheteur = data.find((d:any)=>d.servant_id==sell.price_servant_id&&d.user_id==this.id).qte;
+            //Si l'acheteur n'a qu'1 exemplaire
+            if(qteVenduAcheteur==1)
+            {
+              this.removeServant(this.id,sell.servantPrice);
+            }
+            else
+            {
+              this.addServant(this.id,sell.servantPrice,-1);
+            }
+            this.addServant(sell.user_id,sell.servantPrice,1);
+          }
+          //Dans le cas d'une demande d'échange avec titre
+          else
+          {
+            let qteVenduAcheteur = data.find((d:any)=>d.servant_id==sell.price_servant_id_with_title&&d.user_id==this.id).qte;
+            let qteVenduVendeur = data.find((d:any)=>d.servant_id==sell.price_servant_id_with_title&&d.user_id==sell.user_id).qte;
+            //Si l'acheteur n'a qu'1 exemplaire
+            if(qteVenduAcheteur==1)
+            {
+              //Si le vendeur a déjà un exemplaire
+              if(qteVenduVendeur)
+              {
+                const dataToSend = {
+                  userid:sell.user_id,
+                  servantid:sell.servantPriceWithTitle.id,
+                  level:sell.servantPriceWithTitle.level,
+                  qte:1
+                }
+                from(
+                  fetch(
+                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
+                    {
+                      body: JSON.stringify(dataToSend),
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      method: 'POST',
+                      mode: 'no-cors',
+                    }
+                  )
+                ).subscribe(d=>{
+                  this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,true);
+                });
+              }
+              //Si le vendeur n'a pas d'exemplaire
+              else
+              {
+                this.swapServant(this.id,sell.servantPriceWithTitle,sell.user_id);
+              }
+            } 
+            //Si l'acheteur a plus d'1 exemplaire
+            else
+            {
+              //Si le vendeur a déjà un exemplaire
+              if(qteVenduVendeur)
+              {
+                this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,false);
+                this.addServant(sell.user_id,sell.servantPriceWithTitle,1);
+                this.addServant(this.id,sell.servantPriceWithTitle,-1);
+              }
+              //Si le vendeur n'a pas d'exemplaire
+              else
+              {
+                const dataToSend = {
+                  userid:sell.user_id,
+                  servantid:sell.servantPriceWithTitle.id,
+                  level:sell.servantPriceWithTitle.level,
+                  qte:1
+                }
+                from(
+                  fetch(
+                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
+                    {
+                      body: JSON.stringify(dataToSend),
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      method: 'POST',
+                      mode: 'no-cors',
+                    }
+                  )
+                ).subscribe(d=>{
+                  this.swapTitle(this.id,sell.servantPriceWithTitle,sell.user_id,false);
+                  this.addServant(this.id,sell.servantPriceWithTitle,-1);
+                });
+              }
+            }
+          }
+
+          //Dans le cas d'une vente sans titre
+          if(sell.servant)
+          {
+            let qteVenduVendeur = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==sell.user_id).qte;
+            //Si le vendeur n'a qu'1 exemplaire
+            if(qteVenduVendeur==1)
+            {
+              this.removeServant(sell.user_id,sell.servant);
+              this.addServant(this.id,sell.servant,1);
+            }
+            //Si le vendeur a plus d'1 exemplaire
+            else
+            {
+              this.addServant(sell.user_id,sell.servant,-1);
+              this.addServant(this.id,sell.servant,1);
+            }
+          }
+          //Dans le cas d'une vente avec titre
+          else
+          {
+            let qteVenduAcheteur = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==this.id);
+            let qteVenduVendeur = data.find((d:any)=>d.servant_id==sell.servantWithTitle.id&&d.user_id==sell.user_id).qte;
+            //Si le vendeur n'a qu'1 exemplaire
+            if(qteVenduVendeur==1)
+            {
+              //Si l'acheteur a déjà 1 exemplaire
+              if(qteVenduAcheteur)
+              {
+                this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,true);
+                this.addServant(this.id,sell.servantWithTitle,1);
+              }
+              //Si l'acheteur n'a pas d'exemplaire
+              else
+              {
+                const dataToSend = {
+                  userid:this.id,
+                  servantid:sell.servantWithTitle.id,
+                  level:sell.servantWithTitle.level,
+                  qte:1
+                }
+                from(
+                  fetch(
+                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
+                    {
+                      body: JSON.stringify(dataToSend),
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      method: 'POST',
+                      mode: 'no-cors',
+                    }
+                  )
+                ).subscribe(d=>{
+                  this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,true);
+                });
+              }
+            }
+            //Si le vendeur a plus d'1 exemplaire
+            else
+            {
+              //Si l'acheteur a déjà 1 exemplaire
+              if(qteVenduAcheteur)
+              {
+                this.addServant(sell.user_id,sell.servantWithTitle,-1);
+                this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
+                this.addServant(this.id,sell.servantWithTitle,1);
+              }
+              //Si l'acheteur n'a pas d'exemplaire
+              else
+              {
+                const dataToSend = {
+                  userid:this.id,
+                  servantid:sell.servantWithTitle.id,
+                  level:sell.servantWithTitle.level,
+                  qte:1
+                }
+                from(
+                  fetch(
+                    'https://www.chiya-no-yuuki.fr/FATEaddServant',
+                    {
+                      body: JSON.stringify(dataToSend),
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                      method: 'POST',
+                      mode: 'no-cors',
+                    }
+                  )
+                ).subscribe(d=>{
+                  this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
+                  this.addServant(sell.user_id,sell.servantWithTitle,-1);
+                });
+              }
+            }
+          }
+        });
+  }
+
+  swapTitle(buyerid:any, servant:any, sellerid:any, remove:boolean)
+  {
+    const dataToSend = {
+      buyerid:buyerid,
+      servantid:servant.id,
+      sellerid:sellerid
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEswapTitle',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe(d=>{
+      if(remove)
+      {
+        this.removeServant(this.id,servant);
+      }
+    });
+  }
+
+  swapServant(buyerid:any, servant:any, sellerid:any)
+  {
+    const dataToSend = {
+      buyerid:buyerid,
+      servantid:servant.id,
+      sellerid:sellerid
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEswapServant',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
+  }
+
+  buyServ(sell:any)
+  {
+    const dataToSend = {
+      id:sell.id,
+      userid:this.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEbuyServ',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe(x=>{
+      this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEshop').subscribe(data=>
+      {
+        this.shop = data.map((x:any)=>
+        {
+          let tmp = x;
+          if(x.servant_id_with_title!=-1)tmp.servantWithTitle = this.data.find((y:any)=>y.id==x.servant_id_with_title);
+          if(x.servant_id!=-1)tmp.servant = this.data.find((y:any)=>y.id==x.servant_id);
+          if(x.price_servant_id!=-1)tmp.servantPrice = this.data.find((y:any)=>y.id==x.price_servant_id);
+          if(x.price_servant_id_with_title!=-1)tmp.servantPriceWithTitle = this.data.find((y:any)=>y.id==x.price_servant_id_with_title);
+          return tmp;
+        });
+        if(data.find((d:any)=>d.id==sell.id&&d.bought_user_id==this.id))
+        {
+          if(sell.price_quartz!=-1)
+          {
+            let qte = sell.price_quartz;
+            this.spendQuartz(qte);
+            const dataToSend = {
+              nom:sell.name,
+              qte:qte
+            }
+            from(
+              fetch(
+                'https://www.chiya-no-yuuki.fr/FATEspendQuartz',
+                {
+                  body: JSON.stringify(dataToSend),
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  method: 'POST',
+                  mode: 'no-cors',
+                }
+              )
+            );
+          }
+          else
+          {
+            this.buyServ2(sell);
+          }
+        }
+      });
+    });
+  }
+
+  removeServant(userid:any,perso:any)
+  {
+    const dataToSend = {
+      userid:userid,
+      servantid:perso.id
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEremoveServ',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
   }
 }

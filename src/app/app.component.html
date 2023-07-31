@@ -46,8 +46,7 @@
         <p [class.red]="includesFilter('Ruler')" (click)="filter('Ruler')">Ruler</p>
         <p [class.red]="includesFilter('Saber')" (click)="filter('Saber')">Saber</p>
         <p [class.red]="includesFilter('Shielder')" (click)="filter('Shielder')">Shielder</p>
-        <p class="noClickable">____________</p>
-        <p [class.red]="!showEssences" (click)="showEssences=!showEssences">Craft Essence</p>
+        <p [class.red]="!showEssences" (click)="showEssences=!showEssences"  style="margin-top:30px">Craft Essence</p>
       </div>
 
       <div class="tab2">
@@ -112,7 +111,7 @@
         <p style="color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;padding-top: 20px;font-size: 35px;position: absolute;">{{pseudo}}</p>
         <p style="color: black;text-shadow: 4px 0 white, 0 1px white, 1px 0 white, 0 -1px white;padding-top: 55px;font-size: 20px;position: absolute;">{{user.title}}</p>
         <div><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
-        <p style="position: absolute;top: 68px;right: 280px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
+        <p style="position: absolute;top: 68px;left: 1430px;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
   
       <img draggable="false" src="./assets/images/wait.png" *ngIf="state=='invocation'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
@@ -127,27 +126,75 @@
       </div>
       
       <div *ngIf="state=='shop'">
+        <button style="position: absolute;left: 1000px;top: 97px;width: 200px;" (click)="getShop()">Refresh</button>
+        <div *ngIf="createVente" class="creatVente">
+          <p style="text-align: center;">{{sellType=='quartz'&&persoToSell?'-':'Selectionnez le Servant que vous souhaitez '+(!persoToSell?'échanger':'vendre')}}</p>
+          <div style="display:flex;justify-content: center;height:270px;">
+            <div style="display:flex;overflow-x:scroll;overflow-y:hidden;padding:20px;" [style.display]="sellType=='quartz'&&persoToSell?'none':'flex'">
+              <div *ngFor="let servant of getSellServant()" style="height:207px;position:relative;height:213px"  class="clickable" (click)="clickSellPerso(servant)">
+                <img [class.golden]="persoToSell==undefined?golden(servant.id):false" draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{servant.img1}}"/>
+                <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:3px;" src="./assets/images/borders/{{servant.level}}.png"/>
+                <p style="width:130px;top: -35px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                    white-space: break-spaces;line-height: 10px;left:3px">{{servant.nom}}</p>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content: center;" class="sellContener">
+            <p style="position: absolute;top: 0px;right: 10px;" class="clickable" (click)="createVente=false">x</p>
+            <div style="height:207px;position: relative;" *ngIf="persoToSell" class="clickable" (click)="persoToExchange=undefined;persoToSell=undefined;">
+              <img [class.golden]="sellWithTitle" draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{persoToSell.img1}}"/>
+              <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:3px;" src="./assets/images/borders/{{persoToSell.level}}.png"/>
+              <p style="width:130px;top: -35px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                  white-space: break-spaces;line-height: 10px;left:3px">{{persoToSell.nom}}</p>
+            </div>
+            <div *ngIf="persoToSell" class="blocSell">
+              <p class="clickable" [class.disabledButton]="!isTitleSellToggable()" [class.red]="!sellWithTitle" (click)="sellWithTitle=!sellWithTitle">Sell with Title</p>
+              <p class="clickable" [class.red]="sellType!='trade'" (click)="sellType='trade'" style="margin-top:30px">Trade a Servant</p>
+              <p class="clickable" [class.red]="sellType!='quartz'" (click)="sellType='quartz'">Sell for Quartz</p>
+            </div>
+            <div *ngIf="persoToExchange&&sellType=='trade'" class="blocSell">
+              <p class="clickable" [class.red]="!exchangeWithTitle" (click)="exchangeWithTitle=!exchangeWithTitle">Exchange with Title</p>
+            </div>
+            <div style="position: relative;" *ngIf="persoToExchange&&sellType=='trade'"  class="clickable" (click)="persoToExchange=undefined">
+              <img [class.golden]="exchangeWithTitle" draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{persoToExchange.img1}}"/>
+              <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:3px;" src="./assets/images/borders/{{persoToExchange.level}}.png"/>
+              <p style="width:130px;top: -35px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                  white-space: break-spaces;line-height: 10px;left:3px">{{persoToExchange.nom}}</p>
+            </div>
+            <div style="position: relative;top: 90px;height:50px;" *ngIf="sellType=='quartz'" >
+              <img draggable="false" src="./assets/images/quartz.png" style="position: absolute;height: 60px;top: -14px;left: -18px;"/>
+              <input type="text" [(ngModel)]="sellQuartz" style="width: 200px;" placeholder="Prix.."/>
+            </div>
+          </div>
+          <div style="display:flex;justify-content: center;position: absolute;width: 100%;bottom:15px">
+            <button [class.disabledButton]="isDisabledSell()" style="width:200px;margin-top:0px;" (click)="sellServant()">Vendre</button>
+          </div>
+        </div>
         <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;top:-10px"/>
         <div class="options" style="width:190px;">
           <p [class.red]="filterSell!=''" (click)="filterSell=''">Tout Voir</p>
           <p [class.red]="filterSell!='Mes Ventes'" (click)="filterSell='Mes Ventes'">Mes Ventes</p>
           <p [class.red]="filterSell!='Achat Quartz'" (click)="filterSell='Achat Quartz'">Achat Quartz</p>
           <p [class.red]="filterSell!='Achat Echanges'" (click)="filterSell='Achat Echanges'">Achat Echanges</p>
-          <p class="noClickable">____________</p>
-          <p [class.red]="!filterSellAvailable" (click)="filterSellAvailable=!filterSellAvailable">Achats Possibles</p>
-          <p class="noClickable">____________</p>
-          <button (click)="createVente=true">Vendre</button>
+          <p [class.red]="!filterSellAvailable" (click)="filterSellAvailable=!filterSellAvailable"  style="margin-top:30px">Achats Possibles</p>
+          <button (click)="sellType='trade';sellQuartz='';persoToSell=undefined;persoToExchange=undefined;createVente=true"  style="margin-top:30px">Vendre</button>
         </div>
         <div style="display:flex;justify-content: center;">
           <div style="max-width: 79%;overflow-x: scroll;position: relative;top:-10px;">
             <div style="display:flex;">
               <div *ngFor="let sell of getShops()" class="sell">
                 <p>{{sell.nom}}</p>
-                <div style="position:relative;height:213px" class="clickable" (click)="selectedServ=sell.servant">
+                <div *ngIf="sell.servant" style="position:relative;height:213px" class="clickable" (click)="selectedServ=sell.servant">
                   <img draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{sell.servant.img1}}"/>
                   <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:35px;" src="./assets/images/borders/{{sell.servant.level}}.png"/>
                   <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
                   white-space: break-spaces;line-height: 10px;left:35px">{{sell.servant.nom}}</p>
+                </div>
+                <div *ngIf="sell.servantWithTitle" style="position:relative;height:213px" class="clickable" (click)="selectedServ=sell.servantWithTitle">
+                  <img class="golden" draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{sell.servantWithTitle.img1}}"/>
+                  <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:35px;" src="./assets/images/borders/{{sell.servantWithTitle.level}}.png"/>
+                  <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                  white-space: break-spaces;line-height: 10px;left:35px">{{sell.servantWithTitle.nom}}</p>
                 </div>
                 <p>Contre :</p>
                 <div *ngIf="sell.servantPrice" style="position:relative;height:213px"  class="clickable" (click)="selectedServ=sell.servantPrice">
@@ -156,11 +203,17 @@
                   <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
                   white-space: break-spaces;line-height: 10px;left:35px">{{sell.servantPrice.nom}}</p>
                 </div>
+                <div *ngIf="sell.servantPriceWithTitle" style="position:relative;height:213px"  class="clickable" (click)="selectedServ=sell.servantPriceWithTitle">
+                  <img class="golden" draggable="false" style="height:207px;width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{sell.servantPriceWithTitle.img1}}"/>
+                  <img draggable="false" style="height:207px;width:130px;position:absolute;top:3px;left:35px;" src="./assets/images/borders/{{sell.servantPriceWithTitle.level}}.png"/>
+                  <p style="width:130px;top: -30px;position: relative;font-size: 15px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                  white-space: break-spaces;line-height: 10px;left:35px">{{sell.servantPriceWithTitle.nom}}</p>
+                </div>
                 <div *ngIf="sell.price_quartz!=-1" class="score" style="left:20px;margin-top:10px;width:175px;margin-bottom:158px;top:65px">
                   <p class="sc" style="top:-3px">{{sell.price_quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
                 </div>
-                <button *ngIf="sell.nom!=user.nom" [class.disabledButton]="!got(sell.price_quartz,sell.servantPrice)">Acheter</button>
-                <button *ngIf="sell.nom==user.nom">Annuler</button>
+                <button *ngIf="sell.nom!=user.nom" [class.disabledButton]="!got(sell.price_quartz,sell.servantPrice,sell.servantPriceWithTitle)" (click)="buyServ(sell)">Acheter</button>
+                <button *ngIf="sell.nom==user.nom" (click)="cancelSell(sell.id)">Annuler</button>
               </div>
             </div>
           </div>
@@ -190,14 +243,14 @@
             </div>
           </div>
         </div>
-        <div class="boosted1 left" style="margin-top: 9px;left:9px;position:absolute;">
+        <div class="boosted1 left clickable" style="margin-top: 9px;left:9px;position:absolute;" (click)="selectedServ=perso5">
           <img draggable="false" style="border: 5px ridge #222;height:478px;" src="{{perso5.img1}}"/>
           <div>
             <p>{{perso5.level}}★</p>
             <p>{{perso5.nom}}</p>
           </div>
         </div>
-        <div class="boosted1 right" style="margin-top: 9px;position: absolute;left: 1043px">
+        <div class="boosted1 right clickable" style="margin-top: 9px;position: absolute;left: 1043px"  (click)="selectedServ=perso4">
           <img draggable="false" style="border: 5px ridge #222;height: 478px;" src="{{perso4.img1}}"/>
           <div>
             <p>{{perso4.level}}★</p>
@@ -237,10 +290,10 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
-        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
-        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
-        <img draggable="false" (click)="filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
+        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="createVente=false;filters=[];recherche='';selectedServ=undefined;playButton();state!='invocation'?state='banner':null" src="./assets/images/shopButton.png"/>
       </div>
     </div>
     
