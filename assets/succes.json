@@ -104,37 +104,61 @@
     { 
         "id":18, 
         "nom":"A little group of friends", 
-        "desc":"Avoir 10 servants",
+        "desc":"Avoir 10 servants différents",
         "recompense":10
     },
     { 
         "id":19, 
         "nom":"Almost a team", 
-        "desc":"Avoir 20 servants",
+        "desc":"Avoir 20 servants différents",
         "recompense":20
     },
     { 
         "id":20, 
         "nom":"A big classroom", 
-        "desc":"Avoir 40 servants",
+        "desc":"Avoir 40 servants différents",
         "recompense":40
     },
     { 
         "id":21, 
-        "nom":"A big classroom", 
-        "desc":"Avoir 60 servants",
+        "nom":"You can fill up a room", 
+        "desc":"Avoir 60 servants différents",
         "recompense":60
     },
     { 
         "id":22, 
-        "nom":"A big classroom", 
-        "desc":"Avoir 80 servants",
+        "nom":"Little village", 
+        "desc":"Avoir 80 servants différents",
         "recompense":80
     },
     { 
         "id":23, 
-        "nom":"A big classroom", 
-        "desc":"Avoir 100 servants",
+        "nom":"Village to city ?", 
+        "desc":"Avoir 100 servants différents",
         "recompense":100
+    },
+    { 
+        "id":24, 
+        "nom":"You pulled a lot, right ?", 
+        "desc":"Avoir 50 servants au total",
+        "recompense":30
+    },
+    { 
+        "id":25, 
+        "nom":"When will you stop ?", 
+        "desc":"Avoir 100 servants au total",
+        "recompense":60
+    },
+    { 
+        "id":26, 
+        "nom":"Buddy, you should pause", 
+        "desc":"Avoir 200 servants au total",
+        "recompense":90
+    },
+    { 
+        "id":27, 
+        "nom":"Do you have a life ?", 
+        "desc":"Avoir 500 servants au total",
+        "recompense":120
     }
 ]
