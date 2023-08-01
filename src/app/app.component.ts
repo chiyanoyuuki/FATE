@@ -115,6 +115,8 @@ export class AppComponent implements OnInit
   public successToClaim: any[] = [];
   public notPulled = false;
   public profile: any = undefined;
+  public cantSell: any = [];
+  public cantSellTitle: any = [];
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -1120,6 +1122,16 @@ export class AppComponent implements OnInit
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEshop').subscribe(data=>
     {
+      this.cantSell = [];
+      data.forEach((d:any)=>
+      {
+        if(d.bought_user_id==-1 && d.nom == this.user.nom)
+        {
+          if(d.servant_id!=-1)this.cantSell.push(d.servant_id);
+          if(d.servant_id_with_title!=-1)this.cantSell.push(d.servant_id_with_title);
+        }
+      });
+
       this.shop = data.map((x:any)=>
       {
         let tmp = x;
@@ -1418,13 +1430,19 @@ export class AppComponent implements OnInit
     if(!this.persoToSell) data = this.getData().filter((d:any)=>(d.level>3||d.level==0)&&d.nom!="Craft Essence");
     else data = this.data.filter((d:any)=>d.nom!="Craft Essence");
     let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
-    if(this.recherche!="")data = data.filter((d:any)=>d.nom.match(regexp));
+    if(this.recherche!="")data = data.filter((d:any)=>d.nom.toLowerCase().match(regexp));
     this.sorting(data);
     return data;
   }
 
+  cantSellServant(id:any)
+  {
+    return this.cantSell.includes(id);
+  }
+
   clickSellPerso(servant:any)
   {
+    if(this.persoToSell)this.persoToExchange = servant;
     if(!this.persoToSell)
     {
       this.persoToSell = servant;
@@ -1444,7 +1462,6 @@ export class AppComponent implements OnInit
         this.sellWithTitle = false;
       }
     }
-    this.persoToExchange = servant;
   }
 
   disableTitleToggle()
@@ -1466,10 +1483,13 @@ export class AppComponent implements OnInit
       if(!this.sellQuartz.match(/^[0-9]+$/) || parseInt(this.sellQuartz)>9999 || parseInt(this.sellQuartz)<0)
         return true;
     }
-    else
+    else if(!this.persoToExchange)
     {
-      if(!this.persoToExchange)
-        return true;
+      return true;
+    }
+    else if(this.persoToSell.id==this.persoToExchange.id&&this.sellWithTitle==this.exchangeWithTitle)
+    {
+      return true;
     }
     return false;
   }
@@ -1497,7 +1517,7 @@ export class AppComponent implements OnInit
         }
       )
     ).subscribe(x=>{
-      this.getShop();
+      this.refreshBoutique();
       this.createVente = false;
     });
   }
@@ -1521,7 +1541,7 @@ export class AppComponent implements OnInit
         }
       )
     ).subscribe(x=>{
-      this.getShop();
+      this.refreshBoutique();
     });
   }
 
@@ -1536,9 +1556,19 @@ export class AppComponent implements OnInit
 
         this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetSellData?id1='+this.id+'&id2='+sell.user_id+'&servid1='+servid1+'&servid2='+servid2).subscribe(data=>
         {
-          if(sell.price_quartz==-1)this.venteServ(sell,data);
-          this.donServ(sell,data);
-
+          if(sell.servantPriceWithTitle&&sell.servant&&sell.price_servant_id_with_title==sell.servant_id)
+          {
+            this.swapTitle(this.id,sell.servant,sell.user_id,false);
+          }
+          else if(sell.servantPrice&&sell.servantWithTitle&&sell.price_servant_id==sell.servant_id_with_title)
+          {
+            this.swapTitle(sell.user_id,sell.servantWithTitle,this.id,false);
+          }
+          else
+          {
+            if(sell.price_quartz==-1)this.venteServ(sell,data);
+            this.donServ(sell,data);
+          }
           
           this.majInterval = setInterval(() => {
             this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUser?nom=' + this.pseudo + '&mdp=' + this.mdp).subscribe(data=>
@@ -1826,8 +1856,41 @@ export class AppComponent implements OnInit
     );
   }
 
+  refreshBoutique()
+  {
+    this.getUserData(false);
+    this.getShop();
+  }
 
   buyServ(sell:any)
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUserData?id=' + this.id).subscribe(data=>
+    {
+      let priceid = -1;
+      let title = sell.price_servant_id_with_title!=-1;
+
+      if(sell.price_servant_id!=-1) priceid = sell.price_servant_id;
+      if(sell.price_servant_id_with_title!=-1) priceid = sell.price_servant_id_with_title;
+
+      if(data.find((d:any)=>d.servantid==priceid))
+      {
+        if(title && this.titles.find((t:any)=>t==priceid))
+        {
+          this.buyServ3(sell);
+        }
+        else if(!title)
+        {
+          this.buyServ3(sell);
+        }
+        else
+        {
+          this.refreshBoutique();
+        }
+      }
+    });
+  }
+
+  buyServ3(sell:any)
   {
     const dataToSend = {
       id:sell.id,
