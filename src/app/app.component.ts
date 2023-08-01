@@ -1872,7 +1872,11 @@ export class AppComponent implements OnInit
       if(sell.price_servant_id!=-1) priceid = sell.price_servant_id;
       if(sell.price_servant_id_with_title!=-1) priceid = sell.price_servant_id_with_title;
 
-      if(data.find((d:any)=>d.servantid==priceid))
+      if(sell.quartz!=-1)
+      {
+        this.buyServ3(sell);
+      }
+      else if(data.find((d:any)=>d.servantid==priceid))
       {
         if(title && this.titles.find((t:any)=>t==priceid))
         {
