@@ -367,12 +367,12 @@ box-shadow: unset;
 
 .nbServ{
     position: absolute;
-top: 0px;
-z-index: 2;
+top: -20px;
 font-size: 50px;
 z-index: 2;
 background-color: rgba(20,20,20,0.9);
 box-shadow: black 10px 10px 10px;
 border: 3px ridge #bbb;
-padding: 0px 8px;
+padding: 0px 30px;
+left:20%;
 }

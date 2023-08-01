@@ -160,5 +160,65 @@
         "nom":"Do you have a life ?", 
         "desc":"Avoir 500 servants au total",
         "recompense":120
+    },
+    {
+        "id":28,
+        "nom":"Go check your partner",
+        "desc":"Obtenir 30 servant 5*",
+        "recompense":80
+    },
+    {
+        "id":29,
+        "nom":"You should try gambling",
+        "desc":"Obtenir 40 servant 5*",
+        "recompense":120
+    },
+    {
+        "id":30,
+        "nom":"Babylone's gold",
+        "desc":"Obtenir 30 servant 4*",
+        "recompense":40
+    },
+    {
+        "id":31,
+        "nom":"Gilgamesh is jealous",
+        "desc":"Obtenir 40 servant 4*",
+        "recompense":60
+    },
+    {
+        "id":32,
+        "nom":"The reacher of the reacher",
+        "desc":"Obtenir 50 servant 4*",
+        "recompense":80
+    },
+    { 
+        "id":33, 
+        "nom":"Everyone is jealous", 
+        "desc":"Avoir 30 titres de servant",
+        "recompense":90
+    },
+    { 
+        "id":34, 
+        "nom":"City to Country ?", 
+        "desc":"Avoir 130 servants différents",
+        "recompense":130
+    },
+    { 
+        "id":35, 
+        "nom":"Country to Continent ?", 
+        "desc":"Avoir 160 servants différents",
+        "recompense":160
+    },
+    { 
+        "id":36, 
+        "nom":"Continent to World ?", 
+        "desc":"Avoir 200 servants différents",
+        "recompense":200
+    },
+    { 
+        "id":37, 
+        "nom":"Just leave please", 
+        "desc":"Avoir 1000 servants au total",
+        "recompense":200
     }
 ]
