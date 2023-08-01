@@ -327,16 +327,16 @@ export class AppComponent implements OnInit
     }
     else if(AppComponent.perso.level==5)
     {
-      let rdm2 = Math.floor(Math.random()*3);
-      if(rdm2==0){this.video = "rainbow";}
-      else if(rdm2==1){this.video = "gold";}
-      else if(rdm2==2){this.video = "3star";}
+      let rdm2 = Math.floor(Math.random()*10);
+      if(rdm2<5){this.video = "rainbow";}
+      else if(rdm2<8){this.video = "gold";}
+      else {this.video = "3star";}
     }
     else if(AppComponent.perso.level==4)
     {
-      let rdm2 = Math.floor(Math.random()*2);
-      if(rdm2==0){this.video = "gold";}
-      else if(rdm2==1){this.video = "3star";}
+      let rdm2 = Math.floor(Math.random()*10);
+      if(rdm2<8){this.video = "gold";}
+      else {this.video = "3star";}
     }
     else
     {
