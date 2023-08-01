@@ -25,7 +25,7 @@
         <img draggable="false" style="width:320px;height:100%;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{selectedServ.level}}.png"/>
         <p style="white-space: break-spaces;line-height: 22px;bottom: 28px;position: absolute;font-size: 30px;text-align: center;color:white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;width:100%">{{selectedServ.nom}}</p>
       </div>
-      <p *ngIf="first(selectedServ)" class="clickable useTitle" (click)="setTitle()">Use as Title</p>
+      <p *ngIf="first(selectedServ)&&state=='formation'" class="clickable useTitle" (click)="setTitle()">Use as Title</p>
     </div>
 
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >

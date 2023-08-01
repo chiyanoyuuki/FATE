@@ -1045,7 +1045,7 @@ export class AppComponent implements OnInit
 
   first(serv:any)
   {
-    return this.titles.includes(serv.id) || (serv.level < 4&&serv.nom!="Craft Essence");
+    return this.titles.includes(serv.id) || (serv.level < 4&&serv.nom!="Craft Essence"&&this.userData.find((d:any)=>d.id==serv.id));
   }
 
   golden(id:any)
