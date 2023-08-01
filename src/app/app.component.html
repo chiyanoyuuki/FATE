@@ -31,7 +31,7 @@
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >
       <p class="nbServ">{{getData().length}}</p>
       <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;"/>
-      <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false);getTitles()">Refresh</button>
+      <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false);getTitles();">Refresh</button>
       <div class="options" *ngIf="!this.selectServant">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
         <p [class.red]="includesFilter('Archer')" (click)="filter('Archer')">Archer</p>
@@ -78,11 +78,11 @@
     </div>
 
     <div *ngIf="profile" class="profile">
-      <img (click)="selectServant=true;state='formation';filterTitle=true;profile=undefined;ind=-1" [class.golden]="first(myprofile.servant)" *ngIf="myprofile.servant" class="servProfile clickable" draggable="false" src="{{myprofile.servant.img1}}"/>
-      <div (click)="selectServant=true;state='formation';filterTitle=true;profile=undefined;ind=-1" class="servProfile clickable" *ngIf="!myprofile.servant"></div>
+      <img (click)="profile==id?clickServantProfile(-1):null" [class.golden]="first(myprofile.servant)" *ngIf="myprofile.servant" class="servProfile" [class.clickable]="profile==id" draggable="false" src="{{myprofile.servant.img1}}"/>
+      <div (click)="profile==id?clickServantProfile(-1):null" class="servProfile" [class.clickable]="profile==id" *ngIf="!myprofile.servant"></div>
       <div class="profileBotServs">
-        <img class="clickable" (click)="selectServant=true;state='formation';profile=undefined;ind=i" [class.golden]="myprofile.titleservs[i]==1" *ngFor="let serv of myprofile.servs;let i=index" draggable="false" src="{{serv.img1}}"/>
-        <div class="clickable" (click)="selectServant=true;state='formation';profile=undefined;ind=i" *ngFor="let item of [].constructor(10-myprofile.servs.length);let i=index"></div>
+        <img [class.clickable]="profile==id" (click)="profile==id?clickServantProfile(i):null" [class.golden]="myprofile.titleservs[i]==1" *ngFor="let serv of myprofile.servs;let i=index" draggable="false" src="{{serv.img1}}"/>
+        <div [class.clickable]="profile==id" (click)="profile==id?clickServantProfile(i):null" *ngFor="let item of [].constructor(10-myprofile.servs.length);let i=index"></div>
       </div>
       <div style="display:flex;">
         <div style="height:fit-content;position: absolute;left:525px;max-width:500px;width:500px;">
@@ -101,6 +101,7 @@
           </div>
           <input type="text" class="desc" *ngIf="profile==id" [(ngModel)]="profiledesc" style="width:450px"/>
           <div style="display:flex;justify-content:space-around">
+            <button [class.disabledButton]="user.smurf==0" style="width:140px" *ngIf="profile==id" (click)="transfert()">{{confirmTransfert}}</button>
             <button [class.disabledButton]="myprofile.description==profiledesc||profiledesc.length>99" style="width:140px" *ngIf="profile==id" (click)="descProfile()">Valider</button>
           </div>
         </div>
@@ -120,12 +121,12 @@
     </div>
 
     <div *ngIf="state=='friends'">
-      <button (click)="getUsers()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
+      <button (click)="getUsers();getProfiles();" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
       <p style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">
         <div style="width:100%">
-          <div *ngFor="let user of users;let i=index"  class="clickable" (click)="setProfile(user.id)">
+          <div *ngFor="let user of users;let i=index"  class="clickable clickable3" (click)="setProfile(user.id)">
             <div style="display:flex;">
               <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{(i+1)}}</p>
               <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
@@ -135,7 +136,7 @@
                 <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
               </div>
               <img [class.golden]="isGold(user.id)" *ngIf="getProfile(user.id).servant" class="profilePicture2" draggable="false" src="{{getProfile(user.id).servant.img1}}"/>
-              <div *ngIf="!getProfile(user.id).servant" class="profilePicture2"></div>
+              <div *ngIf="!getProfile(user.id).servant" class="profilePicture2" style="border:unset;"></div>
               <div style="position: absolute;left: 600px;padding-top: 4px;text-align: left;width:400px">
                 <p style="text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>  

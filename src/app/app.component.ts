@@ -134,6 +134,7 @@ export class AppComponent implements OnInit
   public profiledesc: any;
   public selectServant: any;
   public ind: any = -1;
+  public confirmTransfert = "Transfert Smurf";
 
   constructor(private http: HttpClient){
 
@@ -247,6 +248,7 @@ export class AppComponent implements OnInit
 
   setProfile(id:any)
   {
+    this.confirmTransfert = "Transfert Smurf";
     let tmp = this.profiles.find((p:any)=>p.user_id==id);
     if(tmp) this.myprofile = tmp;
     else this.myprofile = {servs:[]};
@@ -1320,9 +1322,48 @@ export class AppComponent implements OnInit
     else return false;
   }
 
-  isGold2(serv:any)
+  clickServantProfile(i:any)
   {
+    this.selectServant=true;
+    this.state='formation';
+    if(i==-1)this.filterTitle=true;
+    this.profile=undefined;
+    this.ind=i;
+  }
 
+  transfert()
+  {
+    if(this.confirmTransfert=="Transfert Smurf")
+    {
+      this.confirmTransfert = "Valider transfert ?"
+    }
+    else
+    {
+      this.confirmTransfert=="Transfert Smurf";
+      this.profile = undefined;
+      if(this.user.smurf!=0)
+      {
+        const dataToSend = {
+          id:this.id,
+          smurf:this.user.smurf
+        }
+        from(
+          fetch(
+            'https://www.chiya-no-yuuki.fr/FATEtransfert',
+            {
+              body: JSON.stringify(dataToSend),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              mode: 'no-cors',
+            }
+          )
+        ).subscribe(e=>{
+          this.getUserData(true);
+        });
+      }
+    }
   }
 
   getProfiles()
@@ -1337,6 +1378,7 @@ export class AppComponent implements OnInit
           tmp.push(this.data.find((d:any)=>d.id==s));
         })
         p.servs = tmp;
+        if(!p.titleservs||p.titleservs == null) p.titleservs = [];
       });
       if(!this.profiles.find((p:any)=>p.user_id==this.id))
       {
