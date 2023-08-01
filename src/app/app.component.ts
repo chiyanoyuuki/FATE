@@ -98,6 +98,7 @@ export class AppComponent implements OnInit
   public dailyInterval: any;
   public filterSell = "";
   public filterSellAvailable = false;
+  public doublons = false;
 
   public timerBanner: any = 5000000;
   public timerQuartz: any = 5000000;
@@ -1483,6 +1484,10 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>this.titles.includes(d.id) && d.level>3);
     }
+    if(this.doublons)
+    {
+      data = data.filter((d:any)=>d.qte>1&&d.level>3);
+    }
     
     this.sorting(data);
     return data;
@@ -1490,6 +1495,7 @@ export class AppComponent implements OnInit
 
   clickMenu()
   {
+    this.doublons = false;
     this.filterTitle = false;
     this.showEssences = false;
     this.notPulled = false;

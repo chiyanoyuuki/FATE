@@ -49,6 +49,7 @@
         <p [class.red]="includesFilter('Saber')" (click)="filter('Saber')">Saber</p>
         <p [class.red]="includesFilter('Shielder')" (click)="filter('Shielder')">Shielder</p>
         <p [class.red]="!filterTitle" (click)="filterTitle=!filterTitle" style="margin-top:30px">Titles</p>
+        <p [class.red]="!doublons" (click)="doublons=!doublons">Doublons</p>
         <p [class.red]="!showEssences" (click)="showEssences=!showEssences"  style="margin-top:30px">Craft Essence</p>
         <p [class.red]="!notPulled" (click)="notPulled=!notPulled">Not Pulled</p>
       </div>
