@@ -117,6 +117,7 @@ export class AppComponent implements OnInit
   public profile: any = undefined;
   public cantSell: any = [];
   public cantSellTitle: any = [];
+  public filterTitle: any = false;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -571,6 +572,8 @@ export class AppComponent implements OnInit
         });
       }
       else tmp = [];
+      let nbtot = 0;
+      this.userData.forEach((d:any)=>{if(d.nom!="Craft Essence")nbtot+=d.qte});
         
       let nbt = tmp.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
       let nbs = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
@@ -764,7 +767,43 @@ export class AppComponent implements OnInit
       cpt=23;
       if(!data.find((d:any)=>d.id==cpt))
       {
-        if(nbs>99)
+        if(nb>99)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=24;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbtot>49)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=25;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbtot>99)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=26;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbtot>199)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=27;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbtot>499)
         {
           this.addSuccess(cpt);
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
@@ -1349,9 +1388,26 @@ export class AppComponent implements OnInit
       let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
       data = data.filter((d:any)=>d.nom.toLowerCase().match(regexp));
     }
+    if(this.filterTitle)
+    {
+      data = data.filter((d:any)=>this.titles.includes(d.id) && d.level>3);
+    }
     
     this.sorting(data);
     return data;
+  }
+
+  clickMenu()
+  {
+    this.filterTitle = false;
+    this.showEssences = false;
+    this.notPulled = false;
+    this.succesOpen=false;
+    this.createVente=false;
+    this.filters=[];
+    this.recherche='';
+    this.selectedServ=undefined;
+    this.playButton();
   }
   
   getNoData()
@@ -1579,6 +1635,7 @@ export class AppComponent implements OnInit
                 this.score = data[0].score;
                 this.getUserData(true);
                 this.getTitles();
+                this.calc();
             });
             clearInterval(this.majInterval);
         },300);
