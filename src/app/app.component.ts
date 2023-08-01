@@ -127,6 +127,13 @@ export class AppComponent implements OnInit
   public static interval: any;
 
   public createVente = false;
+  public profiles: any[] = [];
+  public myprofile: any;
+  public myprofiledata: any;
+  public myprofilestats: any;
+  public profiledesc: any;
+  public selectServant: any;
+  public ind: any = -1;
 
   constructor(private http: HttpClient){
 
@@ -236,6 +243,20 @@ export class AppComponent implements OnInit
     }
     this.reinitBanner();
     this.saveBanner();
+  }
+
+  setProfile(id:any)
+  {
+    let tmp = this.profiles.find((p:any)=>p.user_id==id);
+    if(tmp) this.myprofile = tmp;
+    else this.myprofile = {servs:[]};
+    this.profile = id;
+    this.myprofiledata = this.users.find((u:any)=>u.id==id);
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetProfilesData?id=' + id).subscribe(data=>
+    {
+      console.log(data);
+      this.myprofilestats = data[0];
+    });
   }
 
   public resetVid()
@@ -525,6 +546,7 @@ export class AppComponent implements OnInit
         this.conn();
         this.getTitles();
         this.getShop();
+        this.getProfiles();
         this.state = "banner";
         AppComponent.son.play();
         this.timerQuartz = 400000;
@@ -1275,6 +1297,100 @@ export class AppComponent implements OnInit
     });
   }
 
+  getProfile(id:any)
+  {
+    let tmp = this.profiles.find((p:any)=>p.user_id==id);
+    if(tmp)
+    {
+      return tmp;
+    }
+    else
+    {
+      return {};
+    }
+  }
+
+  isGold(id:any)
+  {
+    let tmp = this.getProfile(id);
+    if(tmp.titleserv&&tmp.titleserv==1)
+    {
+      return true;
+    }
+    else return false;
+  }
+
+  isGold2(serv:any)
+  {
+
+  }
+
+  getProfiles()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetProfiles').subscribe(data=>
+    {
+      this.profiles = data;
+      this.profiles.forEach((p:any)=>{
+        if(p.servant_id!=-1)p.servant = this.data.find((d:any)=>d.id==p.servant_id);
+        let tmp:any[] = [];
+        p.servants.forEach((s:any)=>{
+          tmp.push(this.data.find((d:any)=>d.id==s));
+        })
+        p.servs = tmp;
+      });
+      if(!this.profiles.find((p:any)=>p.user_id==this.id))
+      {
+        let prof = {user_id:this.id,servant_id:-1,servants:[],description:'Pas de description..',succes:[],servs:[],titleserv:-1,titleservs:[]};
+        this.profiledesc = "Pas de description..";
+        this.myprofile = prof;
+        this.profiles.push(prof);
+        const dataToSend = {
+          userid:this.id
+        }
+        from(
+          fetch(
+            'https://www.chiya-no-yuuki.fr/FATEaddProfile',
+            {
+              body: JSON.stringify(dataToSend),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              mode: 'no-cors',
+            }
+          )
+        );
+      }
+      else
+      {
+        this.myprofile = this.profiles.find((p:any)=>p.user_id==this.id)
+        this.profiledesc = this.myprofile.description;
+      }
+    });
+  }
+
+  descProfile()
+  {
+    this.myprofile.description = this.profiledesc;
+    const dataToSend = {
+      userid:this.id,
+      desc:this.profiledesc
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEdescProfile',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
+  }
+
 
   addServant(userid:any, perso:any, qte:number)
   {
@@ -1475,11 +1591,6 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>d.nom!="Craft Essence");
     }
-    if(this.recherche!="")
-    {
-      let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
-      data = data.filter((d:any)=>d.nom.toLowerCase().match(regexp));
-    }
     if(this.filterTitle)
     {
       data = data.filter((d:any)=>this.titles.includes(d.id) && d.level>3);
@@ -1488,6 +1599,17 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>d.qte>1&&d.level>3);
     }
+
+    
+    if(this.selectServant&&this.ind!=-1)
+    {
+      data = this.userData.filter((d:any)=>!this.myprofile.servants.includes(d.id));
+    }
+    if(this.recherche!="")
+    {
+      let regexp = new RegExp('.*'+this.recherche.toLowerCase()+'.*');
+      data = data.filter((d:any)=>d.nom.toLowerCase().match(regexp));
+    }
     
     this.sorting(data);
     return data;
@@ -1495,6 +1617,7 @@ export class AppComponent implements OnInit
 
   clickMenu()
   {
+    this.selectServant = false;
     this.doublons = false;
     this.filterTitle = false;
     this.showEssences = false;
@@ -1506,9 +1629,81 @@ export class AppComponent implements OnInit
     this.selectedServ=undefined;
     this.playButton();
   }
+
+  changeProfile(id:any)
+  {
+    this.selectServant = false;
+    this.setProfile(this.id);
+    if(this.ind==-1)
+    {
+      this.myprofile.servant = this.data.find((d:any)=>d.id==id);
+      const dataToSend = {
+        id:this.id,
+        servantid:id,
+        titleserv:this.titles.includes(id)?1:0
+      }
+      from(
+        fetch(
+          'https://www.chiya-no-yuuki.fr/FATEpicProfile',
+          {
+            body: JSON.stringify(dataToSend),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            mode: 'no-cors',
+          }
+        )
+      );
+    }
+    else
+    {
+      let tmp = this.data.find((d:any)=>d.id==id);
+      if(this.myprofile.servs.length<10)
+      {
+        this.myprofile.servs.push(tmp);
+        this.myprofile.servants.push(id);
+        this.myprofile.titleservs.push(this.titles.includes(id)&&tmp.level>3?1:0);
+      }
+      else
+      {
+        this.myprofile.servants[this.ind] = id;
+        this.myprofile.servs[this.ind]=this.data.find((d:any)=>d.id==id);
+        this.myprofile.titleservs[this.ind] = this.titles.includes(id)&&tmp.level>3?1:0;
+      }
+
+      let servantstosend = "[";
+      this.myprofile.servants.forEach((p:any) => servantstosend+=(p)+",");
+      servantstosend=servantstosend.substring(0,servantstosend.length-1) + "]";
+
+      let titletosend = "[";
+      this.myprofile.titleservs.forEach((p:any) => titletosend+=(p)+",");
+      titletosend=titletosend.substring(0,titletosend.length-1) + "]";
+      
+      const dataToSend = {
+        id:this.id,
+        servants:servantstosend,
+        titleservs:titletosend
+      }
+      from(
+        fetch(
+          'https://www.chiya-no-yuuki.fr/FATEpicsProfile',
+          {
+            body: JSON.stringify(dataToSend),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            mode: 'no-cors',
+          }
+        )
+      );
+    }
+  }
   
   getNoData()
   {
+    if(this.selectServant) return [];
     let data = this.data;
     data = data.filter((d:any)=>!this.userData.find((e:any)=>e.id==d.id));
 
@@ -1524,7 +1719,6 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>!this.allTitles.includes(d.id)&&d.level>3);
     }
-
 
     if(this.recherche!="")
     {

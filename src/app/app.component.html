@@ -32,7 +32,7 @@
       <p class="nbServ">{{getData().length}}</p>
       <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;"/>
       <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false);getTitles()">Refresh</button>
-      <div class="options">
+      <div class="options" *ngIf="!this.selectServant">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
         <p [class.red]="includesFilter('Archer')" (click)="filter('Archer')">Archer</p>
         <p [class.red]="includesFilter('Assassin')" (click)="filter('Assassin')">Assassin</p>
@@ -56,7 +56,7 @@
 
       <div class="tab2">
         <div class="tab" *ngIf="!notPulled">
-          <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;" class="clickable" (click)="selectedServ=perso">
+          <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;" class="clickable" (click)="selectServant?changeProfile(perso.id):selectedServ=perso">
             <img [class.golden]="golden(perso.id)" draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}" />
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
             <p style="bottom: 0px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -77,17 +77,55 @@
       </div>
     </div>
 
-    <div *ngIf="profile">
-      
+    <div *ngIf="profile" class="profile">
+      <img (click)="selectServant=true;state='formation';filterTitle=true;profile=undefined;ind=-1" [class.golden]="first(myprofile.servant)" *ngIf="myprofile.servant" class="servProfile clickable" draggable="false" src="{{myprofile.servant.img1}}"/>
+      <div (click)="selectServant=true;state='formation';filterTitle=true;profile=undefined;ind=-1" class="servProfile clickable" *ngIf="!myprofile.servant"></div>
+      <div class="profileBotServs">
+        <img class="clickable" (click)="selectServant=true;state='formation';profile=undefined;ind=i" [class.golden]="myprofile.titleservs[i]==1" *ngFor="let serv of myprofile.servs;let i=index" draggable="false" src="{{serv.img1}}"/>
+        <div class="clickable" (click)="selectServant=true;state='formation';profile=undefined;ind=i" *ngFor="let item of [].constructor(10-myprofile.servs.length);let i=index"></div>
+      </div>
+      <div style="display:flex;">
+        <div style="height:fit-content;position: absolute;left:525px;max-width:500px;width:500px;">
+          <div style="display:flex">
+            <img [class.golden]="isGold(profile)" *ngIf="myprofile.servant" class="profilePicture" draggable="false" src="{{myprofile.servant.img1}}" style="margin-right: 20px;margin-bottom: 20px;" />
+            <div *ngIf="!myprofile.servant" class="profilePicture"  style="margin-right: 20px;margin-bottom: 20px;"></div>
+            <div>
+              <p style="font-size: 30px;">{{myprofiledata.nom}}</p>
+              <p>{{myprofiledata.title}}</p>
+            </div>
+          </div>
+          <p style="font-size: 15px;">Last pull : {{myprofiledata.last}}</p>
+          <p style="font-size: 15px;">Connecté depuis : {{myprofiledata.conn}}</p>
+          <div class="desc" *ngIf="profile!=id">
+            <p *ngIf="myprofile.description" style="font-size: 15px;">{{myprofile.description}}</p>
+          </div>
+          <input type="text" class="desc" *ngIf="profile==id" [(ngModel)]="profiledesc" style="width:450px"/>
+          <div style="display:flex;justify-content:space-around">
+            <button [class.disabledButton]="myprofile.description==profiledesc||profiledesc.length>99" style="width:140px" *ngIf="profile==id" (click)="descProfile()">Valider</button>
+          </div>
+        </div>
+        <div class="desc2" style="right: 375px;position: absolute;width: 650px;">
+        </div>
+        <div *ngIf="myprofilestats" class="desc2">
+          <div style="display:flex;justify-content: space-between;"><p>Titles :</p><p> {{myprofilestats.titles}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Servants 5* :</p><p> {{myprofilestats.servant5}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Servants 4* :</p><p> {{myprofilestats.servant4}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Pulls :</p><p> {{myprofilestats.pulls}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Max banner pull :</p><p> {{myprofilestats.maxpull}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Succès :</p><p> {{myprofilestats.success}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Nombre d'achats :</p><p> {{myprofilestats.nbAchats}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Nombre de ventes :</p><p> {{myprofilestats.nbVentes}}</p></div>
+        </div>
+      </div>
     </div>
 
     <div *ngIf="state=='friends'">
       <button (click)="getUsers()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
-      <p style="position:absolute;left: 970px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
-      <p style="position:absolute;left: 1210px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
-      <div class="containerScore" style="left:200px;width:1200px">
+      <p style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
+      <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
+      <div class="containerScore" style="left:200px;width:1300px">
         <div style="width:100%">
-          <div *ngFor="let user of users;let i=index"  class="clickable" (click)="profile=user.id">
+          <div *ngFor="let user of users;let i=index"  class="clickable" (click)="setProfile(user.id)">
             <div style="display:flex;">
               <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{(i+1)}}</p>
               <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
@@ -96,14 +134,16 @@
               <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
                 <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
               </div>
-              <div style="position: absolute;left: 530px;padding-top: 4px;text-align: left;width:400px">
+              <img [class.golden]="isGold(user.id)" *ngIf="getProfile(user.id).servant" class="profilePicture2" draggable="false" src="{{getProfile(user.id).servant.img1}}"/>
+              <div *ngIf="!getProfile(user.id).servant" class="profilePicture2"></div>
+              <div style="position: absolute;left: 600px;padding-top: 4px;text-align: left;width:400px">
                 <p style="text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>  
               </div>
-              <div style="position: absolute;left: 820px;padding-top: 15px;text-align: left;width:280px;opacity: 0.4;">
+              <div style="position: absolute;left: 870px;padding-top: 15px;text-align: left;width:280px;opacity: 0.4;">
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.last}}</p>  
               </div>
-              <div style="position: absolute;left: 1045px;padding-top: 15px;text-align: left;width:280px;opacity: 0.4;">
+              <div style="position: absolute;left: 1095px;padding-top: 15px;text-align: left;width:280px;opacity: 0.4;">
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.conn}}</p>  
               </div>
             </div>
@@ -116,7 +156,6 @@
     
     <div *ngIf="state!='connection'">
       <div class="header" style="box-shadow: white 1px 1px 10px;width: 99%;height: 90px;background-color: rgba(100,150,200,0.8);border: 3px ridge #555;display:flex;justify-content: space-around;margin-bottom:20px;">
-
           <img class="clickable" (click)="succesOpen=!succesOpen" draggable="false" src="./assets/images/succes.png" style="position: absolute;left: 15px;width: 80px;"/>
           <img class="clickable" (click)="recordOpen=!recordOpen" draggable="false" src="./assets/images/record.png" style="position: absolute;right: 20px;width: 80px;top:8px"/>
           <p *ngIf="successToClaim.length>0" style="top: 55px;position: absolute;font-size: 20px;width: 29px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -146,8 +185,6 @@
         <div class="clickable" (click)="refreshUser()"><p>{{quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/></div>
         <p style="position: absolute;top: 68px;left: 70%;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Next Quartz : {{nextSQ < 10?'0':''}}{{nextSQ}}:{{nextSQs < 10?'0':''}}{{nextSQs}}</p>
       </div>
-  
-      <img draggable="false" src="./assets/images/wait.png" *ngIf="state=='invocation'" style="position: absolute;bottom: 230px;width: 1370px;left: 170px;"/>
   
       <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'||state=='shop'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
   
@@ -326,11 +363,11 @@
   
       </div>
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
-        <img draggable="false" (click)="clickMenu();state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
-        <img draggable="false" (click)="clickMenu();state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
-        <img draggable="false" (click)="clickMenu();state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
-        <img draggable="false" (click)="clickMenu();state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
-        <img draggable="false" (click)="clickMenu();state!='invocation'?profile='id':null" src="./assets/images/profileButton.png"/>
+        <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
+        <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
+        <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
+        <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='shop':null" src="./assets/images/shopButton.png"/>
+        <img draggable="false" (click)="clickMenu();state!='invocation'?profile?profile=undefined:setProfile(id):null" src="./assets/images/profileButton.png"/>
       </div>
     </div>
     
