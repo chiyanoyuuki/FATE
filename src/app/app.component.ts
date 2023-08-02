@@ -123,6 +123,7 @@ export class AppComponent implements OnInit
   public static perso: any;
   public static show: boolean = false;
   public static interval: any;
+  public levels: any[] = [];
 
   public createVente = false;
   public profiles: any[] = [];
@@ -135,6 +136,8 @@ export class AppComponent implements OnInit
   public confirmTransfert = "Transfert Smurf";
   public filterSpec = "";
   public enhance = false;
+  public ce: number[] = [0,0,0,0,0,0];
+  public ascs: any[] = [];
 
   constructor(private http: HttpClient){
 
@@ -461,6 +464,60 @@ export class AppComponent implements OnInit
     }
     this.persosToInvoq.push(perso);
   }
+  getServLevel()
+  {
+    let level = 0;
+    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    if(tmp)level = tmp.level;
+    return level;
+  }
+
+  getServLevel2(perso:any)
+  {
+    let level = 0;
+    let tmp = this.levels.find((l:any)=>l.servant_id == perso.id);
+    if(tmp)level = tmp.level;
+    return level;
+  }
+
+  disabledAsc(i:number)
+  {
+    let level = this.getServLevel();
+    if(i==0)return false;
+    else if(i==1)return level<31;
+    else if(i==2)return level<61;
+    else return level<100;
+  }
+
+  getLevel()
+  {
+    let limit = this.getLimit();
+    let level = 0;
+    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    if(tmp)level = tmp.level;
+    level = level + this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5+this.ce[5]*20;
+    return level>limit?limit:level;
+  }
+
+  hasDoublon()
+  {
+    return this.userData.find((u:any)=>u.id==this.selectedServ.id).qte>1;
+  }
+
+  isLevelCap()
+  {
+    let limit = this.getLimit();
+    let level = 0;
+    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    if(tmp)level = tmp.level;
+    if(level==limit)return true;
+    return false;
+  }
+
+  getMore()
+  {
+    return this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5+this.ce[5]*20;
+  }
 
   getImage(){
       return AppComponent.perso && AppComponent.perso.img1;
@@ -469,7 +526,14 @@ export class AppComponent implements OnInit
   getCE()
   {
     let tmp = this.data.filter((d:any)=>d.nom=="Craft Essence");
-    return this.userData.filter((d:any)=>d.nom=="Craft Essence");
+    tmp.forEach((t:any)=>{
+      let tmp2 = this.userData.find((u:any)=>u.id==t.id);
+      if(tmp2) tmp.qte = tmp2.qte;
+      else tmp.qte = 0;
+    });
+    let serv = this.userData.find((u:any)=>u.id==this.selectedServ.id);
+    tmp.push(serv);
+    return tmp;
   }
 
   getBack(){
@@ -551,14 +615,24 @@ export class AppComponent implements OnInit
         this.getUserData(false);
         this.getUsers();
         this.conn();
+        this.getLevels();
         this.getTitles();
         this.getShop();
         this.getProfiles();
+        this.getLevels();
         this.state = "banner";
         AppComponent.son.play();
         this.timerQuartz = 400000;
         this.daily();
       }
+    });
+  }
+
+  getLevels()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?id=' + this.id).subscribe(data=>
+    {
+      this.levels = data;
     });
   }
 
@@ -1731,8 +1805,138 @@ export class AppComponent implements OnInit
 
   clickServant(perso:any)
   {
+    this.ascs = [];
     this.enhance=false;
     this.selectedServ=perso;
+  }
+
+  addLevel()
+  {
+    let tmp = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==this.selectedServ.id);
+    let asc = 0;
+    if(tmp)asc = tmp.ascension;
+
+    let cartes = this.getCE();
+    for(let i=0;i<6;i++)
+    {
+      let qte = this.ce[i];
+      let serv = cartes[i];
+      if(qte>0&&serv.qte-qte>0)
+      {
+        this.addServant(this.id,serv,qte*-1);
+      }
+      else if(qte>0)
+      {
+        this.removeServant(this.id,serv);
+      }
+    }
+
+    const dataToSend = {
+      id:this.id,
+      servid:this.selectedServ.id,
+      level:this.getLevel(),
+      asc:asc
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEsetLevels',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe((response) => 
+    {
+      this.enhance = false;
+      this.getLevels();
+    });
+  }  
+
+  changeAscension(i:number)
+  {
+    const dataToSend = {
+      id:this.id,
+      servid:this.selectedServ.id,
+      level:this.getServLevel(),
+      asc:i
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEsetLevels',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe((response) => 
+    {
+      this.ascs = [];
+      this.getLevels();
+    });
+  }
+
+  ascension()
+  {
+    let tmp = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==this.selectedServ.id);
+    let asc = 0;
+    if(tmp.level<=30)asc = 1;
+    else if(tmp.level<=60)asc= 2;
+    else asc = 3;
+    this.addServant(this.id,this.selectedServ,-1);
+
+    const dataToSend = {
+      id:this.id,
+      servid:this.selectedServ.id,
+      level:this.getServLevel()+1,
+      asc:asc
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEsetLevels',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe((response) => 
+    {
+      this.enhance = false;
+      this.getLevels();
+    });
+  }
+
+  getImg(id:any,perso:any)
+  {
+    let tmp = this.levels.find((l:any)=>l.user_id==id&&l.servant_id==perso.id);
+    let img = perso.img1;
+    if(tmp)
+    {
+      if(tmp.ascension==1)img = perso.img2;
+      else if(tmp.ascension==2)img = perso.img3;
+      else if(tmp.ascension==3)img = perso.img4;
+    }
+    return img;
+  }
+
+  clickEnhance()
+  {
+    if(this.enhance==true){this.enhance=false;return;}
+    this.getUserData(false);
+    this.ascs = [];
+    this.ce = [0,0,0,0,0,0];
+    this.enhance=true;
   }
 
   addpull(nb:number)
@@ -1996,18 +2200,29 @@ export class AppComponent implements OnInit
   {
     data.sort((a: any,b: any) => 
     {
-      if(b.level>a.level)
-      {
-        return 1;
-      }
-      else if(b.level<a.level)
-      {
-        return -1;
-      }
-      else
-      {
-        return a.nom > b.nom;
-      }
+      if(this.getServLevel2(b)>this.getServLevel2(a))
+        {
+          return 1;
+        }
+        else if(this.getServLevel2(b)<this.getServLevel2(a))
+        {
+          return -1;
+        }
+        else
+        {
+          if(b.level>a.level)
+          {
+            return 1;
+          }
+          else if(b.level<a.level)
+          {
+            return -1;
+          }
+          else
+          {
+            return a.nom > b.nom;
+          }
+        }
     });
   }
 
@@ -2172,6 +2387,30 @@ export class AppComponent implements OnInit
             clearInterval(this.majInterval);
         },300);
         });
+  }
+
+  getLimit()
+  {
+    let tmp = this.getServLevel();
+    let limit = 99;
+    if(tmp<=30)limit = 30;
+    else if(tmp<=60) limit = 60;
+    return limit;
+  }
+
+  addCe(i:number,nb:number,qte:number)
+  {
+    let limit = this.getLimit();
+
+      if(this.getLevel()>=limit&&nb>0)return;
+      if(this.ce[i]+nb>-1&&this.ce[i]+nb<qte+1)
+        this.ce[i] += nb;
+    
+  }
+
+  getCeValue(i:number)
+  {
+    return this.ce[i];
   }
 
   venteServ(sell:any,data:any)
@@ -2541,6 +2780,31 @@ export class AppComponent implements OnInit
         }
       });
     });
+  }
+
+  lessThan100()
+  {
+    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    return !tmp||tmp.level<100;
+  }
+
+  moreThan30()
+  {
+    let level = this.getServLevel();
+    return level>30;
+  }
+
+  changeAsc()
+  {
+    this.ascs=[];
+    this.enhance = false;
+    this.ascs.push(this.selectedServ.img1);
+    if(this.selectedServ.img2)
+      this.ascs.push(this.selectedServ.img2);
+    if(this.selectedServ.img3)
+      this.ascs.push(this.selectedServ.img3);
+    if(this.selectedServ.img4)
+      this.ascs.push(this.selectedServ.img4);
   }
 
   removeServant(userid:any,perso:any)
