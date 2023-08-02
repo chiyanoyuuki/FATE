@@ -117,7 +117,9 @@
       <div style="display:flex;">
         <div style="height:fit-content;position: absolute;left:525px;max-width:500px;width:500px;">
           <div style="display:flex">
-            <img [class.golden]="isGold(profile)" *ngIf="myprofile.servant" class="profilePicture" draggable="false" src="{{getImg(myprofile.user_id,myprofile.servant)}}" style="margin-right: 20px;margin-bottom: 20px;" />
+            <div *ngIf="myprofile.servant" [class.golden]="isGold(profile)" style="margin-right: 20px;margin-bottom: 20px;" class="profilePicture">
+              <img draggable="false" src="{{getImg(myprofile.user_id,myprofile.servant)}}"  />
+            </div>
             <div *ngIf="!myprofile.servant" class="profilePicture"  style="margin-right: 20px;margin-bottom: 20px;"></div>
             <div>
               <p style="font-size: 30px;">{{myprofiledata.nom}}</p>
@@ -165,8 +167,9 @@
               <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
                 <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
               </div>
-              <img [class.golden]="isGold(user.id)" *ngIf="getProfile(user.id).servant" class="profilePicture2" draggable="false" src="{{getImg(user.id,getProfile(user.id).servant)}}"/>
-              <div *ngIf="!getProfile(user.id).servant" class="profilePicture2" style="border:unset;"></div>
+              <div *ngIf="getProfile(user.id).servant" class="profilePicture2" [class.golden]="isGold(user.id)">
+                <img  draggable="false" src="{{getImg(user.id,getProfile(user.id).servant)}}"/>
+              </div>
               <div style="position: absolute;left: 600px;padding-top: 4px;text-align: left;width:400px">
                 <p style="text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>  

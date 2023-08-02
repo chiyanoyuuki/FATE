@@ -405,8 +405,14 @@ height: 100%;
 .profilePicture{
     width: 80px;
 height: 80px;
-object-position: 0% 10%;
+overflow: hidden;
+}
+.profilePicture img{
+    width: 80px;
+height: 80px;
+object-position: 0% -50%;
 object-fit: cover;
+transform: scale(2);
 }
 .profile p{
     color:white;
@@ -438,9 +444,15 @@ right:30px;
     margin-top: 3px;
     width: 50px;
     height: 50px;
-    object-position: 0% 10%;
-    object-fit: cover;
     border: 2px ridge black;
+    overflow: hidden;
+}
+.profilePicture2 img{
+    width: 50px;
+height: 50px;
+object-position: 0% -40%;
+object-fit: cover;
+transform: scale(1.5);
 }
 .containerScore .clickable3:hover{
     opacity:0.4;
