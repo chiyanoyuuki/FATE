@@ -48,8 +48,10 @@
         <p [class.red]="includesFilter('Ruler')" (click)="filter('Ruler')">Ruler</p>
         <p [class.red]="includesFilter('Saber')" (click)="filter('Saber')">Saber</p>
         <p [class.red]="includesFilter('Shielder')" (click)="filter('Shielder')">Shielder</p>
-        <p [class.red]="!filterTitle" (click)="filterTitle=!filterTitle" style="margin-top:30px">Titles</p>
-        <p [class.red]="!doublons" (click)="doublons=!doublons">Doublons</p>
+        <p [class.red]="filterSpec!='Servants 5*'"  (click)="filterSpec=='Servants 5*'?filterSpec='':filterSpec='Servants 5*'" style="margin-top:30px">Servants 5*</p>
+        <p [class.red]="filterSpec!='Servants 4*'"  (click)="filterSpec=='Servants 4*'?filterSpec='':filterSpec='Servants 4*'">Servants 4*</p>
+        <p [class.red]="filterSpec!='Titles'"       (click)="filterSpec=='Titles'?filterSpec='':filterSpec='Titles'">Titles</p>
+        <p [class.red]="filterSpec!='Doublons'"     (click)="filterSpec=='Doublons'?filterSpec='':filterSpec='Doublons'">Doublons</p>
         <p [class.red]="!showEssences" (click)="showEssences=!showEssences"  style="margin-top:30px">Craft Essence</p>
         <p [class.red]="!notPulled" (click)="notPulled=!notPulled">Not Pulled</p>
       </div>

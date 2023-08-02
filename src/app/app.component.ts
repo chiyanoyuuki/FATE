@@ -98,7 +98,6 @@ export class AppComponent implements OnInit
   public dailyInterval: any;
   public filterSell = "";
   public filterSellAvailable = false;
-  public doublons = false;
 
   public timerBanner: any = 5000000;
   public timerQuartz: any = 5000000;
@@ -119,7 +118,6 @@ export class AppComponent implements OnInit
   public profile: any = undefined;
   public cantSell: any = [];
   public cantSellTitle: any = [];
-  public filterTitle: any = false;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -135,6 +133,7 @@ export class AppComponent implements OnInit
   public selectServant: any;
   public ind: any = -1;
   public confirmTransfert = "Transfert Smurf";
+  public filterSpec = "";
 
   constructor(private http: HttpClient){
 
@@ -585,7 +584,16 @@ export class AppComponent implements OnInit
       this.successToClaim = data.filter((d:any)=>d.claimed==0);
       if(!this.successToClaim) this.successToClaim = [];
       this.successToClaim = this.successToClaim.map((s:any)=>{return this.succ.find((c:any)=>c.id==s.id)});
-      
+
+      let classes = ["Alter Ego", "Archer", "Assassin", "Avenger", "Beast", "Berserker", "Caster", "Foreigner", "Lancer", "Moon Cancer", "Pretender", "Rider", "Ruler", "Saber", "Shielder"];
+      let nbclasses: any[] = [];
+      let nbclassesmax: any[] = [];
+      classes.forEach((c:any)=>
+      {
+        nbclasses.push(this.userData.filter((u:any)=>u.classe==c).length);
+        nbclassesmax.push(this.data.filter((u:any)=>u.classe==c).length);
+      });
+
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
@@ -603,6 +611,98 @@ export class AppComponent implements OnInit
         
       let nbt = tmp.filter((t:any)=>t.level>3&&t.nom!="Craft Essence").length;
       let nbs = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
+
+      //succès classes
+
+      let id = 1000;
+      let ind = 0;
+      classes.forEach((c:any)=>
+      {
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>0)
+          {
+            let succ = {id:id,nom:"My first "+c,desc:"Obtenir son premier servant de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>4)
+          {
+            let succ = {id:id,nom:"A little group of "+c,desc:"Obtenir 5 servants de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>9)
+          {
+            let succ = {id:id,nom:"A bunch of "+c,desc:"Obtenir 10 servants de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>19)
+          {
+            let succ = {id:id,nom:"An army of "+c,desc:"Obtenir 20 servants de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>29)
+          {
+            let succ = {id:id,nom:"Plenty of "+c,desc:"Obtenir 30 servants de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>39)
+          {
+            let succ = {id:id,nom:"A city of "+c,desc:"Obtenir 40 servants de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]>49)
+          {
+            let succ = {id:id,nom:"A world of "+c,desc:"Obtenir 50 servants de classe "+c,recompense:5};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        if(!data.find((d:any)=>d.id==id))
+        {
+          if(nbclasses[ind]==nbclassesmax[ind])
+          {
+            let succ = {id:id,nom:"YOU GOT THEM ALL"+c,desc:"Obtenir tous les servants de classe "+c,recompense:20};
+            this.addSuccess(id);
+            this.successToClaim.push(succ);
+          }
+        }
+        id++;
+        ind++;
+        id=1000+ind*100;
+      });
+
+      //succès généraux
       
       let cpt=1;
       if(!data.find((d:any)=>d.id==cpt))
@@ -925,7 +1025,79 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
-    });
+      cpt=38;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb4>59)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=39;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb4>69)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=40;
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb4>79)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=41
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb4>89)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=42
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>39)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=43
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>49)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=44
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nbt>59)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=45
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(this.userData.find((d:any)=>d.id==1))
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+    }); 
   }
 
   claimSuccess(success:any)
@@ -1326,7 +1498,7 @@ export class AppComponent implements OnInit
   {
     this.selectServant=true;
     this.state='formation';
-    if(i==-1)this.filterTitle=true;
+    if(i==-1)this.filterSpec="Titles";
     this.profile=undefined;
     this.ind=i;
   }
@@ -1633,13 +1805,21 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>d.nom!="Craft Essence");
     }
-    if(this.filterTitle)
+    if(this.filterSpec=="Titles")
     {
       data = data.filter((d:any)=>this.titles.includes(d.id) && d.level>3);
     }
-    if(this.doublons)
+    if(this.filterSpec=="Doublons")
     {
       data = data.filter((d:any)=>d.qte>1&&d.level>3);
+    }
+    if(this.filterSpec=="Servants 5*")
+    {
+      data = data.filter((d:any)=>d.level==5);
+    }
+    if(this.filterSpec=="Servants 4*")
+    {
+      data = data.filter((d:any)=>d.level==4);
     }
 
     
@@ -1659,9 +1839,8 @@ export class AppComponent implements OnInit
 
   clickMenu()
   {
+    this.filterSpec = "";
     this.selectServant = false;
-    this.doublons = false;
-    this.filterTitle = false;
     this.showEssences = false;
     this.notPulled = false;
     this.succesOpen=false;
@@ -1760,6 +1939,14 @@ export class AppComponent implements OnInit
     if(this.notPulled)
     {
       data = data.filter((d:any)=>!this.allTitles.includes(d.id)&&d.level>3);
+    }
+    if(this.filterSpec=="Servants 5*")
+    {
+      data = data.filter((d:any)=>d.level==5);
+    }
+    if(this.filterSpec=="Servants 4*")
+    {
+      data = data.filter((d:any)=>d.level==4);
     }
 
     if(this.recherche!="")

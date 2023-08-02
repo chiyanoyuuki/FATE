@@ -220,5 +220,53 @@
         "nom":"Just leave please", 
         "desc":"Avoir 1000 servants au total",
         "recompense":200
+    },
+    {
+        "id":38,
+        "nom":"Money money money",
+        "desc":"Obtenir 60 servant 4*",
+        "recompense":100
+    },
+    {
+        "id":39,
+        "nom":"I need a dollar",
+        "desc":"Obtenir 70 servant 4*",
+        "recompense":120
+    },
+    {
+        "id":40,
+        "nom":"Who can try me ?",
+        "desc":"Obtenir 80 servant 4*",
+        "recompense":140
+    },
+    {
+        "id":41,
+        "nom":"No more space",
+        "desc":"Obtenir 90 servant 4*",
+        "recompense":160
+    },
+    { 
+        "id":42, 
+        "nom":"Did you pay for that ?", 
+        "desc":"Avoir 40 titres de servant",
+        "recompense":120
+    },
+    { 
+        "id":43, 
+        "nom":"Let some for others", 
+        "desc":"Avoir 50 titres de servant",
+        "recompense":150
+    },
+    { 
+        "id":44, 
+        "nom":"Nobody can challenge", 
+        "desc":"Avoir 60 titres de servant",
+        "recompense":180
+    },
+    { 
+        "id":45, 
+        "nom":"Chaldea's late state", 
+        "desc":"Obtenir Mash Ortinax", 
+        "recompense":10
     }
 ]
