@@ -3873,6 +3873,37 @@
         "img1":"./assets/images/servants/rin/0.jpg",
         "img2":"./assets/images/servants/rin/1.jpg",
         "img3":"./assets/images/servants/rin/2.jpg",
-        "img4":"./assets/images/servants/rin/3.jpg"
+        "img4":"./assets/images/servants/rin/3.jpg",
+        "special":true
+    },
+    {
+        "id":391,
+        "nom":"Noah",
+        "level":5,
+        "classe":"Rider",
+        "img1":"./assets/images/servants/noah/0.jpg",
+        "img2":"./assets/images/servants/noah/1.jpg",
+        "img3":"./assets/images/servants/noah/2.jpg",
+        "img4":"./assets/images/servants/noah/3.jpg",
+        "special":true
+    },
+    {
+        "id":392,
+        "nom":"Suzuka Gozen Santa",
+        "level":4,
+        "classe":"Saber",
+        "img1":"./assets/images/servants/suzukagozensanta/0.jpg",
+        "img2":"./assets/images/servants/suzukagozensanta/1.jpg",
+        "img3":"./assets/images/servants/suzukagozensanta/2.jpg",
+        "img4":"./assets/images/servants/suzukagozensanta/3.jpg",
+        "special":true
+    },
+    {
+        "id":393,
+        "nom":"Beast IV/S",
+        "level":5,
+        "classe":"Beast",
+        "img1":"./assets/images/servants/beastivs/0.jpg",
+        "special":true
     }
 ]

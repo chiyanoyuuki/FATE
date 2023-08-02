@@ -535,7 +535,9 @@ export class AppComponent implements OnInit
   }
 
   getBack(){
+    if(AppComponent.perso.special)return "./assets/images/back/gspecial.jpg";
     if(!AppComponent.perso)return "./assets/images/back/saber.png";
+    
       let retour: string = "";
       if(AppComponent.perso.level > 3)
       {
