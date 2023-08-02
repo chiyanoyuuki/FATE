@@ -475,7 +475,7 @@ export class AppComponent implements OnInit
   getServLevel2(perso:any)
   {
     let level = 0;
-    let tmp = this.levels.find((l:any)=>l.servant_id == perso.id);
+    let tmp = this.levels.find((l:any)=>l.user_id == this.id && l.servant_id == perso.id);
     if(tmp)level = tmp.level;
     return level;
   }
