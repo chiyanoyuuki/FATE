@@ -467,7 +467,7 @@ export class AppComponent implements OnInit
   getServLevel()
   {
     let level = 0;
-    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    let tmp = this.levels.find((l:any)=>l.user_id == this.id && l.servant_id == this.selectedServ.id);
     if(tmp)level = tmp.level;
     return level;
   }
@@ -493,7 +493,7 @@ export class AppComponent implements OnInit
   {
     let limit = this.getLimit();
     let level = 0;
-    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    let tmp = this.levels.find((l:any)=>l.user_id == this.id && l.servant_id == this.selectedServ.id);
     if(tmp)level = tmp.level;
     level = level + this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5;
     return level>limit?limit:level;
@@ -508,7 +508,7 @@ export class AppComponent implements OnInit
   {
     let limit = this.getLimit();
     let level = 0;
-    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    let tmp = this.levels.find((l:any)=>l.user_id == this.id && l.servant_id == this.selectedServ.id);
     if(tmp)level = tmp.level;
     if(level==limit)return true;
     return false;
@@ -2787,7 +2787,7 @@ export class AppComponent implements OnInit
 
   lessThan100()
   {
-    let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
+    let tmp = this.levels.find((l:any)=>l.user_id == this.id && l.servant_id == this.selectedServ.id);
     return !tmp||tmp.level<100;
   }
 
