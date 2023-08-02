@@ -136,7 +136,7 @@ export class AppComponent implements OnInit
   public confirmTransfert = "Transfert Smurf";
   public filterSpec = "";
   public enhance = false;
-  public ce: number[] = [0,0,0,0,0,0];
+  public ce: number[] = [0,0,0,0,0];
   public ascs: any[] = [];
 
   constructor(private http: HttpClient){
@@ -495,7 +495,7 @@ export class AppComponent implements OnInit
     let level = 0;
     let tmp = this.levels.find((l:any)=>l.servant_id == this.selectedServ.id);
     if(tmp)level = tmp.level;
-    level = level + this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5+this.ce[5]*20;
+    level = level + this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5;
     return level>limit?limit:level;
   }
 
@@ -516,7 +516,7 @@ export class AppComponent implements OnInit
 
   getMore()
   {
-    return this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5+this.ce[5]*20;
+    return this.ce[0]*1+this.ce[1]*2+this.ce[2]*3+this.ce[3]*4+this.ce[4]*5;
   }
 
   getImage(){
@@ -531,8 +531,6 @@ export class AppComponent implements OnInit
       if(tmp2) tmp.qte = tmp2.qte;
       else tmp.qte = 0;
     });
-    let serv = this.userData.find((u:any)=>u.id==this.selectedServ.id);
-    tmp.push(serv);
     return tmp;
   }
 
@@ -1817,17 +1815,20 @@ export class AppComponent implements OnInit
     if(tmp)asc = tmp.ascension;
 
     let cartes = this.getCE();
-    for(let i=0;i<6;i++)
+    for(let i=0;i<5;i++)
     {
       let qte = this.ce[i];
       let serv = cartes[i];
-      if(qte>0&&serv.qte-qte>0)
+      if(qte>0)
       {
-        this.addServant(this.id,serv,qte*-1);
-      }
-      else if(qte>0)
-      {
-        this.removeServant(this.id,serv);
+        if(serv.qte-qte>0)
+        {
+          this.addServant(this.id,serv,qte*-1);
+        }
+        else
+        {
+          this.removeServant(this.id,serv);
+        }
       }
     }
 
@@ -1890,6 +1891,7 @@ export class AppComponent implements OnInit
     if(tmp.level<=30)asc = 1;
     else if(tmp.level<=60)asc= 2;
     else asc = 3;
+    
     this.addServant(this.id,this.selectedServ,-1);
 
     const dataToSend = {
@@ -1914,6 +1916,7 @@ export class AppComponent implements OnInit
     {
       this.enhance = false;
       this.getLevels();
+      this.getUserData(false);
     });
   }
 
@@ -1935,7 +1938,7 @@ export class AppComponent implements OnInit
     if(this.enhance==true){this.enhance=false;return;}
     this.getUserData(false);
     this.ascs = [];
-    this.ce = [0,0,0,0,0,0];
+    this.ce = [0,0,0,0,0];
     this.enhance=true;
   }
 
