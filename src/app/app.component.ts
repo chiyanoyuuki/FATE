@@ -628,7 +628,7 @@ export class AppComponent implements OnInit
 
   getLevels()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?id=' + this.id).subscribe(data=>
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(data=>
     {
       this.levels = data;
     });
