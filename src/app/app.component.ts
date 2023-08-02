@@ -134,6 +134,7 @@ export class AppComponent implements OnInit
   public ind: any = -1;
   public confirmTransfert = "Transfert Smurf";
   public filterSpec = "";
+  public enhance = false;
 
   constructor(private http: HttpClient){
 
@@ -255,7 +256,6 @@ export class AppComponent implements OnInit
     this.myprofiledata = this.users.find((u:any)=>u.id==id);
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetProfilesData?id=' + id).subscribe(data=>
     {
-      console.log(data);
       this.myprofilestats = data[0];
     });
   }
@@ -464,6 +464,12 @@ export class AppComponent implements OnInit
 
   getImage(){
       return AppComponent.perso && AppComponent.perso.img1;
+  }
+
+  getCE()
+  {
+    let tmp = this.data.filter((d:any)=>d.nom=="Craft Essence");
+    return this.userData.filter((d:any)=>d.nom=="Craft Essence");
   }
 
   getBack(){
@@ -1723,6 +1729,12 @@ export class AppComponent implements OnInit
     });
   }
 
+  clickServant(perso:any)
+  {
+    this.enhance=false;
+    this.selectedServ=perso;
+  }
+
   addpull(nb:number)
   {
     const dataToSend = {
@@ -1757,7 +1769,7 @@ export class AppComponent implements OnInit
         else if(s.level==4){main=60;second=30;}
         else if(s.level==3){main=30;second=15;}
         else if(s.level==2){main=20;second=10;}
-        else if(s.level==1){main=10;second=50;}
+        else if(s.level==1){main=10;second=5;}
         else if(s.level==0){main=1000;second=500;}
       }
       else
