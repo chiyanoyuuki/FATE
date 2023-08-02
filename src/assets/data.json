@@ -3905,5 +3905,24 @@
         "classe":"Beast",
         "img1":"./assets/images/servants/beastivs/0.jpg",
         "special":true
+    },
+    {
+        "id":394,
+        "nom":"Kirschtaria",
+        "level":5,
+        "classe":"Caster",
+        "img1":"./assets/images/servants/kirschtaria/0.jpg",
+        "special":true
+    },
+    {
+        "id":395,
+        "nom":"Sakura Matou",
+        "level":5,
+        "classe":"Alter Ego",
+        "img1":"./assets/images/servants/sakura/0.jpg",
+        "img2":"./assets/images/servants/sakura/1.jpg",
+        "img3":"./assets/images/servants/sakura/2.jpg",
+        "img4":"./assets/images/servants/sakura/3.jpg",
+        "special":true
     }
 ]

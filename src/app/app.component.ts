@@ -1890,9 +1890,9 @@ export class AppComponent implements OnInit
   {
     let tmp = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==this.selectedServ.id);
     let asc = 0;
-    if(tmp.level<=30)asc = 1;
-    else if(tmp.level<=60)asc= 2;
-    else asc = 3;
+    if(tmp.level<=30&&this.selectedServ.img2)asc = 1;
+    else if(tmp.level<=60&&this.selectedServ.img3)asc= 2;
+    else if(this.selectedServ.img4) asc = 3;
     
     this.addServant(this.id,this.selectedServ,-1);
 
