@@ -286,7 +286,6 @@
           <p [class.red]="filterSell!='Mes Ventes'" (click)="filterSell='Mes Ventes'">Mes Ventes</p>
           <p [class.red]="filterSell!='Achat Quartz'" (click)="filterSell='Achat Quartz'">Achat Quartz</p>
           <p [class.red]="filterSell!='Achat Echanges'" (click)="filterSell='Achat Echanges'">Achat Echanges</p>
-          <p [class.red]="!filterSellAvailable" (click)="filterSellAvailable=!filterSellAvailable"  style="margin-top:30px">Achats Possibles</p>
           <button (click)="this.recherche='';sellType='trade';sellQuartz='';persoToSell=undefined;persoToExchange=undefined;createVente=true"  style="margin-top:30px">Vendre</button>
         </div>
         <div style="display:flex;justify-content: center;">

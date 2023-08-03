@@ -3912,6 +3912,9 @@
         "level":5,
         "classe":"Caster",
         "img1":"./assets/images/servants/kirschtaria/0.jpg",
+        "img2":"./assets/images/servants/kirschtaria/1.jpg",
+        "img3":"./assets/images/servants/kirschtaria/2.jpg",
+        "img4":"./assets/images/servants/kirschtaria/3.jpg",
         "special":true
     },
     {
@@ -3923,6 +3926,116 @@
         "img2":"./assets/images/servants/sakura/1.jpg",
         "img3":"./assets/images/servants/sakura/2.jpg",
         "img4":"./assets/images/servants/sakura/3.jpg",
+        "special":true
+    },
+    {
+        "id":396,
+        "nom":"Black Irisviel",
+        "level":5,
+        "classe":"Avenger",
+        "img1":"./assets/images/servants/blackirisviel/0.jpg",
+        "img2":"./assets/images/servants/blackirisviel/1.jpg",
+        "img3":"./assets/images/servants/blackirisviel/2.jpg",
+        "img4":"./assets/images/servants/blackirisviel/3.jpg",
+        "special":true
+    },
+    {
+        "id":397,
+        "nom":"Galahad",
+        "level":5,
+        "classe":"Shielder",
+        "img1":"./assets/images/servants/galahad/0.jpg",
+        "img2":"./assets/images/servants/galahad/1.jpg",
+        "img3":"./assets/images/servants/galahad/2.jpg",
+        "img4":"./assets/images/servants/galahad/3.jpg",
+        "special":true
+    },
+    {
+        "id":398,
+        "nom":"Illyasviel",
+        "level":5,
+        "classe":"Assassin",
+        "img1":"./assets/images/servants/illyasviel/0.jpg",
+        "img2":"./assets/images/servants/illyasviel/1.jpg",
+        "img3":"./assets/images/servants/illyasviel/2.jpg",
+        "img4":"./assets/images/servants/illyasviel/3.jpg",
+        "special":true
+    },
+    {
+        "id":399,
+        "nom":"Kirei Kotomine",
+        "level":5,
+        "classe":"Ruler",
+        "img1":"./assets/images/servants/kirei/0.jpg",
+        "img2":"./assets/images/servants/kirei/1.jpg",
+        "img3":"./assets/images/servants/kirei/2.jpg",
+        "img4":"./assets/images/servants/kirei/3.jpg",
+        "special":true
+    },
+    {
+        "id":400,
+        "nom":"Marie Antoinette Alter",
+        "level":5,
+        "classe":"Pretender",
+        "img1":"./assets/images/servants/marieantoinette/0.jpg",
+        "img2":"./assets/images/servants/marieantoinette/1.jpg",
+        "img3":"./assets/images/servants/marieantoinette/2.jpg",
+        "img4":"./assets/images/servants/marieantoinette/3.jpg",
+        "special":true
+    },
+    {
+        "id":401,
+        "nom":"Miyamoto Musashi Alter",
+        "level":5,
+        "classe":"Berserker",
+        "img1":"./assets/images/servants/musashialter/0.jpg",
+        "img2":"./assets/images/servants/musashialter/1.jpg",
+        "img3":"./assets/images/servants/musashialter/2.jpg",
+        "img4":"./assets/images/servants/musashialter/3.jpg",
+        "special":true
+    },
+    {
+        "id":402,
+        "nom":"Mordred Trifas",
+        "level":5,
+        "classe":"Saber",
+        "img1":"./assets/images/servants/mordredtrifas/0.jpg",
+        "img2":"./assets/images/servants/mordredtrifas/1.jpg",
+        "img3":"./assets/images/servants/mordredtrifas/2.jpg",
+        "img4":"./assets/images/servants/mordredtrifas/3.jpg",
+        "special":true
+    },
+    {
+        "id":402,
+        "nom":"Olga Marie",
+        "level":5,
+        "classe":"Foreigner",
+        "img1":"./assets/images/servants/olgamarie/0.jpg",
+        "img2":"./assets/images/servants/olgamarie/0.jpg",
+        "img3":"./assets/images/servants/olgamarie/0.jpg",
+        "img4":"./assets/images/servants/olgamarie/1.jpg",
+        "special":true
+    },
+    {
+        "id":403,
+        "nom":"Shirou",
+        "level":5,
+        "classe":"Caster",
+        "img1":"./assets/images/servants/shirou/0.jpg",
+        "img2":"./assets/images/servants/shirou/1.jpg",
+        "img3":"./assets/images/servants/shirou/2.jpg",
+        "img4":"./assets/images/servants/shirou/3.jpg",
+        "special":true
+    },
+    {
+        "id":404,
+        "nom":"Maxwell's Demon",
+        "level":5,
+        "classe":"Caster",
+        "img1":"./assets/images/servants/maxwell/0.jpg",
+        "img2":"./assets/images/servants/maxwell/1.jpg",
+        "img3":"./assets/images/servants/maxwell/2.jpg",
+        "img4":"./assets/images/servants/maxwell/3.jpg",
         "special":true
     }
 ]

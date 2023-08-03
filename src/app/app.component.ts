@@ -677,8 +677,6 @@ export class AppComponent implements OnInit
       let nb60 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level>60).length;
       let nb100 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level==100).length;
 
-      console.log(nb30,nb60,nb100);
-
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
@@ -1426,71 +1424,6 @@ export class AppComponent implements OnInit
     }
 
     shop = shop.filter((s:any)=>s.bought_user_id==-1);
-
-    shop.sort((a: any,b: any) => 
-    {
-      if(a.servant&&b.servant)
-      {
-        if(b.servant.level>a.servant.level)
-        {
-          return 1;
-        }
-        else if(b.servant.level<a.servant.level)
-        {
-          return -1;
-        }
-        else
-        {
-          return a.servant.nom > b.servant.nom;
-        }
-      }
-      else if(a.servant)
-      {
-        if(b.servantWithTitle.level>a.servant.level)
-        {
-          return 1;
-        }
-        else if(b.servantWithTitle.level<a.servant.level)
-        {
-          return -1;
-        }
-        else
-        {
-          return a.servant.nom > b.servantWithTitle.nom;
-        }
-      }
-      else if(b.servant)
-      {
-        if(b.servant.level>a.servantWithTitle.level)
-        {
-          return 1;
-        }
-        else if(b.servant.level<a.servantWithTitle.level)
-        {
-          return -1;
-        }
-        else
-        {
-          return a.servantWithTitle.nom > b.servant.nom;
-        }
-      }
-      else
-      {
-        if(b.servantWithTitle.level>a.servantWithTitle.level)
-        {
-          return 1;
-        }
-        else if(b.servantWithTitle.level<a.servantWithTitle.level)
-        {
-          return -1;
-        }
-        else
-        {
-          return a.servantWithTitle.nom > b.servantWithTitle.nom;
-        }
-      }
-      
-    });
     return shop;
   }
 
