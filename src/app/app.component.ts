@@ -677,6 +677,8 @@ export class AppComponent implements OnInit
       let nb60 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level>60).length;
       let nb100 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level==100).length;
 
+      console.log(nb30,nb60,nb100);
+
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
       let nb4 = this.userData.filter((u:any)=>u.level==4&&u.nom!="Craft Essence").length;
@@ -1256,6 +1258,33 @@ export class AppComponent implements OnInit
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(nb100>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=55
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb100>19)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=56
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb60>19)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=57
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb30>19)
         {
           this.addSuccess(cpt);
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));

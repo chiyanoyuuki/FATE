@@ -296,13 +296,13 @@
     { 
         "id":50, 
         "nom":"Ready for the fight", 
-        "desc":"Avoir 5 servant au dessus du niveau 60", 
+        "desc":"Avoir 5 servants au dessus du niveau 60", 
         "recompense":50
     },
     { 
         "id":51, 
         "nom":"Ready for the war", 
-        "desc":"Avoir 10 servant au dessus du niveau 60", 
+        "desc":"Avoir 10 servants au dessus du niveau 60", 
         "recompense":80
     },
     { 
@@ -314,13 +314,31 @@
     { 
         "id":53, 
         "nom":"Look at my babies !", 
-        "desc":"Avoir 5 servant au niveau maximum", 
+        "desc":"Avoir 5 servants au niveau maximum", 
         "recompense":60
     },
     { 
         "id":54, 
         "nom":"Look at my babies !", 
-        "desc":"Avoir 10 servant au niveau maximum", 
+        "desc":"Avoir 10 servants au niveau maximum", 
         "recompense":90
+    },
+    { 
+        "id":55, 
+        "nom":"Look at my babies !", 
+        "desc":"Avoir 20 servants au niveau maximum", 
+        "recompense":120
+    },
+    { 
+        "id":56, 
+        "nom":"They're all so cute", 
+        "desc":"Avoir 20 servants au dessus du niveauu 60", 
+        "recompense":110
+    },
+    { 
+        "id":57, 
+        "nom":"Give me more", 
+        "desc":"Obtenir une ascension sur 20 servants", 
+        "recompense":70
     }
 ]
