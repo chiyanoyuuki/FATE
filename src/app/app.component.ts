@@ -673,6 +673,9 @@ export class AppComponent implements OnInit
         nbclasses.push(this.userData.filter((u:any)=>u.classe==c).length);
         nbclassesmax.push(this.data.filter((u:any)=>u.classe==c).length);
       });
+      let nb30 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level>30).length;
+      let nb60 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level>60).length;
+      let nb100 = this.levels.filter((d:any)=>d.user_id==this.id&&d.level==100).length;
 
       let nb = this.userData.filter((u:any)=>u.nom!="Craft Essence").length;
       let nb5 = this.userData.filter((u:any)=>u.level==5&&u.nom!="Craft Essence").length;
@@ -1172,6 +1175,87 @@ export class AppComponent implements OnInit
       if(!data.find((d:any)=>d.id==cpt))
       {
         if(this.userData.find((d:any)=>d.id==1))
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=46
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb30>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=47
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb30>4)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=48
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb30>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=49
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb60>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=50
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb60>4)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=51
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb60>9)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=52
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb100>0)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=53
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb100>4)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=54
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb100>9)
         {
           this.addSuccess(cpt);
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));

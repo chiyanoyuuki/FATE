@@ -268,5 +268,59 @@
         "nom":"Chaldea's late state", 
         "desc":"Obtenir Mash Ortinax", 
         "recompense":10
+    },
+    { 
+        "id":46, 
+        "nom":"It's beautiful, right ?", 
+        "desc":"Obtenir une ascension sur 1 servant", 
+        "recompense":10
+    },
+    { 
+        "id":47, 
+        "nom":"Look at my servants !", 
+        "desc":"Obtenir une ascension sur 5 servants", 
+        "recompense":30
+    },
+    { 
+        "id":48, 
+        "nom":"Arn't they perfect ?", 
+        "desc":"Obtenir une ascension sur 10 servants", 
+        "recompense":50
+    },
+    { 
+        "id":49, 
+        "nom":"Stronger than ever", 
+        "desc":"Avoir 1 servant au dessus du niveau 60", 
+        "recompense":20
+    },
+    { 
+        "id":50, 
+        "nom":"Ready for the fight", 
+        "desc":"Avoir 5 servant au dessus du niveau 60", 
+        "recompense":50
+    },
+    { 
+        "id":51, 
+        "nom":"Ready for the war", 
+        "desc":"Avoir 10 servant au dessus du niveau 60", 
+        "recompense":80
+    },
+    { 
+        "id":52, 
+        "nom":"Perfect, isn't it ?", 
+        "desc":"Avoir 1 servant au niveau maximum", 
+        "recompense":30
+    },
+    { 
+        "id":53, 
+        "nom":"Look at my babies !", 
+        "desc":"Avoir 5 servant au niveau maximum", 
+        "recompense":60
+    },
+    { 
+        "id":54, 
+        "nom":"Look at my babies !", 
+        "desc":"Avoir 10 servant au niveau maximum", 
+        "recompense":90
     }
 ]
