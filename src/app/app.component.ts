@@ -708,19 +708,24 @@ export class AppComponent implements OnInit
     {
       this.pvps = pvp;
       this.pvp = pvp.find((p:any)=>p.user_id==this.id);
-      if(this.pvp)
-      {
-        this.myprofile.compo = this.pvp.team;
-        this.myprofile.titlescompo = this.pvp.titles;
-        this.myprofile.comp = [];
-        this.myprofile.compo.forEach((c:any)=>this.myprofile.comp.push(this.data.find((d:any)=>d.id==c)));
-      }
-      else
-      {
-        this.myprofile.compo = [];
-        this.myprofile.comp = [];
-        this.myprofile.titlescompo = [];
-      }
+
+      this.profiles.forEach((pro:any)=>{
+        let pvp = this.pvps.find((p:any)=>p.user_id==pro.user_id);
+        if(pvp)
+        {
+          pro.compo = this.pvp.team;
+          pro.titlescompo = this.pvp.titles;
+          pro.comp = [];
+          pro.compo.forEach((c:any)=>pro.comp.push(this.data.find((d:any)=>d.id==c)));
+        }
+        else
+        {
+          pro.compo = [];
+          pro.comp = [];
+          pro.titlescompo = [];
+        }
+      });
+      this.myprofile = this.profiles.find((p:any)=>p.user_id==this.id)
     });
   }
 
@@ -2179,8 +2184,8 @@ export class AppComponent implements OnInit
 
     if(left1.length==0||left2.length==0)
     {
-      if(left2.length==0)this.spendQuartz(3);
-      else if(left1.length==0)this.spendQuartz2(3);
+      if(left2.length==0)this.spendQuartz(-3);
+      else if(left1.length==0)this.spendQuartz2(-3);
       clearInterval(this.idleInterval);
       clearInterval(this.combatInterval);
       this.team1 = [];
@@ -2339,6 +2344,8 @@ export class AppComponent implements OnInit
       else if(classeatq==g4[2]&&classecible==g4[1])mult=boost;
 
       else if((g1.includes(classeatq)||g2.includes(classeatq))&&classecible==g4[0])mult=malus;
+
+      else mult = 1;
     }
     dmg = Math.round(dmg*mult);
 

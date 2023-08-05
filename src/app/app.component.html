@@ -262,7 +262,7 @@
             </div>
             <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
           </div>
-          <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" style="margin:auto;position: absolute;bottom: 20px;" (click)="launchDuel()">Duel</button>
+          <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" style="margin:auto;position: absolute;bottom: 20px;" (click)="adversaire=profile;launchDuel()">Duel</button>
         </div>
 
         <div *ngIf="myprofilestats" class="desc2">
@@ -279,7 +279,7 @@
     </div>
 
     <div *ngIf="state=='friends'">
-      <button (click)="getUsers();getProfiles();" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
+      <button (click)="getUsers();getProfiles();getPvp()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
       <p style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">
