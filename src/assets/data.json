@@ -5114,5 +5114,38 @@
 	"img3":"./assets/images/servants/maxwell/2.jpg",
 	"img4":"./assets/images/servants/maxwell/3.jpg",
 	"special":true
+    },
+    {"scale":1,
+	"id":405,
+	"nom":"Mordred Alter",
+	"level":5,
+	"classe":"Alter Ego",
+	"img1":"./assets/images/servants/mordredalter/0.jpg",
+	"img2":"./assets/images/servants/mordredalter/1.jpg",
+	"img3":"./assets/images/servants/mordredalter/2.jpg",
+	"img4":"./assets/images/servants/mordredalter/3.jpg",
+	"special":true
+    },
+    {"scale":1,
+	"id":406,
+	"nom":"Alatariel",
+	"level":5,
+	"classe":"Ruler",
+	"img1":"./assets/images/servants/alatariel/0.jpg",
+	"img2":"./assets/images/servants/alatariel/1.jpg",
+	"img3":"./assets/images/servants/alatariel/2.jpg",
+	"img4":"./assets/images/servants/alatariel/3.jpg",
+	"special":true
+    },
+    {"scale":1,
+	"id":406,
+	"nom":"Tonelico",
+	"level":5,
+	"classe":"Caster",
+	"img1":"./assets/images/servants/tonelico/0.jpg",
+	"img2":"./assets/images/servants/tonelico/1.jpg",
+	"img3":"./assets/images/servants/tonelico/2.jpg",
+	"img4":"./assets/images/servants/tonelico/3.jpg",
+	"special":true
     }
 ]

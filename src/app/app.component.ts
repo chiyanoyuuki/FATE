@@ -66,21 +66,17 @@ import {
       transition('2 => 0', animate('400ms'))
     ]),
 
-    trigger('dashToTeam2', [
-      state('0', style({ left: "0px" })),
-      state('1', style({ left: "{{arrivex}}px"}), {params: {arrivex: '0px'}}),
-      state('2', style({ left: "{{arrivex2}}px"}), {params: {arrivex2: '0px'}}),
-      transition('0 => 1', animate('400ms ease-in')),
-      transition('1 => 2', animate('400ms ease-out')),
-      transition('2 => 1', animate('400ms ease-in')),
-      transition('1 => 0', animate('400ms ease-out'))
-    ]),
-
-    trigger('dashToTeam3', [
-      state('0', style({ left: "0px" })),
-      state('1', style({ left: "{{arrivex3}}px"}), {params: {arrivex3: '0px'}}),
-      transition('0 => 1', animate('400ms ease-in')),
-      transition('1 => 0', animate('400ms ease-out'))
+    trigger('animationcombat', [
+      state('idle', style({ left: "0px" })),
+      state('dashavant', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      state('coup', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      state('takedamage', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      transition('idle => dashavant', animate('400ms ease-in')),
+      transition('dashavant => idle', animate('400ms ease-out')),
+      transition('dashavant => coup', animate('400ms ease-in')),
+      transition('coup => dashavant', animate('400ms ease-out')),
+      transition('idle => takedamage', animate('400ms ease-out')),
+      transition('takedamage => idle', animate('400ms ease-in'))
     ]),
 
     trigger('slashOpacity', [
@@ -105,7 +101,6 @@ export class AppComponent implements OnInit
   public recherche = "";
   public shop: any;
   public majInterval: any;
-  public damage: any;
 
   public pseudo = "";
   public mdp = "";
@@ -211,10 +206,6 @@ export class AppComponent implements OnInit
   public idleStateNumber: any[] = ["0","0","0","0"];
   public idleStateNumber2: any[] = ["0","0","0","0"];
 
-  public dashToTeam: any[] = ["0","0","0","0"];
-  public dashToTeam2: any[] = ["0","0","0","0"];
-  public dashToTeam3: any[] = ["0","0","0","0"];
-  public dashToTeam4: any[] = ["0","0","0","0"];
   public combatInterval: any;
   public arriveyaction: any = 0;
   public arrivexaction: any = 0;
@@ -229,8 +220,6 @@ export class AppComponent implements OnInit
   public attaquestate = 0;
 
   public teamattaque = 0;
-  public slashOpacity = ["0","0","0","0"];
-  public slashOpacity2 = ["0","0","0","0"];
 
   constructor(private http: HttpClient){
 
@@ -2117,79 +2106,101 @@ export class AppComponent implements OnInit
     let cible = this.getCible();
     this.attaquant1 = i;
     this.place = cible;
-
-    let atq:any;
-
-    if(this.teamattaque==0)
-    {
-      atq = document.getElementById("perso1-"+i)!.getBoundingClientRect();
-    }
-    else
-    {
-      atq = document.getElementById("perso1-"+cible)!.getBoundingClientRect();
-    }
-
-    let persoatq = this.team1[i];
-    if(this.teamattaque==1)persoatq = this.team2[i];
-    let widthatq = atq.width+persoatq.scale>1.7?500:0;
-
-    if(persoatq.scale>1.7)console.log(persoatq);
     
-    this.arrivexaction = this.getXaction(600+50*i-widthatq);
-    this.arrivexaction2 = this.getXaction(650+50*i-widthatq);
-    this.arrivexaction3 = this.teamattaque==1?-100:100;
     clearInterval(this.attaqueInterval);
     this.timerAttaque = 0;
     this.team1.forEach((tmp:any)=>{
-      tmp.avanceattaque = "0";
-      tmp.coup = "0";
-      tmp.takedamage = "0";
-      tmp.slashed = "0";
-    })
-    this.dashToTeam = ["0","0","0","0"];
-    this.dashToTeam2 = ["0","0","0","0"];
-    this.dashToTeam3 = ["0","0","0","0"];
-    this.dashToTeam4 = ["0","0","0","0"];
-    this.slashOpacity = ["0","0","0","0"];
-    this.slashOpacity2 = ["0","0","0","0"];
-    this.changeAttaqueState(i,"1");
+      tmp.animation = "idle";
+      tmp.arrivex = 0;
+    });
+    this.team2.forEach((tmp:any)=>{
+      tmp.animation = "idle";
+      tmp.arrivex = 0;
+    })    
+
+    this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
       if(this.timerAttaque==700)
       {
-        this.attaquestate = 1;
-        this.setOpacity(cible,"1");
-        this.changeAttaqueState(i,"2");
-        this.changeAttaqueState2(cible,"1");
+        this.setAnimX(i,300,"coup");
+        this.setAnimX2(cible,-100,"takedamage");
+        this.damage(i,cible);
       }
       if(this.timerAttaque==900)
       {
-        this.attaquestate = 0;
-        this.changeAttaqueState(i,"1");
-        this.changeAttaqueState2(cible,"0");
+        this.setAnimX(i,200,"dashavant");
+        this.setAnimX2(cible,0,"idle");
       }
       if(this.timerAttaque==1300)
       {
-        this.setOpacity(cible,"0");
-        this.changeAttaqueState(i,"0");
+        this.setAnimX(i,0,"idle");
+        this.setAnimX2(cible,0,"endSlash");
         clearInterval(this.attaqueInterval);
       }
       this.timerAttaque+=100;
     },100);
   }
 
-  setOpacity(i:any,val:any)
+  damage(atq:any,cible:any)
+  {
+    
+  }
+
+  setAnimX(i:any,x:any,anim:any)
   {
     if(this.teamattaque==0)
     {
-      this.slashOpacity2[i]=val;
+      this.team1[i].arrivex=x;
+      this.team1[i].animation=anim;
     }
     else
     {
-      this.slashOpacity[i]=val;
+      x = x * -1;
+      this.team2[i].arrivex=x;
+      this.team2[i].animation=anim;
     }
   }
 
-
+  setAnimX2(cible:any,x:any,anim:any)
+  {
+    if(this.teamattaque==0)
+    {
+      x = x * -1;
+      this.team2[cible].arrivex=x;
+      if(anim!="endSlash")this.team2[cible].animation=anim;
+      if(anim=="takedamage")
+      {
+        this.team2[cible].slash="1";
+        this.team2[cible].negative=true;
+      }
+      else if(anim=="idle")
+      {
+        this.team2[cible].negative=false;
+      }
+      else if(anim=="endSlash")
+      {
+        this.team2[cible].slash="0";
+      }
+    }
+    else
+    {
+      this.team1[cible].arrivex=x;
+      if(anim!="endSlash")this.team1[cible].animation=anim;
+      if(anim=="takedamage")
+      {
+        this.team1[cible].slash="1";
+        this.team1[cible].negative=true;
+      }
+      else if(anim=="idle")
+      {
+        this.team1[cible].negative=false;
+      }
+      else if(anim=="endSlash")
+      {
+        this.team1[cible].slash="0";
+      }
+    }
+  }
 
   getXaction(val:any)
   {
@@ -2199,30 +2210,6 @@ export class AppComponent implements OnInit
       val=val*-1;
     }
     return val;
-  }
-
-  changeAttaqueState(i:any,state:any)
-  {
-    if(this.teamattaque==0)
-    {
-      this.dashToTeam[i]=state;
-    }
-    else
-    {
-      this.dashToTeam2[i]=state;
-    }
-  }
-
-  changeAttaqueState2(i:any,state:any)
-  {
-    if(this.teamattaque==1)
-    {
-      this.dashToTeam3[i]=state;
-    }
-    else
-    {
-      this.dashToTeam4[i]=state;
-    }
   }
 
   getCible()
@@ -2236,6 +2223,7 @@ export class AppComponent implements OnInit
     this.musiquecombat.play();
 
     this.combatInterval = setInterval(() => {
+      this.teamattaque = Math.round(Math.random());
       let rdm = Math.round(Math.random()*9);
       if(rdm!=0)
       {
@@ -2297,10 +2285,7 @@ export class AppComponent implements OnInit
           }
           tmp.title = team1.titles[cpt++]==1;
           
-          tmp.avanceattaque = "0";
-          tmp.coup = "0";
-          tmp.takedamage = "0";
-          tmp.slashed = "0";
+          tmp.animation = "idle";
           tmp.arrivex = 0;
           tmp.negative = false;
 
@@ -2315,10 +2300,21 @@ export class AppComponent implements OnInit
         {
           let tmp = this.data.find((d:any)=>d.id==x);
           let tmplevel = this.levels.find((l:any)=>l.user_id==this.adversaire&&l.servant_id==tmp.id);
-          if(tmplevel)tmp.ascension = tmplevel.ascension;
-          tmp.pdv = (Math.round(Math.random()*7000));
-          tmp.pdvmax = tmp.pdv + (Math.round(Math.random()*3000));
-          tmp.np = (Math.round(Math.random()*100));
+          if(tmplevel)
+          {
+            tmp.ascension = tmplevel.ascension;
+            tmp.niveau = tmplevel.level;
+          }
+          tmp.title = team2.titles[cpt++]==1;
+          
+          tmp.animation = "idle";
+          tmp.arrivex = 0;
+          tmp.negative = false;
+
+          tmp.np = 0;
+          tmp.dmg = this.getDmg(tmp);
+          tmp.pdv = this.getPdv(tmp);
+          tmp.pdvmax = tmp.pdv;
           return tmp;
         });
         
@@ -2350,9 +2346,9 @@ export class AppComponent implements OnInit
       classeajoute = 1.1;
     else if(classe=="Caster")
       classeajoute = 1;
-    let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau:1))*10+(perso.niveau?perso.niveau:1)*40;
-    let title = perso.title?1000:0;
-    return Math.round((((500+ajoutlevel)*classeajoute)*rarete)*asc+title);
+    let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau:1))*40+(perso.niveau?perso.niveau:1)*70;
+    let title = perso.title?Math.round(Math.random()*1000)+500:0;
+    return Math.round(((((Math.round(Math.random()*200)+300)+ajoutlevel)*classeajoute)*rarete)*asc+title);
   }
 
   getDmg(perso:any)
@@ -2362,8 +2358,8 @@ export class AppComponent implements OnInit
     if(perso.niveau>60)asc=1.1;
     if(perso.niveau>100)asc=1.15;
     let classe = perso.classe;
-    let rarete = 1+perso.level*0.4;
-    if(perso.level==0) rarete = 1.5;
+    let rarete = perso.level*1.5;
+    if(perso.level==0) rarete = 5;
     let classeajoute = 1;
     if(classe=="Shielder")
       classeajoute = 0.8;
@@ -2379,9 +2375,9 @@ export class AppComponent implements OnInit
       classeajoute = 1.1;
     else if(classe=="Caster")
       classeajoute = 1.2;
-    let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau:1))*3+(perso.niveau?perso.niveau:1)*10;
-    let title = perso.title?300:0;
-    return Math.round((((200+ajoutlevel)*classeajoute)*rarete)*asc+title);
+    let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau/3:1))*3+(perso.niveau?perso.niveau/2:1)*7;
+    let title = perso.title?Math.round(Math.random()*200)+100:0;
+    return Math.round((((Math.round(Math.random()*30)+20+ajoutlevel)*classeajoute)*rarete)*asc+title);
   }
 
   startIdleInterval()
