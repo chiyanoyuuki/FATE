@@ -71,12 +71,14 @@ import {
       state('dashavant', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('coup', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('takedamage', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      state('death', style({ left: "{{arrivex}}px", opacity:0 }), {params: {arrivex: '0'}}),
       transition('idle => dashavant', animate('400ms ease-in')),
       transition('dashavant => idle', animate('400ms ease-out')),
       transition('dashavant => coup', animate('400ms ease-in')),
       transition('coup => dashavant', animate('400ms ease-out')),
       transition('idle => takedamage', animate('400ms ease-out')),
-      transition('takedamage => idle', animate('400ms ease-in'))
+      transition('takedamage => idle', animate('400ms ease-in')),
+      transition('takedamage => death', animate('1000ms'))
     ]),
 
     trigger('dmgAnimation', [
@@ -120,6 +122,7 @@ export class AppComponent implements OnInit
   public nextSQ : any;
   public nextSQs : any;
   public user: any;
+  public compo = false;
   public recordOpen = false;
 
   public vid: any;
@@ -166,6 +169,8 @@ export class AppComponent implements OnInit
   public profile: any = undefined;
   public cantSell: any = [];
   public cantSellTitle: any = [];
+  public pvps: any[] = [];
+  public pvp: any;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -213,10 +218,6 @@ export class AppComponent implements OnInit
   public idleStateNumber2: any[] = ["0","0","0","0"];
 
   public combatInterval: any;
-  public arriveyaction: any = 0;
-  public arrivexaction: any = 0;
-  public arrivexaction2: any = 0;
-  public arrivexaction3: any = 0;
   public place:any = 0;
   public attaquant1:any = -1;
   public attaquant2:any = -1;
@@ -701,6 +702,28 @@ export class AppComponent implements OnInit
   }
   revealed(){return AppComponent.revealed;}
 
+  getPvp()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
+    {
+      this.pvps = pvp;
+      this.pvp = pvp.find((p:any)=>p.user_id==this.id);
+      if(this.pvp)
+      {
+        this.myprofile.compo = this.pvp.team;
+        this.myprofile.titlescompo = this.pvp.titles;
+        this.myprofile.comp = [];
+        this.myprofile.compo.forEach((c:any)=>this.myprofile.comp.push(this.data.find((d:any)=>d.id==c)));
+      }
+      else
+      {
+        this.myprofile.compo = [];
+        this.myprofile.comp = [];
+        this.myprofile.titlescompo = [];
+      }
+    });
+  }
+
   connect(afterCreate:boolean){
     if(this.pseudo.length<3||this.mdp.length<3||this.pseudo.length>20||this.mdp.length>20)
     {
@@ -735,6 +758,7 @@ export class AppComponent implements OnInit
         AppComponent.son.play();
         this.timerQuartz = 400000;
         this.daily();
+        this.getPvp();
       }
     });
   }
@@ -1692,6 +1716,29 @@ export class AppComponent implements OnInit
     });
   }
 
+  spendQuartz2(qte:number)
+  {
+    const dataToSend = {
+      id:this.users.find((u:any)=>u.id==this.adversaire).nom,
+      qte:qte
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEspendQuartz',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe(e=>{
+      this.refreshUser();
+    });
+  }
+
   getShop()
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEshop').subscribe(data=>
@@ -1743,9 +1790,20 @@ export class AppComponent implements OnInit
 
   clickServantProfile(i:any)
   {
+    this.compo = false;
     this.selectServant=true;
     this.state='formation';
     if(i==-1)this.filterSpec="Titles";
+    this.profile=undefined;
+    this.ind=i;
+  }
+
+  clickServantProfileCompo(i:any)
+  {
+    console.log(this.myprofile);
+    this.compo = true;
+    this.selectServant=true;
+    this.state='formation';
     this.profile=undefined;
     this.ind=i;
   }
@@ -1797,11 +1855,12 @@ export class AppComponent implements OnInit
           tmp.push(this.data.find((d:any)=>d.id==s));
         })
         p.servs = tmp;
+        tmp = [];
         if(!p.titleservs||p.titleservs == null) p.titleservs = [];
       });
       if(!this.profiles.find((p:any)=>p.user_id==this.id))
       {
-        let prof = {user_id:this.id,servant_id:-1,servants:[],description:'Pas de description..',succes:[],servs:[],titleserv:-1,titleservs:[]};
+        let prof = {user_id:this.id,servant_id:-1,servants:[],description:'Pas de description..',succes:[],servs:[],titleserv:-1,titleservs:[],compo:[],titlescompo:[]};
         this.profiledesc = "Pas de description..";
         this.myprofile = prof;
         this.profiles.push(prof);
@@ -2109,20 +2168,60 @@ export class AppComponent implements OnInit
 
   startDash()
   {
-    let i = Math.round(Math.random()*3);
-    let cible = this.getCible();
+    let persoatq:any;
+    let persocible:any;
+    let i:any;
+    let cible:any;
+    let left1 = this.team1.filter((t:any)=>t.pdv>0);
+    let left2 = this.team2.filter((t:any)=>t.pdv>0);
+    let i1 = Math.round(Math.random()*(left1.length-1));
+    let i2 = Math.round(Math.random()*(left2.length-1));
+
+    if(left1.length==0||left2.length==0)
+    {
+      if(left2.length==0)this.spendQuartz(3);
+      else if(left1.length==0)this.spendQuartz2(3);
+      clearInterval(this.idleInterval);
+      clearInterval(this.combatInterval);
+      this.team1 = [];
+      this.team2 = [];
+      this.profile=this.adversaire;
+      this.state="banner";
+      return;
+    }
+
+    if(this.teamattaque==0)
+    {
+      i = this.team1.indexOf(left1[i1]);
+      cible = this.team2.indexOf(left2[i2]);
+      persoatq = this.team1[i];
+      persocible = this.team2[cible];
+    }
+    else
+    {
+      cible = this.team1.indexOf(left1[i1]);
+      i = this.team2.indexOf(left2[i2]);
+      persoatq = this.team2[i];
+      persocible = this.team1[cible];
+    }
     this.attaquant1 = i;
     this.place = cible;
     
     clearInterval(this.attaqueInterval);
     this.timerAttaque = 0;
     this.team1.forEach((tmp:any)=>{
-      tmp.animation = "idle";
-      tmp.arrivex = 0;
+      if(tmp.pdv>0)
+      {
+        tmp.animation = "idle";
+        tmp.arrivex = 0;
+      }
     });
     this.team2.forEach((tmp:any)=>{
-      tmp.animation = "idle";
-      tmp.arrivex = 0;
+      if(tmp.pdv>0)
+      {
+        tmp.animation = "idle";
+        tmp.arrivex = 0;
+      }
     })    
     this.dmgs.forEach((tmp:any)=>{
       tmp.timer+=2000;
@@ -2139,13 +2238,15 @@ export class AppComponent implements OnInit
       }
       if(this.timerAttaque==900)
       {
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle");
+        else this.setAnimX2(cible,0,"death");
         this.setAnimX(i,200,"dashavant");
-        this.setAnimX2(cible,0,"idle");
+        
       }
       if(this.timerAttaque==1300)
       {
         this.setAnimX(i,0,"idle");
-        this.setAnimX2(cible,0,"endSlash");
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash");
         clearInterval(this.attaqueInterval);
       }
       this.timerAttaque+=100;
@@ -2241,8 +2342,11 @@ export class AppComponent implements OnInit
     }
     dmg = Math.round(dmg*mult);
 
-    let tmp = {anim:'0',pos:this.ys[cible],left:this.xs2[cible],dmg:dmg,timer:0};
-    if(this.teamattaque==1)tmp.left=this.xs1[cible];
+    let tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0};
+    if(this.teamattaque==1)
+    {
+      tmp.left=this.xs1[cible]+20;
+    }
     this.dmgs.push(tmp);
 
     let tmpinterval = setInterval(() => {
@@ -2320,18 +2424,13 @@ export class AppComponent implements OnInit
     return val;
   }
 
-  getCible()
-  {
-    return Math.round(Math.random()*3);
-  }
-
   startCombat()
   {
     AppComponent.son.pause();
     this.musiquecombat.play();
+    this.teamattaque = Math.round(Math.random());
 
     this.combatInterval = setInterval(() => {
-      this.teamattaque = Math.round(Math.random());
       let rdm = Math.round(Math.random()*9);
       if(rdm!=0)
       {
@@ -2353,10 +2452,13 @@ export class AppComponent implements OnInit
         this.state="duel";
 
         let team1 = pvp.find((p:any)=>p.user_id == this.id);
-        let team2 = pvp.find((p:any)=>p.user_id == 81/*this.profile*/);
+        let team2 = pvp.find((p:any)=>p.user_id == this.profile);
 
         this.titlesduel = team1.titles;
         this.titlesduel2 = team2.titles;
+
+        this.arriveLeft = "0";
+        this.arriveRight = "0";
 
         this.arriveState = [this.getRdm2(),this.getRdm2(),this.getRdm2(),this.getRdm2()];
         this.arriveState2 = [this.getRdm2(),this.getRdm2(),this.getRdm2(),this.getRdm2()];
@@ -2381,10 +2483,12 @@ export class AppComponent implements OnInit
           }
         },100);
 
+        let data = JSON.parse(JSON.stringify(this.data));
+
         let cpt=0;
         this.team1 = team1.team.map((x:any)=>
         {
-          let tmp = this.data.find((d:any)=>d.id==x);
+          let tmp = data.find((d:any)=>d.id==x);
           let tmplevel = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==tmp.id);
           if(tmplevel)
           {
@@ -2406,7 +2510,7 @@ export class AppComponent implements OnInit
 
         this.team2 = team2.team.map((x:any)=>
         {
-          let tmp = this.data.find((d:any)=>d.id==x);
+          let tmp = data.find((d:any)=>d.id==x);
           let tmplevel = this.levels.find((l:any)=>l.user_id==this.adversaire&&l.servant_id==tmp.id);
           if(tmplevel)
           {
@@ -2629,11 +2733,13 @@ export class AppComponent implements OnInit
     {
       data = data.filter((d:any)=>d.level==4);
     }
-
-    
-    if(this.selectServant&&this.ind!=-1)
+    if(this.selectServant&&this.ind!=-1&&!this.compo)
     {
       data = this.userData.filter((d:any)=>!this.myprofile.servants.includes(d.id));
+    }
+    if(this.selectServant&&this.ind!=-1&&this.compo)
+    {
+      data = this.userData.filter((d:any)=>!this.myprofile.compo.includes(d.id));
     }
     if(this.recherche!="")
     {
@@ -2688,45 +2794,106 @@ export class AppComponent implements OnInit
     else
     {
       let tmp = this.data.find((d:any)=>d.id==id);
-      if(this.myprofile.servs.length<10)
+      let servantstosend = "[";
+      let titletosend = "[";
+
+      if(this.compo)
       {
-        this.myprofile.servs.push(tmp);
-        this.myprofile.servants.push(id);
-        this.myprofile.titleservs.push(this.titles.includes(id)&&tmp.level>3?1:0);
+        if(this.myprofile.compo.length<4)
+        {
+          this.myprofile.comp.push(tmp);
+          this.myprofile.compo.push(id);
+          this.myprofile.titlescompo.push(this.titles.includes(id)&&tmp.level>3?1:0);
+        }
+        else
+        {
+          this.myprofile.compo[this.ind] = id;
+          this.myprofile.comp[this.ind]=this.data.find((d:any)=>d.id==id);
+          this.myprofile.titlescompo[this.ind] = this.titles.includes(id)&&tmp.level>3?1:0;
+        }
+        this.myprofile.compo.forEach((p:any) => servantstosend+=(p)+",");
+        servantstosend=servantstosend.substring(0,servantstosend.length-1) + "]";
+
+        this.myprofile.titlescompo.forEach((p:any) => titletosend+=(p)+",");
+        titletosend=titletosend.substring(0,titletosend.length-1) + "]";
+
+        const dataToSend = {
+          id:this.id,
+          compo:servantstosend,
+          titlescompo:titletosend
+        }
+        from(
+          fetch(
+            'https://www.chiya-no-yuuki.fr/FATEcompoProfile',
+            {
+              body: JSON.stringify(dataToSend),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              mode: 'no-cors',
+            }
+          )
+        );
+
+        const dataToSend2 = {
+          id:this.id,
+          compo:servantstosend,
+          titlescompo:titletosend
+        }
+        from(
+          fetch(
+            'https://www.chiya-no-yuuki.fr/FATEcompoProfile',
+            {
+              body: JSON.stringify(dataToSend2),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              mode: 'no-cors',
+            }
+          )
+        );
       }
       else
       {
-        this.myprofile.servants[this.ind] = id;
-        this.myprofile.servs[this.ind]=this.data.find((d:any)=>d.id==id);
-        this.myprofile.titleservs[this.ind] = this.titles.includes(id)&&tmp.level>3?1:0;
-      }
+        if(this.myprofile.servs.length<10)
+        {
+          this.myprofile.servs.push(tmp);
+          this.myprofile.servants.push(id);
+          this.myprofile.titleservs.push(this.titles.includes(id)&&tmp.level>3?1:0);
+        }
+        else
+        {
+          this.myprofile.servants[this.ind] = id;
+          this.myprofile.servs[this.ind]=this.data.find((d:any)=>d.id==id);
+          this.myprofile.titleservs[this.ind] = this.titles.includes(id)&&tmp.level>3?1:0;
+        }
+        this.myprofile.servants.forEach((p:any) => servantstosend+=(p)+",");
+        servantstosend=servantstosend.substring(0,servantstosend.length-1) + "]";
 
-      let servantstosend = "[";
-      this.myprofile.servants.forEach((p:any) => servantstosend+=(p)+",");
-      servantstosend=servantstosend.substring(0,servantstosend.length-1) + "]";
+        this.myprofile.titleservs.forEach((p:any) => titletosend+=(p)+",");
+        titletosend=titletosend.substring(0,titletosend.length-1) + "]";
 
-      let titletosend = "[";
-      this.myprofile.titleservs.forEach((p:any) => titletosend+=(p)+",");
-      titletosend=titletosend.substring(0,titletosend.length-1) + "]";
-      
-      const dataToSend = {
-        id:this.id,
-        servants:servantstosend,
-        titleservs:titletosend
+        const dataToSend = {
+          id:this.id,
+          servants:servantstosend,
+          titleservs:titletosend
+        }
+        from(
+          fetch(
+            'https://www.chiya-no-yuuki.fr/FATEpicsProfile',
+            {
+              body: JSON.stringify(dataToSend),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              mode: 'no-cors',
+            }
+          )
+        );
       }
-      from(
-        fetch(
-          'https://www.chiya-no-yuuki.fr/FATEpicsProfile',
-          {
-            body: JSON.stringify(dataToSend),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-            mode: 'no-cors',
-          }
-        )
-      );
     }
   }
   

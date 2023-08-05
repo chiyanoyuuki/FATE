@@ -68,7 +68,7 @@
       </div>
 
       <div style="position: relative;" *ngFor="let perso of team1;let i=index" [@idle]="getIdleState(i)" [@arriveleft]="arriveState[i]<0?'1':'0'">
-        <div  class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs1[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
+        <div  *ngIf="perso" class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs1[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
           <div [style.filter]="perso.negative?'invert()':'unset'" [@animationcombat]="{value:perso.animation, params:{arrivex:perso.arrivex}}" style="position: relative;">
             <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
             <img draggable="false" [attr.id]="'perso1-'+i" [class.titleDuel]="titlesduel[i]==1"  src="{{getSprite(perso)}}" [style.transform]="perso.turn?'unset':'scaleX(-1)'"/>
@@ -78,7 +78,7 @@
       </div>
 
       <div style="position: relative;" *ngFor="let perso of team2;let i=index" [@idle]="getIdleState2(i)" [@arriveright]="arriveState2[i]<0?'1':'0'">
-        <div  class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs2[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
+        <div *ngIf="perso" class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs2[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
           <div [style.filter]="perso.negative?'invert()':''" [@animationcombat]="{value:perso.animation, params:{arrivex:perso.arrivex}}" style="position: relative;">
             <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
             <img  draggable="false" [attr.id]="'perso2-'+i" [class.titleDuel]="titlesduel2[i]==1" src="{{getSprite(perso)}}"  [style.transform]="!perso.turn?'unset':'scaleX(-1)'"/>
@@ -120,7 +120,7 @@
           <div>
             <input type="text" [(ngModel)]="pseudo"/>
           </div>
-          <p>Mot de passe :</p>p
+          <p>Mot de passe :</p>
           <div>
             <input type="password" [(ngModel)]="mdp"/>
           </div>
@@ -253,7 +253,16 @@
         </div>
 
         <div class="desc2" style="right: 375px;position: absolute;width: 650px;">
-          <button style="margin:auto;" >Duel</button>
+          <p>Composition :</p>
+          <div class="profileBotServs2">
+            <div *ngFor="let serv of myprofile.comp;let i=index"  style="position:relative">
+              <img [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" [class.golden]="myprofile.titlescompo[i]==1" draggable="false" src="{{getImg(myprofile.user_id,serv)}}"/>
+              <p style="bottom: -10px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+              background-color: green;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{getServLevel2(serv)}}</p>
+            </div>
+            <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
+          </div>
+          <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" style="margin:auto;position: absolute;bottom: 20px;" (click)="launchDuel()">Duel</button>
         </div>
 
         <div *ngIf="myprofilestats" class="desc2">
