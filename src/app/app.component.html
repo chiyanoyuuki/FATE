@@ -9,8 +9,10 @@
 
       <div class="duelstats">
 
+        <p class="damage" *ngFor="let dmg of dmgs" [@dmgAnimation]="{value:dmg.anim, params:{pos:dmg.pos}}" [style.left]="dmg.left+'px'">-{{dmg.dmg}}</p>
+
         <div>
-          <div *ngFor="let perso of team1;let i=index" class="containerStatsDuel">
+          <div *ngFor="let perso of team1;let i=index" class="containerStatsDuel" [style.opacity]="perso.pdv>0?1:0.7">
             <p style="text-align: center;">{{perso.nom}}</p>
             <div style="display:flex;">
               <p style="bottom: 35px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -37,7 +39,7 @@
         </div>
 
         <div>
-          <div *ngFor="let perso of team2;let i=index" class="containerStatsDuel2">
+          <div *ngFor="let perso of team2;let i=index" class="containerStatsDuel2" [style.opacity]="perso.pdv>0?1:0.7">
             <p style="text-align: center;">{{perso.nom}}</p>
             <div style="display: flex;">
               <p style="bottom: 35px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -251,7 +253,7 @@
         </div>
 
         <div class="desc2" style="right: 375px;position: absolute;width: 650px;">
-          <button style="margin:auto;">Duel</button>
+          <button style="margin:auto;" >Duel</button>
         </div>
 
         <div *ngIf="myprofilestats" class="desc2">

@@ -5083,17 +5083,6 @@
 	"special":true
     },
     {"scale":1,
-	"id":402,
-	"nom":"Olga Marie",
-	"level":5,
-	"classe":"Foreigner",
-	"img1":"./assets/images/servants/olgamarie/0.jpg",
-	"img2":"./assets/images/servants/olgamarie/0.jpg",
-	"img3":"./assets/images/servants/olgamarie/0.jpg",
-	"img4":"./assets/images/servants/olgamarie/1.jpg",
-	"special":true
-    },
-    {"scale":1,
 	"id":403,
 	"nom":"Shirou",
 	"level":5,
@@ -5138,7 +5127,7 @@
 	"special":true
     },
     {"scale":1,
-	"id":406,
+	"id":407,
 	"nom":"Tonelico",
 	"level":5,
 	"classe":"Caster",
@@ -5146,6 +5135,17 @@
 	"img2":"./assets/images/servants/tonelico/1.jpg",
 	"img3":"./assets/images/servants/tonelico/2.jpg",
 	"img4":"./assets/images/servants/tonelico/3.jpg",
+	"special":true
+    },
+    {"scale":1,
+	"id":408,
+	"nom":"Olga Marie",
+	"level":5,
+	"classe":"Foreigner",
+	"img1":"./assets/images/servants/olgamarie/0.jpg",
+	"img2":"./assets/images/servants/olgamarie/0.jpg",
+	"img3":"./assets/images/servants/olgamarie/0.jpg",
+	"img4":"./assets/images/servants/olgamarie/1.jpg",
 	"special":true
     }
 ]

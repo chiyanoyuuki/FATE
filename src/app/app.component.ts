@@ -79,6 +79,12 @@ import {
       transition('takedamage => idle', animate('400ms ease-in'))
     ]),
 
+    trigger('dmgAnimation', [
+      state('0', style({ top: "{{pos}}px", opacity: 1 }), {params: {pos: '0'}}),
+      state('1', style({ top: "{{pos}}px", opacity: 0 }), {params: {pos: '0'}}),
+      transition('0 => 1', animate('4000ms')),
+    ]),
+
     trigger('slashOpacity', [
       state('0', style({ opacity: "0" })),
       state('1', style({ opacity: "1" })),
@@ -218,6 +224,7 @@ export class AppComponent implements OnInit
   public timerAttaque = 0;
   public musiquecombat: any;
   public attaquestate = 0;
+  public dmgs:any = [];
 
   public teamattaque = 0;
 
@@ -2117,6 +2124,10 @@ export class AppComponent implements OnInit
       tmp.animation = "idle";
       tmp.arrivex = 0;
     })    
+    this.dmgs.forEach((tmp:any)=>{
+      tmp.timer+=2000;
+      if(tmp.timer>6000)this.dmgs.splice(this.dmgs.indexOf(tmp),1);
+    });
 
     this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
@@ -2143,7 +2154,104 @@ export class AppComponent implements OnInit
 
   damage(atq:any,cible:any)
   {
-    
+    let persoatq;
+    let persocible;
+
+    if(this.teamattaque==0)
+    {
+      persoatq = this.team1[atq];
+      persocible = this.team2[cible];
+    }
+    else
+    {
+      persoatq = this.team2[atq];
+      persocible = this.team1[cible];
+    }
+
+    let boost = 1.2;
+    let malus = 0.8;
+    let dmg = persoatq.dmg;
+    let mult = (Math.round(Math.random()*30)+70)/100
+    dmg = dmg * mult;
+    mult = -1;
+
+    let classeatq = persoatq.classe;
+    let classecible = persocible.classe;
+
+    let g1 = ["Saber","Lancer","Archer"];
+    let g2 = ["Rider","Caster","Assassin"];
+    let g3 = ["Alter Ego","Pretender","Foreigner"];
+    let g4 = ["Ruler","Avenger","Moon Cancer"];
+
+    if(classeatq=="Shielder"||classecible=="Shielder"){mult = 1;}
+    if(classecible=="Berserker"||(classeatq=="Berserker"&&classecible!="Foreigner")){mult = 1.5;}
+
+    if(classecible=="Beast"&&(g1.includes(classeatq)||g2.includes(classeatq))){mult = malus;}
+    else if(classecible=="Beast"&&(g3.includes(classeatq)||g4.includes(classeatq))){mult = boost;}
+
+    else if(classeatq=="Beast"&&(g1.includes(classecible)||g2.includes(classecible))){mult = boost;}
+    else if(classeatq=="Beast"&&(g3.includes(classecible)||g4.includes(classecible))){mult = malus;}
+
+    if(mult==-1)
+    {
+      //GROUPE 1
+      if(classeatq==g1[0]&&classecible==g1[1])mult=boost;
+      else if(classeatq==g1[1]&&classecible==g1[0])mult=malus;
+
+      else if(classeatq==g1[0]&&classecible==g1[2])mult=malus;
+      else if(classeatq==g1[2]&&classecible==g1[0])mult=boost;
+
+      else if(classeatq==g1[1]&&classecible==g1[2])mult=boost;
+      else if(classeatq==g1[2]&&classecible==g1[1])mult=malus;
+      //GROUPE 2
+      else if(classeatq==g2[0]&&classecible==g2[1])mult=boost;
+      else if(classeatq==g2[1]&&classecible==g2[0])mult=malus;
+
+      else if(classeatq==g2[0]&&classecible==g2[2])mult=malus;
+      else if(classeatq==g2[2]&&classecible==g2[0])mult=boost;
+
+      else if(classeatq==g2[1]&&classecible==g2[2])mult=boost;
+      else if(classeatq==g2[2]&&classecible==g2[1])mult=malus;
+      //ALTER EGO
+      else if(g3[0]&&g1.includes(classecible)) mult=malus;
+      else if(g3[0]&&g2.includes(classecible)) mult=boost;
+      //PRETENDER
+      else if(g3[1]&&g1.includes(classecible)) mult=boost;
+      else if(g3[1]&&g2.includes(classecible)) mult=malus;
+      //GROUPE 3
+      else if(classeatq==g3[0]&&classecible==g3[1])mult=malus;
+      else if(classeatq==g3[1]&&classecible==g3[0])mult=boost;
+
+      else if(classeatq==g3[0]&&classecible==g3[2])mult=boost;
+      else if(classeatq==g3[2]&&classecible==g3[0])mult=malus;
+
+      else if(classeatq==g3[1]&&classecible==g3[2])mult=malus;
+      else if(classeatq==g3[2]&&classecible==g3[1])mult=boost;
+      //GROUPE 4
+      else if(classeatq==g4[0]&&classecible==g4[1])mult=malus;
+      else if(classeatq==g4[1]&&classecible==g4[0])mult=boost;
+
+      else if(classeatq==g4[0]&&classecible==g4[2])mult=boost;
+      else if(classeatq==g4[2]&&classecible==g4[0])mult=malus;
+
+      else if(classeatq==g4[1]&&classecible==g4[2])mult=malus;
+      else if(classeatq==g4[2]&&classecible==g4[1])mult=boost;
+
+      else if((g1.includes(classeatq)||g2.includes(classeatq))&&classecible==g4[0])mult=malus;
+    }
+    dmg = Math.round(dmg*mult);
+
+    let tmp = {anim:'0',pos:this.ys[cible],left:this.xs2[cible],dmg:dmg,timer:0};
+    if(this.teamattaque==1)tmp.left=this.xs1[cible];
+    this.dmgs.push(tmp);
+
+    let tmpinterval = setInterval(() => {
+      tmp.pos = tmp.pos - 100;
+      tmp.anim='1';
+      clearInterval(tmpinterval);
+    },50);
+    persocible.pdv = persocible.pdv - dmg;
+    if(persocible.pdv<0)persocible.pdv = 0;
   }
 
   setAnimX(i:any,x:any,anim:any)

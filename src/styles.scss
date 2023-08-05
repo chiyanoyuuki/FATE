@@ -604,3 +604,12 @@ height: 100%;
 .opa0{
     opacity:0;
 }
+.damage{
+    -webkit-text-stroke: 1px;
+    -webkit-text-stroke-color: black;
+    position:absolute;
+    z-index:10;
+    color:red!important;
+    font-weight:bold;
+    font-size:40px;
+}
