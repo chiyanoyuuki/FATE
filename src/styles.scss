@@ -23,6 +23,7 @@
 body{
     background-color: black;
     margin:0;
+    overflow:hidden;
 }
 
   p{
@@ -479,4 +480,125 @@ top:505px;
     border: 3px ridge #bbb;
     color: white;
     text-shadow: 4px 0 black , 0 2px black , 2px 0 black , 2px 2px black;
+}
+
+.bgDuel{
+    position:absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.persoduel{
+    position: absolute;
+}
+.persoduel img{
+    height:200px;
+}
+.duelstats{
+    display: flex;
+justify-content: space-between;
+position: absolute;
+width: 100%;
+}
+.duelstats p{
+    color: white;
+    text-shadow: unset;
+    text-align: center;
+}
+.containerStatsDuel{
+    background-color: rgba(20,20,20,0.9);
+box-shadow: black 10px 10px 10px;
+border: 3px ridge #bbb;
+padding: 20px;
+  padding-left: 20px;
+border-radius: 20px;
+left: -15px;
+position: relative;
+padding-left: 40px;
+margin-top:10px;
+padding-top:5px;
+}
+.containerStatsDuel2{
+    background-color: rgba(20,20,20,0.9);
+box-shadow: black -10px 10px 10px;
+border: 3px ridge #bbb;
+color: white;
+padding: 20px;
+  padding: 20px;
+border-radius: 20px;
+right: -15px;
+position: relative;
+padding-right: 40px;
+margin-top:10px;
+padding-top:5px;
+}
+.containerRightDuel{
+    margin-left: 10px;
+}
+.containerRightDuel2{
+    margin-right: 10px;
+    text-align: right;
+}
+.containerRightDuel p{
+    width:140px;
+}
+.containerRightDuel2 p{
+    width:140px;
+}
+.containerbar{
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    border: 2px ridge #bbb;
+    height: 18px;
+    top: 2px;
+    position: relative;
+    margin-left: 15px;
+    width:200px;
+    border-radius:5px;
+}
+.containerbar2{
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    border: 2px ridge #bbb;
+    height: 18px;
+    top: 2px;
+    position: relative;
+    margin-right: 15px;
+    width:200px;
+    border-radius:5px;
+}
+.hp{
+    background:linear-gradient(#202020, #50cc50);
+width: 100%;
+height: 100%;
+}
+.np{
+    background:linear-gradient(#202020, #cccc50);
+width: 100%;
+height: 100%;
+}
+.sepia{
+    filter:sepia(1);
+}
+.titleDuel{
+    filter:drop-shadow(00px 00px 5px gold)!important;
+}
+.shadow {
+	position: absolute;
+	filter: brightness(0) blur(10px);
+    width:50%;
+    bottom:-43%;
+}
+.shadow {
+	position: absolute;
+	width: 110%;
+	bottom: -8px;
+	height: 20% !important;
+	left: -5%;
+}
+.boosted1 img{
+    width:346px;
+}
+.opa0{
+    opacity:0;
 }

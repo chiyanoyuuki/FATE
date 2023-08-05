@@ -43,6 +43,52 @@ import {
       transition('0 => 1', animate('500ms ease-out')),
       transition('1 => 0', animate('500ms ease-out'))
     ]),
+
+    trigger('arriveleft', [
+      state('0', style({ transform: "translate(-1000px,-50px)"})),
+      state('1', style({ transform: "translate(0px,0px)"})),
+      transition('0 => 1', animate('600ms ease-out'))
+    ]),
+
+    trigger('arriveright', [
+      state('0', style({ transform: "translate(1000px,-50px)"})),
+      state('1', style({ transform: "translate(0px,0px)"})),
+      transition('0 => 1', animate('600ms ease-out'))
+    ]),
+
+    trigger('idle', [
+      state('0', style({ transform: "translate(0px,0px)"})),
+      state('1', style({ transform: "translate(-3px,1px)"})),
+      state('2', style({ transform: "translate(3px,1px)"})),
+      transition('0 => 1', animate('400ms')),
+      transition('0 => 2', animate('400ms')),
+      transition('1 => 0', animate('400ms')),
+      transition('2 => 0', animate('400ms'))
+    ]),
+
+    trigger('dashToTeam2', [
+      state('0', style({ left: "0px" })),
+      state('1', style({ left: "{{arrivex}}px"}), {params: {arrivex: '0px'}}),
+      state('2', style({ left: "{{arrivex2}}px"}), {params: {arrivex2: '0px'}}),
+      transition('0 => 1', animate('400ms ease-in')),
+      transition('1 => 2', animate('400ms ease-out')),
+      transition('2 => 1', animate('400ms ease-in')),
+      transition('1 => 0', animate('400ms ease-out'))
+    ]),
+
+    trigger('dashToTeam3', [
+      state('0', style({ left: "0px" })),
+      state('1', style({ left: "{{arrivex3}}px"}), {params: {arrivex3: '0px'}}),
+      transition('0 => 1', animate('400ms ease-in')),
+      transition('1 => 0', animate('400ms ease-out'))
+    ]),
+
+    trigger('slashOpacity', [
+      state('0', style({ opacity: "0" })),
+      state('1', style({ opacity: "1" })),
+      transition('0 => 1', animate('300ms ease-in')),
+      transition('1 => 0', animate('1000ms ease-out'))
+    ]),
   ]
 })
 
@@ -59,6 +105,7 @@ export class AppComponent implements OnInit
   public recherche = "";
   public shop: any;
   public majInterval: any;
+  public damage: any;
 
   public pseudo = "";
   public mdp = "";
@@ -138,6 +185,52 @@ export class AppComponent implements OnInit
   public enhance = false;
   public ce: number[] = [0,0,0,0,0];
   public ascs: any[] = [];
+  public duel: any[] = [];
+
+  public idleState: number[] = [0,0,0,0];
+  public idleState2: number[] = [0,0,0,0];
+  public arriveState: number[] = [0,0,0,0];
+  public arriveState2: number[] = [0,0,0,0];
+  public idleInterval: any;
+  public arriveInterval: any;
+  public arriveLeft: string = "0";
+  public arriveRight: string = "0";
+  public titlesduel: any[] = [];
+  public titlesduel2: any[] = [];
+
+  public idpersotest = 342;
+  public scaletest = 1;
+  public test = false;
+
+  public adversaire: any = undefined;
+  public team1: any[] = [];
+  public team2: any[] = [];
+  public xs1: any[] = [560,465,360,155];
+  public ys: any[] = [575,630,695,720];
+  public xs2: any[] = [1440,1505,1640,1740];
+  public idleStateNumber: any[] = ["0","0","0","0"];
+  public idleStateNumber2: any[] = ["0","0","0","0"];
+
+  public dashToTeam: any[] = ["0","0","0","0"];
+  public dashToTeam2: any[] = ["0","0","0","0"];
+  public dashToTeam3: any[] = ["0","0","0","0"];
+  public dashToTeam4: any[] = ["0","0","0","0"];
+  public combatInterval: any;
+  public arriveyaction: any = 0;
+  public arrivexaction: any = 0;
+  public arrivexaction2: any = 0;
+  public arrivexaction3: any = 0;
+  public place:any = 0;
+  public attaquant1:any = -1;
+  public attaquant2:any = -1;
+  public attaqueInterval: any;
+  public timerAttaque = 0;
+  public musiquecombat: any;
+  public attaquestate = 0;
+
+  public teamattaque = 0;
+  public slashOpacity = ["0","0","0","0"];
+  public slashOpacity2 = ["0","0","0","0"];
 
   constructor(private http: HttpClient){
 
@@ -187,6 +280,11 @@ export class AppComponent implements OnInit
     this.sonbtn.src = "./assets/confirm_button.mp3";
     this.sonbtn.load();
     this.sonbtn.volume = 0.5;
+
+    this.musiquecombat = new Audio();
+    this.musiquecombat.src = "./assets/combat.mp3";
+    this.musiquecombat.load();
+    this.musiquecombat.volume = 0;
 
     document.oncontextmenu = function () {
       return false;
@@ -328,6 +426,17 @@ export class AppComponent implements OnInit
     this.invocs = nb;
     this.summon();
     this.getTitles();
+  }
+
+  getPersoTest()
+  {
+    return this.data.find((d:any)=>d.id==this.idpersotest);
+  }
+
+  getSpritePerso()
+  {
+    let perso = this.getPersoTest();
+    return this.getSprite(perso);
   }
 
   public summon()
@@ -573,6 +682,12 @@ export class AppComponent implements OnInit
     }
   }
 
+  getIdleState(i:number){
+    return this.idleStateNumber[i];
+  }
+  getIdleState2(i:number){
+    return this.idleStateNumber2[i];
+  }
   getName(){
     return AppComponent.perso.nom;
   }
@@ -655,6 +770,15 @@ export class AppComponent implements OnInit
         }
       )
     );
+  }
+
+  getRdm()
+  {
+    return Math.round(Math.random()*15)*100+300;
+  }
+  getRdm2()
+  {
+    return Math.round(Math.random()*500)+300;
   }
 
   checkSuccess()
@@ -1551,7 +1675,6 @@ export class AppComponent implements OnInit
 
   spendQuartz(qte:number)
   {
-    this.quartz-=qte;
     const dataToSend = {
       nom:this.pseudo,
       qte:qte
@@ -1568,7 +1691,9 @@ export class AppComponent implements OnInit
           mode: 'no-cors',
         }
       )
-    );
+    ).subscribe(e=>{
+      this.refreshUser();
+    });
   }
 
   getShop()
@@ -1978,6 +2103,318 @@ export class AppComponent implements OnInit
       else if(tmp.ascension==2)img = perso.img3;
       else if(tmp.ascension==3)img = perso.img4;
     }
+    return img;
+  }
+
+  getWidth(min:number,max:number)
+  {
+    return (min/max)*100;
+  }
+
+  startDash()
+  {
+    let i = Math.round(Math.random()*3);
+    let cible = this.getCible();
+    this.attaquant1 = i;
+    this.place = cible;
+
+    let atq:any;
+
+    if(this.teamattaque==0)
+    {
+      atq = document.getElementById("perso1-"+i)!.getBoundingClientRect();
+    }
+    else
+    {
+      atq = document.getElementById("perso1-"+cible)!.getBoundingClientRect();
+    }
+
+    let persoatq = this.team1[i];
+    if(this.teamattaque==1)persoatq = this.team2[i];
+    let widthatq = atq.width+persoatq.scale>1.7?500:0;
+
+    if(persoatq.scale>1.7)console.log(persoatq);
+    
+    this.arrivexaction = this.getXaction(600+50*i-widthatq);
+    this.arrivexaction2 = this.getXaction(650+50*i-widthatq);
+    this.arrivexaction3 = this.teamattaque==1?-100:100;
+    clearInterval(this.attaqueInterval);
+    this.timerAttaque = 0;
+    this.team1.forEach((tmp:any)=>{
+      tmp.avanceattaque = "0";
+      tmp.coup = "0";
+      tmp.takedamage = "0";
+      tmp.slashed = "0";
+    })
+    this.dashToTeam = ["0","0","0","0"];
+    this.dashToTeam2 = ["0","0","0","0"];
+    this.dashToTeam3 = ["0","0","0","0"];
+    this.dashToTeam4 = ["0","0","0","0"];
+    this.slashOpacity = ["0","0","0","0"];
+    this.slashOpacity2 = ["0","0","0","0"];
+    this.changeAttaqueState(i,"1");
+    this.attaqueInterval = setInterval(() => {
+      if(this.timerAttaque==700)
+      {
+        this.attaquestate = 1;
+        this.setOpacity(cible,"1");
+        this.changeAttaqueState(i,"2");
+        this.changeAttaqueState2(cible,"1");
+      }
+      if(this.timerAttaque==900)
+      {
+        this.attaquestate = 0;
+        this.changeAttaqueState(i,"1");
+        this.changeAttaqueState2(cible,"0");
+      }
+      if(this.timerAttaque==1300)
+      {
+        this.setOpacity(cible,"0");
+        this.changeAttaqueState(i,"0");
+        clearInterval(this.attaqueInterval);
+      }
+      this.timerAttaque+=100;
+    },100);
+  }
+
+  setOpacity(i:any,val:any)
+  {
+    if(this.teamattaque==0)
+    {
+      this.slashOpacity2[i]=val;
+    }
+    else
+    {
+      this.slashOpacity[i]=val;
+    }
+  }
+
+
+
+  getXaction(val:any)
+  {
+    let tmp = val;
+    if(this.teamattaque==1)
+    {
+      val=val*-1;
+    }
+    return val;
+  }
+
+  changeAttaqueState(i:any,state:any)
+  {
+    if(this.teamattaque==0)
+    {
+      this.dashToTeam[i]=state;
+    }
+    else
+    {
+      this.dashToTeam2[i]=state;
+    }
+  }
+
+  changeAttaqueState2(i:any,state:any)
+  {
+    if(this.teamattaque==1)
+    {
+      this.dashToTeam3[i]=state;
+    }
+    else
+    {
+      this.dashToTeam4[i]=state;
+    }
+  }
+
+  getCible()
+  {
+    return Math.round(Math.random()*3);
+  }
+
+  startCombat()
+  {
+    AppComponent.son.pause();
+    this.musiquecombat.play();
+
+    this.combatInterval = setInterval(() => {
+      let rdm = Math.round(Math.random()*9);
+      if(rdm!=0)
+      {
+        this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
+      }
+      this.startDash();
+    },2000);
+  }
+
+  launchDuel()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
+    {
+      this.duel = pvp;
+      this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(levels=>
+      {
+        this.levels = levels;
+
+        this.state="duel";
+
+        let team1 = pvp.find((p:any)=>p.user_id == this.id);
+        let team2 = pvp.find((p:any)=>p.user_id == 81/*this.profile*/);
+
+        this.titlesduel = team1.titles;
+        this.titlesduel2 = team2.titles;
+
+        this.arriveState = [this.getRdm2(),this.getRdm2(),this.getRdm2(),this.getRdm2()];
+        this.arriveState2 = [this.getRdm2(),this.getRdm2(),this.getRdm2(),this.getRdm2()];
+        
+        this.arriveInterval = setInterval(() => {
+          let allinf = true;
+          for(let i=0;i<4;i++)
+          {
+            this.arriveState[i]-=100;
+            this.arriveState2[i]-=100;
+            if(this.arriveState[i]>=0)allinf=false;
+            if(this.arriveState2[i]>=0)allinf=false;
+          }
+          if(allinf)
+          {
+            clearInterval(this.arriveInterval);
+            this.arriveInterval = setInterval(() => {
+              this.startIdleInterval();
+              this.startCombat();
+              clearInterval(this.arriveInterval);
+            },200);
+          }
+        },100);
+
+        let cpt=0;
+        this.team1 = team1.team.map((x:any)=>
+        {
+          let tmp = this.data.find((d:any)=>d.id==x);
+          let tmplevel = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==tmp.id);
+          if(tmplevel)
+          {
+            tmp.ascension = tmplevel.ascension;
+            tmp.niveau = tmplevel.level;
+          }
+          tmp.title = team1.titles[cpt++]==1;
+          
+          tmp.avanceattaque = "0";
+          tmp.coup = "0";
+          tmp.takedamage = "0";
+          tmp.slashed = "0";
+          tmp.arrivex = 0;
+          tmp.negative = false;
+
+          tmp.np = 0;
+          tmp.dmg = this.getDmg(tmp);
+          tmp.pdv = this.getPdv(tmp);
+          tmp.pdvmax = tmp.pdv;
+          return tmp;
+        });
+
+        this.team2 = team2.team.map((x:any)=>
+        {
+          let tmp = this.data.find((d:any)=>d.id==x);
+          let tmplevel = this.levels.find((l:any)=>l.user_id==this.adversaire&&l.servant_id==tmp.id);
+          if(tmplevel)tmp.ascension = tmplevel.ascension;
+          tmp.pdv = (Math.round(Math.random()*7000));
+          tmp.pdvmax = tmp.pdv + (Math.round(Math.random()*3000));
+          tmp.np = (Math.round(Math.random()*100));
+          return tmp;
+        });
+        
+        this.adversaire = this.profile;
+        this.profile = undefined;
+      });
+    });
+  }
+
+  getPdv(perso:any)
+  {
+    let asc = 1;
+    if(perso.niveau>30)asc=1.1;
+    if(perso.niveau>60)asc=1.2;
+    if(perso.niveau>100)asc=1.3;
+    let classe = perso.classe;
+    let rarete = 1+perso.level*0.3;
+    if(perso.level==0) rarete = 1.5;
+    let classeajoute = 1;
+    if(classe=="Shielder"||classe=="Beast")
+      classeajoute = 1.7;
+    else if(classe=="Ruler"||classe=="Avenger"||classe=="Moon Cancer")
+      classeajoute = 1.5;
+    else if(classe=="Foreigner"||classe=="Pretender"||classe=="Alter Ego")
+      classeajoute = 1.4;
+    else if(classe=="Berserker"||classe=="Saber"||classe=="Rider")
+      classeajoute = 1.2;
+    else if(classe=="Lancer"||classe=="Assassin"||classe=="Archer")
+      classeajoute = 1.1;
+    else if(classe=="Caster")
+      classeajoute = 1;
+    let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau:1))*10+(perso.niveau?perso.niveau:1)*40;
+    let title = perso.title?1000:0;
+    return Math.round((((500+ajoutlevel)*classeajoute)*rarete)*asc+title);
+  }
+
+  getDmg(perso:any)
+  {
+    let asc = 1;
+    if(perso.niveau>30)asc=1.05;
+    if(perso.niveau>60)asc=1.1;
+    if(perso.niveau>100)asc=1.15;
+    let classe = perso.classe;
+    let rarete = 1+perso.level*0.4;
+    if(perso.level==0) rarete = 1.5;
+    let classeajoute = 1;
+    if(classe=="Shielder")
+      classeajoute = 0.8;
+    else if(classe=="Ruler")
+      classeajoute = 0.9;
+    else if(classe=="Avenger"||classe=="Moon Cancer")
+      classeajoute = 1.1;
+    else if(classe=="Foreigner"||classe=="Pretender"||classe=="Alter Ego"||classe=="Beast")
+      classeajoute = 1.1;
+    else if(classe=="Berserker"||classe=="Saber"||classe=="Rider")
+      classeajoute = 1;
+    else if(classe=="Lancer"||classe=="Assassin"||classe=="Archer")
+      classeajoute = 1.1;
+    else if(classe=="Caster")
+      classeajoute = 1.2;
+    let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau:1))*3+(perso.niveau?perso.niveau:1)*10;
+    let title = perso.title?300:0;
+    return Math.round((((200+ajoutlevel)*classeajoute)*rarete)*asc+title);
+  }
+
+  startIdleInterval()
+  {
+    this.arriveLeft = "2";
+    this.arriveRight = "2";
+    this.idleState = [this.getRdm(),this.getRdm(),this.getRdm(),this.getRdm()];
+    this.idleState2 = [this.getRdm(),this.getRdm(),this.getRdm(),this.getRdm()];
+
+    this.idleInterval = setInterval(() => {
+      for(let i=0;i<4;i++)
+      {
+        this.idleState[i]-=100;
+        this.idleState2[i]-=100;
+
+        let rdm = Math.round(Math.random())+1;
+        let rdm2 = Math.round(Math.random())+1;
+
+        if(this.idleState[i]==0)this.idleStateNumber[i]=rdm;
+        if(this.idleState2[i]==0)this.idleStateNumber2[i]=rdm2;
+
+        if(this.idleState[i]<-500){this.idleStateNumber[i]=0;this.idleState[i]=this.getRdm();}
+        if(this.idleState2[i]<-500){this.idleStateNumber2[i]=0;this.idleState2[i]=this.getRdm();}
+      }
+    },100);
+  }
+
+  getSprite(perso:any)
+  {
+    let img = perso.sprite1;
+    if(perso.ascension==1&&perso.sprite2)img = perso.sprite2;
+    else if(perso.ascension==2&&perso.sprite3)img = perso.sprite3;
+    else if(perso.ascension==3&&perso.sprite3)img = perso.sprite3;
     return img;
   }
 

@@ -1,3 +1,93 @@
+    <div *ngIf="state=='duel'">
+      <img class="bgDuel" src="./assets/images/bgDuel.png" />
+
+      <div *ngIf="test" style="position:absolute;left:815px;top:534px;">
+        <div style="display: flex;"><button (click)="idpersotest=idpersotest-1;scaletest=getPersoTest().scale;">-</button><p>{{idpersotest}}</p><button (click)="idpersotest=idpersotest+1;scaletest=getPersoTest().scale;">+</button></div>
+        <img draggable="false" src="{{getSpritePerso()}}" style="height:200px;pointer-events: none;" [style.scale]="scaletest"/>
+        <div style="display: flex;"><button (click)="scaletest=scaletest-0.1">-</button><p>{{scaletest}}</p><button (click)="scaletest=scaletest+0.1">+</button></div>
+      </div>
+
+      <div class="duelstats">
+
+        <div>
+          <div *ngFor="let perso of team1;let i=index" class="containerStatsDuel">
+            <p style="text-align: center;">{{perso.nom}}</p>
+            <div style="display:flex;">
+              <p style="bottom: 35px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+              background-color: green;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{getServLevel2(perso)}}</p>
+              <div [class.golden]="titlesduel[i]==1" class="profilePicture2" style="margin:0;position: relative;left:0px;border: 4px ridge #404040;">
+                <img draggable="false" class="profilePicture" src="{{getImg(id,perso)}}"/>
+              </div>
+              <div class="containerRightDuel">
+                <div style="display:flex">
+                  <p>{{perso.pdv}}/{{perso.pdvmax}}</p>
+                  <div class="containerbar">
+                    <div class="hp" [style.width]="getWidth(perso.pdv,perso.pdvmax)+'%'"></div>
+                  </div>
+                </div>
+                <div style="display:flex">
+                  <p>{{perso.dmg}}/100</p>
+                  <div class="containerbar">
+                    <div class="np" [style.width]="getWidth(perso.np,100)+'%'"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div *ngFor="let perso of team2;let i=index" class="containerStatsDuel2">
+            <p style="text-align: center;">{{perso.nom}}</p>
+            <div style="display: flex;">
+              <p style="bottom: 35px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                background-color: darkred;border-radius: 20px;border: 2px ridge #202020;left: -12px;z-index: 2;">{{getServLevel2(perso)}}</p>
+              <div class="containerRightDuel2">
+                <div style="display:flex">
+                  <div class="containerbar2">
+                    <div class="hp" [style.width]="getWidth(perso.pdv,perso.pdvmax)+'%'"></div>
+                  </div>
+                  <p>{{perso.pdv}}/{{perso.pdvmax}}</p>
+                </div>
+                <div style="display:flex">
+                  <div class="containerbar2">
+                    <div class="np" [style.width]="getWidth(perso.np,100)+'%'"></div>
+                  </div>
+                  <p>{{perso.np}}/100</p>
+                </div>
+              </div>
+              <div [class.golden]="titlesduel2[i]==1" class="profilePicture2" style="margin:0;position: relative;left:0px;border: 4px ridge #404040;">
+                <img draggable="false" class="profilePicture" src="{{getImg(adversaire,perso)}}"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      
+
+      <div style="position: relative;" *ngFor="let perso of team1;let i=index" [@idle]="getIdleState(i)" [@arriveleft]="arriveState[i]<0?'1':'0'">
+        <div  class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs1[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
+          <div [style.filter]="place==i&&attaquestate==1&&teamattaque==1?'invert()':'unset'" [@dashToTeam3]="{value:dashToTeam3[i], params:{arrivex3:arrivexaction3}}" [@dashToTeam2]="{value:dashToTeam[i], params:{arrivex:arrivexaction,arrivex2:arrivexaction2}}" style="position: relative;">
+            <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
+            <img draggable="false" [attr.id]="'perso1-'+i" [class.titleDuel]="titlesduel[i]==1"  src="{{getSprite(perso)}}" [style.transform]="perso.turn?'unset':'scaleX(-1)'"/>
+            <img class="opa0" [@slashOpacity]="slashOpacity[i]" src="./assets/images/slash.png" style="position:absolute;left:20px"/>
+          </div>
+        </div>
+      </div>
+
+      <div style="position: relative;" *ngFor="let perso of team2;let i=index" [@idle]="getIdleState2(i)" [@arriveright]="arriveState2[i]<0?'1':'0'">
+        <div  class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs2[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
+          <div [style.filter]="place==i&&attaquestate==1&&teamattaque==0?'invert()':''" [@dashToTeam3]="{value:dashToTeam4[i], params:{arrivex3:arrivexaction3}}" [@dashToTeam2]="{value:dashToTeam2[i], params:{arrivex:arrivexaction,arrivex2:arrivexaction2}}" style="position: relative;">
+            <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
+            <img  draggable="false" [attr.id]="'perso2-'+i" [class.titleDuel]="titlesduel2[i]==1" src="{{getSprite(perso)}}"  [style.transform]="!perso.turn?'unset':'scaleX(-1)'"/>
+            <img class="opa0" [@slashOpacity]="slashOpacity2[i]" src="./assets/images/slash.png" style="position:absolute;right:20px;transform: scaleX(-1)"/>
+            <p *ngIf="place==i&&attaquestate==1&&teamattaque==0">{{damage}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <div *ngIf="state=='connection'">
       <img draggable="false" src="./assets/images/connScreen.png" style="width:100%"/>
       <div class="connform" style="position: absolute;left:33%;top:23%">
@@ -137,8 +227,11 @@
             <button [class.disabledButton]="myprofile.description==profiledesc||profiledesc.length>99" style="width:140px" *ngIf="profile==id" (click)="descProfile()">Valider</button>
           </div>
         </div>
+
         <div class="desc2" style="right: 375px;position: absolute;width: 650px;">
+          <button style="margin:auto;" >Duel</button>
         </div>
+
         <div *ngIf="myprofilestats" class="desc2">
           <div style="display:flex;justify-content: space-between;"><p>Titles :</p><p> {{myprofilestats.titles}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Servants 5* :</p><p> {{myprofilestats.servant5}}</p></div>
@@ -186,9 +279,7 @@
       </div>
     </div>
     
-        
-    
-    <div *ngIf="state!='connection'">
+    <div *ngIf="state!='connection'&&state!='duel'">
       <div class="header" style="box-shadow: white 1px 1px 10px;width: 99%;height: 90px;background-color: rgba(100,150,200,0.8);border: 3px ridge #555;display:flex;justify-content: space-around;margin-bottom:20px;">
           <img class="clickable" (click)="succesOpen=!succesOpen" draggable="false" src="./assets/images/succes.png" style="position: absolute;left: 15px;width: 80px;"/>
           <img class="clickable" (click)="recordOpen=!recordOpen" draggable="false" src="./assets/images/record.png" style="position: absolute;right: 20px;width: 80px;top:8px"/>
@@ -335,7 +426,7 @@
         <div style="position:absolute;left:350px;top:135px" (mouseleave)="focus=undefined">
           <div style="display:flex">
             <div *ngFor="let perso of persos5" style="position:relative">
-              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="clickServant(perso)"/>
+              <img draggable="false" style="height:90px;border: 3px ridge #222;width:66px;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="clickServant(perso)"/>
               <div class="boosted2 row5"  style="pointer-events: none;z-index: 3;">
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.nom}}</p>
@@ -344,7 +435,7 @@
           </div>
           <div style="display:flex">
             <div *ngFor="let perso of persos4" style="position:relative">
-              <img draggable="false" style="height:90px;border: 3px ridge #222;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="clickServant(perso)"/>
+              <img draggable="false" style="height:90px;border: 3px ridge #222;width:66px;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="clickServant(perso)"/>
               <div class="boosted2"  style="pointer-events: none;z-index: 3;">
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.nom}}</p>
