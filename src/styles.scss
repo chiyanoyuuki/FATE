@@ -612,6 +612,7 @@ height: 100%;
     color:red!important;
     font-weight:bold;
     font-size:40px;
+    border-radius:100%;
 }
 .profileBotServs2{
     display:flex;
@@ -644,4 +645,9 @@ color: darkred!important;
   -webkit-text-stroke-color: currentcolor;
 -webkit-text-stroke-color: black;
 font-size: 35px;
+}
+.cc{
+    background: radial-gradient(rgba(200,200,20,1), rgba(150,20,20,0));
+    border:10px dashed red;
+    padding:8px;
 }

@@ -2263,21 +2263,21 @@ export class AppComponent implements OnInit
     this.attaqueInterval = setInterval(() => {
       if(this.timerAttaque==700)
       {
+        let tmp = this.damage(i,cible);
         this.setAnimX(i,300,"coup");
-        this.setAnimX2(cible,-100,"takedamage");
-        this.damage(i,cible);
+        this.setAnimX2(cible,-100,"takedamage",tmp);
       }
       if(this.timerAttaque==900)
       {
-        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle");
-        else this.setAnimX2(cible,0,"death");
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
+        else this.setAnimX2(cible,0,"death",false);
         this.setAnimX(i,200,"dashavant");
         
       }
       if(this.timerAttaque==1300)
       {
         this.setAnimX(i,0,"idle");
-        if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash");
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash",false);
         clearInterval(this.attaqueInterval);
       }
       this.timerAttaque+=100;
@@ -2408,10 +2408,38 @@ export class AppComponent implements OnInit
       else mult = 1;
     }
     dmg = Math.round(dmg*mult);
+    let cc = false;
+    let ec = false;
 
-    let tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px'};
-    if(mult==boost||mult==1.5){tmp.color='#f1da00';tmp.size='50px'}
-    else if(mult==malus){tmp.color='#4738ff';tmp.size='30px'}
+    let rdm = Math.round(Math.random()*9);
+    if(rdm==0)
+    {
+      cc = true;
+      dmg = Math.round(dmg * 1.5);
+    }
+    else
+    {
+      rdm = Math.round(Math.random()*9);
+      if(rdm==0)
+      {
+        ec = true;
+        dmg = 0;
+      }
+    }
+
+    let tmp: any;
+
+    if(ec)
+    {
+      tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:"Rate-",timer:0,color:'white',size:'40px', cc:cc, ec:ec};
+    }
+    else
+    {
+      tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
+      if(mult==boost||mult==1.5){tmp.color='#f1da00';tmp.size='50px'}
+      else if(mult==malus){tmp.color='#4738ff';tmp.size='30px'}
+    }
+
     if(this.teamattaque==1)
     {
       tmp.left=this.xs1[cible]+20;
@@ -2425,6 +2453,7 @@ export class AppComponent implements OnInit
     },50);
     persocible.pdv = persocible.pdv - dmg;
     if(persocible.pdv<0)persocible.pdv = 0;
+    return ec;
   }
 
   setAnimX(i:any,x:any,anim:any)
@@ -2442,7 +2471,7 @@ export class AppComponent implements OnInit
     }
   }
 
-  setAnimX2(cible:any,x:any,anim:any)
+  setAnimX2(cible:any,x:any,anim:any,miss:any)
   {
     if(this.teamattaque==0)
     {
@@ -2451,8 +2480,8 @@ export class AppComponent implements OnInit
       if(anim!="endSlash")this.team2[cible].animation=anim;
       if(anim=="takedamage")
       {
-        this.team2[cible].slash="1";
-        this.team2[cible].negative=true;
+        if(!miss)this.team2[cible].slash="1";
+        if(!miss)this.team2[cible].negative=true;
       }
       else if(anim=="idle")
       {
@@ -2469,8 +2498,8 @@ export class AppComponent implements OnInit
       if(anim!="endSlash")this.team1[cible].animation=anim;
       if(anim=="takedamage")
       {
-        this.team1[cible].slash="1";
-        this.team1[cible].negative=true;
+        if(!miss)this.team1[cible].slash="1";
+        if(!miss)this.team1[cible].negative=true;
       }
       else if(anim=="idle")
       {
