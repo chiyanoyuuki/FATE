@@ -212,6 +212,7 @@
     </div>
 
     <div *ngIf="profile" class="profile">
+      <img style="position: absolute;z-index: 3;width: 50%;left: 25%;" class="clickable" (click)="showinfo=false;" *ngIf="showinfo" src="./assets/images/info_duel0.png"/>
       <img (click)="profile==id?clickServantProfile(-1):null" [class.golden]="first(myprofile.servant)" *ngIf="myprofile.servant" class="servProfile" [class.clickable]="profile==id" draggable="false" src="{{getImg(myprofile.user_id,myprofile.servant)}}"/>
       <div (click)="profile==id?clickServantProfile(-1):null" class="servProfile" [class.clickable]="profile==id" *ngIf="!myprofile.servant"></div>
       <div class="profileBotServs">
@@ -252,8 +253,9 @@
             <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
           </div>
           <div style="position: absolute;bottom: 20px;display:flex;justify-content: space-between;">
-            <button (click)="getPvp()" style="margin:auto;">Refresh</button>
-            <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" style="margin:auto;" (click)="adversaire=profile;launchDuel()">Duel</button>  
+            <button (click)="getPvp()">Refresh</button>
+            <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" (click)="adversaire=profile;launchDuel()">Duel</button>  
+            <button (click)="showinfo=true">Infos</button>  
           </div>
         </div>
 

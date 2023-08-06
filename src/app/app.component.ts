@@ -154,6 +154,7 @@ export class AppComponent implements OnInit
   public dailyInterval: any;
   public filterSell = "";
   public filterSellAvailable = false;
+  public showinfo = false;
 
   public timerBanner: any = 5000000;
   public timerQuartz: any = 5000000;
