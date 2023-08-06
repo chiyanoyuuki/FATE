@@ -2297,8 +2297,8 @@ export class AppComponent implements OnInit
       persocible = this.team1[cible];
     }
 
-    let boost = 1.2;
-    let malus = 0.8;
+    let boost = 2;
+    let malus = 0.5;
     let dmg = persoatq.dmg;
     let mult = (Math.round(Math.random()*30)+70)/100
     dmg = dmg * mult;
@@ -2373,7 +2373,7 @@ export class AppComponent implements OnInit
     dmg = Math.round(dmg*mult);
 
     let tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px'};
-    if(mult==boost){tmp.color='#f1da00';tmp.size='50px'}
+    if(mult==boost||mult==1.5){tmp.color='#f1da00';tmp.size='50px'}
     else if(mult==malus){tmp.color='#4738ff';tmp.size='30px'}
     if(this.teamattaque==1)
     {
@@ -2468,7 +2468,14 @@ export class AppComponent implements OnInit
     this.teamattaque = Math.round(Math.random());
 
     this.combatInterval = setInterval(() => {
-      let rdm = Math.round(Math.random()*9);
+      let diff = 0;
+
+      if(this.teamattaque==0)
+        diff=this.team1.length-this.team2.length;
+      else
+        diff=this.team2.length-this.team1.length;
+
+      let rdm = Math.round(Math.random()*(9-diff));
       if(rdm!=0)
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;

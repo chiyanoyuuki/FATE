@@ -248,7 +248,10 @@
             </div>
             <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
           </div>
-          <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" style="margin:auto;position: absolute;bottom: 20px;" (click)="adversaire=profile;launchDuel()">Duel</button>
+          <div style="position: absolute;bottom: 20px;">
+            <button (click)="getUsers();getProfiles();getPvp()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
+            <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" style="margin:auto;" (click)="adversaire=profile;launchDuel()">Duel</button>  
+          </div>
         </div>
 
         <div *ngIf="myprofilestats" class="desc2">
