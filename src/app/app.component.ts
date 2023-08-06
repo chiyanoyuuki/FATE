@@ -1625,9 +1625,9 @@ export class AppComponent implements OnInit
     this.team2.forEach((t:any)=>{tot2+=t.pdv})
 
     if(i==0)
-      return Math.round((tot1/(tot1+tot2))*100);
+      return tot1;
     else
-      return Math.round((tot2/(tot1+tot2))*100);
+      return tot2;
   }
 
   first(serv:any)
@@ -2240,17 +2240,18 @@ export class AppComponent implements OnInit
       persocible = this.team1[cible];
     }
 
+    let fail = false;
     //Intelligence du coup
     let rdm = Math.round(Math.random()*99);
     if(rdm>20)
     {
       cible = this.getSmartCible(persoatq);
-      console.log(persoatq.classe);
-      console.log(persocible.classe,persocible.pdv);
       if(this.teamattaque==0)persocible = this.team2[cible];
       else persocible = this.team1[cible];
-      console.log(persocible.classe,persocible.pdv);
-      console.log("===========");
+    }
+    else
+    {
+      fail = true;
     }
 
     this.attaquant1 = i;
@@ -2302,6 +2303,7 @@ export class AppComponent implements OnInit
     this.attaqueInterval = setInterval(() => {
       if(this.timerAttaque==700)
       {
+        if(fail)persoatq.fail=true;
         let tmp = this.damage(i,cible);
         this.setAnimX(i,300,"coup");
         if(passiveShielder==-1)this.setAnimX2(cible,-100,"takedamage",tmp);
@@ -2321,6 +2323,7 @@ export class AppComponent implements OnInit
       }
       if(this.timerAttaque==1300)
       {
+        persoatq.fail=false;
         this.setAnimX(i,0,"idle");
         if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash",false);
         clearInterval(this.attaqueInterval);
@@ -2432,8 +2435,6 @@ export class AppComponent implements OnInit
     if(tmpfocus.length==0) tmpfocus = focus.filter((f:any)=>malus.includes(f.classe));
   
     tmpfocus.sort((a: any,b: any) => {return a.pdv - b.pdv});
-
-    tmpfocus.forEach((t:any)=>console.log(t.classe,t.pdv));
     
     if(this.teamattaque==0)return this.team2.indexOf(tmpfocus[0]);
     else return this.team1.indexOf(tmpfocus[0]);
@@ -2735,7 +2736,6 @@ export class AppComponent implements OnInit
         diff=t2-t1;
 
       let rdm = Math.round(Math.random()*(99-(diff*10)));
-
       if(rdm>10)
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
