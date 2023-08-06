@@ -246,6 +246,7 @@
           <p>Composition :</p>
           <div class="profileBotServs2">
             <div *ngFor="let serv of myprofile.comp;let i=index"  style="position:relative">
+              <img style="filter: drop-shadow(0px 0px 3px black);width: 60px;position: absolute;z-index: 2;height: 60px;bottom: -30px;left:50px;" src="./assets/images/classes/{{serv.classe}}.png"/>
               <img [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" [class.golden]="id==profile&&myprofile.titlescompo[i]==1" draggable="false" src="{{getImg(myprofile.user_id,serv)}}"/>
             </div>
             <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
@@ -450,6 +451,7 @@
         <div style="position:absolute;left:350px;top:135px" (mouseleave)="focus=undefined">
           <div style="display:flex">
             <div *ngFor="let perso of persos5" style="position:relative">
+              <img [style.display]="focus==perso?'unset':'none'" style="filter: drop-shadow(0px 0px 3px black);width: 40px;position: absolute;z-index: 2;height: 40px;bottom: -17px;left:20px;" src="./assets/images/classes/{{perso.classe}}.png"/>
               <img draggable="false" style="height:90px;border: 3px ridge #222;width:66px;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="clickServant(perso)"/>
               <div class="boosted2 row5"  style="pointer-events: none;z-index: 3;">
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
@@ -459,6 +461,7 @@
           </div>
           <div style="display:flex">
             <div *ngFor="let perso of persos4" style="position:relative">
+              <img [style.display]="focus==perso?'unset':'none'" style="filter: drop-shadow(0px 0px 3px black);width: 40px;position: absolute;z-index: 2;height: 40px;bottom: -17px;left:20px;" src="./assets/images/classes/{{perso.classe}}.png"/>
               <img draggable="false" style="height:90px;border: 3px ridge #222;width:66px;" src="{{perso.img1}}" (mouseover)="focus=perso" class="clickable" (click)="clickServant(perso)"/>
               <div class="boosted2"  style="pointer-events: none;z-index: 3;">
                 <p [style.display]="focus==perso?'unset':'none'">{{perso.level}}★</p>
@@ -468,6 +471,7 @@
           </div>
         </div>
         <div class="boosted1 left clickable" style="margin-top: 9px;left:9px;position:absolute;" (click)="clickServant(perso5)">
+          <img style="filter: drop-shadow(0px 0px 3px black);width: 80px;position: absolute;z-index: 2;height: 80px;bottom: -45px;right: -35px;" src="./assets/images/classes/{{perso5.classe}}.png"/>
           <img draggable="false" style="border: 5px ridge #222;height:478px;" src="{{perso5.img1}}"/>
           <div>
             <p>{{perso5.level}}★</p>
@@ -475,6 +479,7 @@
           </div>
         </div>
         <div class="boosted1 right clickable" style="margin-top: 9px;position: absolute;left: 1043px"  (click)="enhance=false;clickServant(perso4)">
+          <img style="filter: drop-shadow(0px 0px 3px black);width: 80px;position: absolute;z-index: 2;height: 80px;bottom: -45px;left: -35px;" src="./assets/images/classes/{{perso4.classe}}.png"/>
           <img draggable="false" style="border: 5px ridge #222;height: 478px;" src="{{perso4.img1}}"/>
           <div>
             <p>{{perso4.level}}★</p>

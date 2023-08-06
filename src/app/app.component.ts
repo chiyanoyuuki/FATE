@@ -99,6 +99,10 @@ import {
 
 export class AppComponent implements OnInit
 {
+  public berserkerpassivechance1 = 75;
+  public berserkerpassivechance2 = 25;
+  public shielderpassivechance = 25;
+
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
   public static cropstate: string = '0';
@@ -2211,6 +2215,7 @@ export class AppComponent implements OnInit
   {
     let persoatq:any;
     let persocible:any;
+    let teamcible:any;
     let i:any;
     let cible:any;
 
@@ -2231,6 +2236,7 @@ export class AppComponent implements OnInit
       cible = this.team2.indexOf(left2[i2]);
       persoatq = this.team1[i];
       persocible = this.team2[cible];
+      teamcible = this.team2;
     }
     else
     {
@@ -2238,6 +2244,7 @@ export class AppComponent implements OnInit
       i = this.team2.indexOf(left2[i2]);
       persoatq = this.team2[i];
       persocible = this.team1[cible];
+      teamcible = this.team1;
     }
 
     let fail = false;
@@ -2246,8 +2253,7 @@ export class AppComponent implements OnInit
     if(rdm>20)
     {
       cible = this.getSmartCible(persoatq);
-      if(this.teamattaque==0)persocible = this.team2[cible];
-      else persocible = this.team1[cible];
+      persocible = teamcible[cible];
     }
     else
     {
@@ -2259,6 +2265,89 @@ export class AppComponent implements OnInit
     
     clearInterval(this.attaqueInterval);
     this.timerAttaque = 0;
+    this.updateStates();
+
+    let passiveBerserker: any = [];
+    let passiveShielder: any = this.passiveShielder();
+    let persoshield: any;
+    let persosCleave: any = [];
+
+    if(passiveShielder!=-1)
+    {
+      persoshield = persocible;
+      persocible.atqanim = "Shielder";
+      persocible.atqanimdecal = 0;
+      persoshield.animation="Shield";
+      persoshield.slash="1";
+      cible = passiveShielder;
+      persocible=teamcible[cible];
+      this.setAnimX2(cible,200,"dashavant",false);
+    }
+    else if(persoatq.classe=="Berserker")
+    {
+      passiveBerserker = this.passiveBerserker(cible);
+      passiveBerserker.forEach((p:any)=>persosCleave.push(teamcible[p]));
+      persosCleave.forEach((p:any)=>
+      {
+        p.atqanim=persoatq.classe;
+        p.atqanimdecal = 0;
+      });
+    }
+
+    persocible.atqanim = persoatq.classe;
+    persocible.atqanimdecal = 0;
+    if(persoatq.classe=="Lancer"||persoatq.classe=="Archer")persocible.atqanimdecal = 150;
+    if(persoatq.classe=="Assassin")persocible.atqanimdecal = 50;
+    
+    this.setAnimX(i,200,"dashavant");
+    this.attaqueInterval = setInterval(() => {
+      if(this.timerAttaque==700)
+      {
+        if(fail){persoatq.fail=true;}
+        let dmg = this.damage(i,cible,false);
+        let dmgcleave: any = [];
+        passiveBerserker.forEach((p:any)=>dmgcleave.push(this.damage(i,p,true)));
+        this.setAnimX(i,300,"coup");
+        if(passiveShielder==-1)
+        {
+          this.setAnimX2(cible,-100,"takedamage",dmg);
+          for(let i=0;i<passiveBerserker.length;i++){this.setAnimX2(passiveBerserker[i],-100,"takedamage",dmgcleave[i]);}
+        }
+        else 
+        {
+          persoshield.animation="idle";
+          persoshield.slash="0";
+          this.setAnimX2(cible,-100,"takedamage",dmg);
+        }
+      }
+      if(this.timerAttaque==900)
+      {
+        for(let i=0;i<passiveBerserker.length;i++)
+        {
+          if(persosCleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],0,"idle",false);
+          else this.setAnimX2(passiveBerserker[i],0,"death",false);
+        }
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
+        else this.setAnimX2(cible,0,"death",false);
+        this.setAnimX(i,200,"dashavant");
+      }
+      if(this.timerAttaque==1300)
+      {
+        persoatq.fail=false;
+        this.setAnimX(i,0,"idle");
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash",false);
+        for(let i=0;i<passiveBerserker.length;i++)
+        {
+          if(persosCleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],0,"endSlash",false);
+        }
+        clearInterval(this.attaqueInterval);
+      }
+      this.timerAttaque+=100;
+    },100);
+  }
+
+  updateStates()
+  {
     this.team1.forEach((tmp:any)=>{
       if(tmp.pdv>0)
       {
@@ -2277,59 +2366,51 @@ export class AppComponent implements OnInit
       tmp.timer+=2000;
       if(tmp.timer>6000)this.dmgs.splice(this.dmgs.indexOf(tmp),1);
     });
+  }
 
-    let passiveShielder: any = this.passiveShielder();
-    let persoshield: any;
+  passiveBerserker(place:any)
+  {
+    let focus = this.team1;
+    if(this.teamattaque==0)focus = this.team2;
+    let tmpfocus = [];
 
-    if(passiveShielder!=-1)
+    if(place==0)tmpfocus.push(focus[1]);
+    else if(place==1)
     {
-      persoshield = persocible;
-      persocible.atqanim = "Shielder";
-      persocible.atqanimdecal = 0;
-      persoshield.animation="Shield";
-      persoshield.slash="1";
-      cible = passiveShielder;
-      if(this.teamattaque==0)persocible=this.team2[cible];
-      else persocible=this.team1[cible];
-      this.setAnimX2(cible,200,"dashavant",false);
+      tmpfocus.push(focus[0]);
+      tmpfocus.push(focus[2]);
     }
+    else if(place==2)
+    {
+      tmpfocus.push(focus[1]);
+      tmpfocus.push(focus[3]);
+    }
+    else tmpfocus.push(focus[2]);
 
-    persocible.atqanim = persoatq.classe;
-    persocible.atqanimdecal = 0;
-    if(persoatq.classe=="Lancer"||persoatq.classe=="Archer")persocible.atqanimdecal = 150;
-    if(persoatq.classe=="Assassin")persocible.atqanimdecal = 50;
-    
-    this.setAnimX(i,200,"dashavant");
-    this.attaqueInterval = setInterval(() => {
-      if(this.timerAttaque==700)
+    tmpfocus = tmpfocus.filter((t:any)=>t.pdv>0);
+
+    if(tmpfocus.length>0)
+    {
+      if(tmpfocus.length==2)
       {
-        if(fail)persoatq.fail=true;
-        let tmp = this.damage(i,cible);
-        this.setAnimX(i,300,"coup");
-        if(passiveShielder==-1)this.setAnimX2(cible,-100,"takedamage",tmp);
-        else 
+        let rdm = Math.round(Math.random()*99);
+        if(rdm>this.berserkerpassivechance2)
         {
-          persoshield.animation="idle";
-          persoshield.slash="0";
-          this.setAnimX2(cible,-100,"takedamage",tmp);
+          tmpfocus = tmpfocus.splice(Math.round(Math.random()),1);
         }
       }
-      if(this.timerAttaque==900)
+      
+      let rdm = Math.round(Math.random()*99);
+      if(rdm>this.berserkerpassivechance1)
       {
-        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
-        else this.setAnimX2(cible,0,"death",false);
-        this.setAnimX(i,200,"dashavant");
-        
+        if(tmpfocus.length==1)tmpfocus=[];
+        else tmpfocus = tmpfocus.splice(Math.round(Math.random()),1);
       }
-      if(this.timerAttaque==1300)
-      {
-        persoatq.fail=false;
-        this.setAnimX(i,0,"idle");
-        if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash",false);
-        clearInterval(this.attaqueInterval);
-      }
-      this.timerAttaque+=100;
-    },100);
+    }
+    let indices:any = [];
+    if(this.teamattaque==0)tmpfocus.forEach((t:any)=>indices.push(this.team2.indexOf(t)));
+    else tmpfocus.forEach((t:any)=>indices.push(this.team1.indexOf(t)));
+    return indices;
   }
 
   getSmartCible(persoatq:any)
@@ -2452,7 +2533,7 @@ export class AppComponent implements OnInit
         {
           let rdm = Math.round(Math.random()*99);
           rdm=2;//test
-          if(rdm<20)ind = i;
+          if(rdm<this.shielderpassivechance)ind = i;
         }
       }
     }
@@ -2465,7 +2546,7 @@ export class AppComponent implements OnInit
         {
           let rdm = Math.round(Math.random()*99);
           rdm=2;//test
-          if(rdm<20)ind = i;
+          if(rdm<this.shielderpassivechance)ind = i;
         }
       }
     }
@@ -2505,7 +2586,7 @@ export class AppComponent implements OnInit
     return retour;
   }
 
-  damage(atq:any,cible:any)
+  damage(atq:any,cible:any,cibleBerserk:any)
   {
     let persoatq;
     let persocible;
@@ -2599,6 +2680,7 @@ export class AppComponent implements OnInit
       else mult = 1;
     }
     dmg = Math.round(dmg*mult);
+    if(cibleBerserk) dmg = Math.round(dmg*0.75);
     let cc = false;
     let ec = false;
 
