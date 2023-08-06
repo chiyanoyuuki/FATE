@@ -158,7 +158,7 @@
       <p class="nbServ">{{getData().length}}</p>
       <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 43%;position: relative;width:200px;"/>
       <button style="position: absolute;left: 65%;top: -10px;width: 200px;" (click)="getUserData(false);getTitles();getLevels()">Refresh</button>
-      <div class="options" *ngIf="!this.selectServant">
+      <div class="options">
         <p [class.red]="includesFilter('Alter Ego')" (click)="filter('Alter Ego')">Alter Ego</p>
         <p [class.red]="includesFilter('Archer')" (click)="filter('Archer')">Archer</p>
         <p [class.red]="includesFilter('Assassin')" (click)="filter('Assassin')">Assassin</p>
@@ -178,6 +178,7 @@
         <p [class.red]="filterSpec!='Servants 4*'"  (click)="filterSpec=='Servants 4*'?filterSpec='':filterSpec='Servants 4*'">Servants 4*</p>
         <p [class.red]="filterSpec!='Titles'"       (click)="filterSpec=='Titles'?filterSpec='':filterSpec='Titles'">Titles</p>
         <p [class.red]="filterSpec!='Doublons'"     (click)="filterSpec=='Doublons'?filterSpec='':filterSpec='Doublons'">Doublons</p>
+        <p [class.red]="filterSpec!='Originaux'"    (click)="filterSpec=='Originaux'?filterSpec='':filterSpec='Originaux'">Originaux</p>
         <p [class.red]="!showEssences" (click)="showEssences=!showEssences"  style="margin-top:30px">Craft Essence</p>
         <p [class.red]="!notPulled" (click)="notPulled=!notPulled">Not Pulled</p>
       </div>
@@ -187,6 +188,7 @@
           <div *ngFor="let perso of getData();let i=index" style="position:relative;margin-right:10px;" class="clickable" (click)="selectServant?changeProfile(perso.id):clickServant(perso)">
             <img [class.golden]="golden(perso.id)" draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{getImg(id,perso)}}" />
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px" src="./assets/images/borders/{{perso.level}}.png"/>
+            <img style="filter: drop-shadow(0px 0px 3px black);width: 40px;position: absolute;z-index: 2;height: 40px;bottom: 55px;right: -20px;" src="./assets/images/classes/{{perso.classe}}.png"/>
             <p *ngIf="getServLevel2(perso)>0" style="bottom: 30px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
               background-color: green;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{getServLevel2(perso)}}</p>
             <p style="bottom: 0px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
@@ -196,7 +198,7 @@
           </div>
         </div>
         
-        <div class="tab">
+        <div class="tab" *ngIf="!selectServant">
           <div *ngFor="let perso of getNoData();let i=index" style="height:fit-content;position:relative;margin-right:10px;filter: grayscale(200%);opacity: 0.6;" class="clickable2" (click)="clickServant(perso)">
             <img draggable="false" style="width:130px;border:3px ridge #202020;box-shadow: black -9px 8px 15px;" src="{{perso.img1}}"/>
             <img draggable="false" style="width:130px;position:absolute;top:3px;left:3px;" src="./assets/images/borders/{{perso.level}}.png"/>

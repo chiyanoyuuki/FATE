@@ -2233,6 +2233,8 @@ export class AppComponent implements OnInit
     }
     this.attaquant1 = i;
     this.place = cible;
+
+
     
     clearInterval(this.attaqueInterval);
     this.timerAttaque = 0;
@@ -2847,14 +2849,18 @@ export class AppComponent implements OnInit
     if(this.filterSpec=="Servants 4*")
     {
       data = data.filter((d:any)=>d.level==4);
+    }  
+    if(this.filterSpec=="Originaux")
+    {
+      data = data.filter((d:any)=>d.special);
     }
     if(this.selectServant&&this.ind!=-1&&!this.compo)
     {
-      data = this.userData.filter((d:any)=>!this.myprofile.servants.includes(d.id));
+      data = data.filter((d:any)=>!this.myprofile.servants.includes(d.id));
     }
     if(this.selectServant&&this.ind!=-1&&this.compo)
     {
-      data = this.userData.filter((d:any)=>!this.myprofile.compo.includes(d.id));
+      data = data.filter((d:any)=>!this.myprofile.compo.includes(d.id));
     }
     if(this.recherche!="")
     {
@@ -3037,6 +3043,10 @@ export class AppComponent implements OnInit
     if(this.filterSpec=="Servants 4*")
     {
       data = data.filter((d:any)=>d.level==4);
+    }
+    if(this.filterSpec=="Originaux")
+    {
+      data = data.filter((d:any)=>d.special);
     }
 
     if(this.recherche!="")

@@ -4954,6 +4954,7 @@
 	"img2":"./assets/images/servants/rin/1.jpg",
 	"img3":"./assets/images/servants/rin/2.jpg",
 	"img4":"./assets/images/servants/rin/3.jpg",
+	"sprite1":"./assets/images/servants/rin/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -4965,6 +4966,7 @@
 	"img2":"./assets/images/servants/noah/1.jpg",
 	"img3":"./assets/images/servants/noah/2.jpg",
 	"img4":"./assets/images/servants/noah/3.jpg",
+	"sprite1":"./assets/images/servants/noah/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -4995,6 +4997,7 @@
 	"img2":"./assets/images/servants/kirschtaria/1.jpg",
 	"img3":"./assets/images/servants/kirschtaria/2.jpg",
 	"img4":"./assets/images/servants/kirschtaria/3.jpg",
+	"sprite1":"./assets/images/servants/kirschtaria/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5006,6 +5009,8 @@
 	"img2":"./assets/images/servants/sakura/1.jpg",
 	"img3":"./assets/images/servants/sakura/2.jpg",
 	"img4":"./assets/images/servants/sakura/3.jpg",
+	"sprite1":"./assets/images/servants/sakura/sprite.png",
+	"sprite4":"./assets/images/servants/sakura/sprite2.png",
 	"special":true
     },
     {"scale":1,
@@ -5017,6 +5022,7 @@
 	"img2":"./assets/images/servants/blackirisviel/1.jpg",
 	"img3":"./assets/images/servants/blackirisviel/2.jpg",
 	"img4":"./assets/images/servants/blackirisviel/3.jpg",
+	"sprite1":"./assets/images/servants/blackirisviel/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5028,6 +5034,7 @@
 	"img2":"./assets/images/servants/galahad/1.jpg",
 	"img3":"./assets/images/servants/galahad/2.jpg",
 	"img4":"./assets/images/servants/galahad/3.jpg",
+	"sprite1":"./assets/images/servants/galahad/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5083,6 +5090,7 @@
 	"img2":"./assets/images/servants/mordredtrifas/1.jpg",
 	"img3":"./assets/images/servants/mordredtrifas/2.jpg",
 	"img4":"./assets/images/servants/mordredtrifas/3.jpg",
+	"sprite1":"./assets/images/servants/mordredtrifas/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5094,7 +5102,9 @@
 	"img2":"./assets/images/servants/shirou/1.jpg",
 	"img3":"./assets/images/servants/shirou/2.jpg",
 	"img4":"./assets/images/servants/shirou/3.jpg",
-	"special":true
+	"sprite1":"./assets/images/servants/shirou/sprite.png",
+	"special":true,
+	"turn":true
     },
     {"scale":1,
 	"id":404,
@@ -5149,6 +5159,7 @@
 	"img2":"./assets/images/servants/olgamarie/0.jpg",
 	"img3":"./assets/images/servants/olgamarie/0.jpg",
 	"img4":"./assets/images/servants/olgamarie/1.jpg",
+	"sprite1":"./assets/images/servants/olgamarie/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5182,6 +5193,7 @@
 	"img2":"./assets/images/servants/manaka/1.png",
 	"img3":"./assets/images/servants/manaka/2.png",
 	"img4":"./assets/images/servants/manaka/3.png",
+	"sprite1":"./assets/images/servants/manaka/sprite.png",
 	"special":true
     },
     {"scale":1,
