@@ -2194,12 +2194,26 @@ export class AppComponent implements OnInit
     return (min/max)*100;
   }
 
+  endFight(t1:any,t2:any)
+  {
+    if(t2==0)this.spendQuartz(-3);
+      else if(t1==0)this.spendQuartz2(-3);
+      clearInterval(this.idleInterval);
+      clearInterval(this.combatInterval);
+      this.team1 = [];
+      this.team2 = [];
+      this.profile=this.adversaire;
+      this.state="banner";
+      return;
+  }
+
   startDash()
   {
     let persoatq:any;
     let persocible:any;
     let i:any;
     let cible:any;
+
     let left1 = this.team1.filter((t:any)=>t.pdv>0);
     let left2 = this.team2.filter((t:any)=>t.pdv>0);
     let i1 = Math.round(Math.random()*(left1.length-1));
@@ -2207,14 +2221,7 @@ export class AppComponent implements OnInit
 
     if(left1.length==0||left2.length==0)
     {
-      if(left2.length==0)this.spendQuartz(-3);
-      else if(left1.length==0)this.spendQuartz2(-3);
-      clearInterval(this.idleInterval);
-      clearInterval(this.combatInterval);
-      this.team1 = [];
-      this.team2 = [];
-      this.profile=this.adversaire;
-      this.state="banner";
+      this.endFight(left1.length,left2.length);
       return;
     }
 
@@ -2232,10 +2239,22 @@ export class AppComponent implements OnInit
       persoatq = this.team2[i];
       persocible = this.team1[cible];
     }
+
+    //Intelligence du coup
+    let rdm = Math.round(Math.random()*99);
+    if(rdm>20)
+    {
+      cible = this.getSmartCible(persoatq);
+      console.log(persoatq.classe);
+      console.log(persocible.classe,persocible.pdv);
+      if(this.teamattaque==0)persocible = this.team2[cible];
+      else persocible = this.team1[cible];
+      console.log(persocible.classe,persocible.pdv);
+      console.log("===========");
+    }
+
     this.attaquant1 = i;
     this.place = cible;
-
-
     
     clearInterval(this.attaqueInterval);
     this.timerAttaque = 0;
@@ -2308,6 +2327,116 @@ export class AppComponent implements OnInit
       }
       this.timerAttaque+=100;
     },100);
+  }
+
+  getSmartCible(persoatq:any)
+  {
+    let classeatq = persoatq.classe;
+    let focus = this.team1.filter((t:any)=>t.pdv>0);
+    if(this.teamattaque==0)focus = this.team2.filter((t:any)=>t.pdv>0);
+
+    if(focus.length==1)
+    {
+      if(this.teamattaque==0)return this.team2.indexOf(focus[0]);
+      else return this.team1.indexOf(focus[0]);
+    }
+
+    focus.sort((a: any,b: any) => {return a.pdv - b.pdv});
+    if(focus[1].pdv-focus[0].pdv>15000)
+    {
+      if(this.teamattaque==0)return this.team2.indexOf(focus[0]);
+      else return this.team1.indexOf(focus[0]);
+    }
+
+    let tmpfocus:any = [];
+    let boost: any = [];
+    let malus: any = [];
+
+    if(classeatq=="Alter Ego")
+    {
+      boost = ["Berserker","Assassin","Rider","Caster","Foreigner","Beast"];
+      malus = ["Archer","Saber","Lancer","Pretender"];
+    }
+    else if(classeatq=="Pretender")
+    {
+      boost = ["Berserker","Saber","Archer","Lancer","Alter Ego","Beast"];
+      malus = ["Rider","Caster","Assassin","Foreigner"];
+    }
+    else if(classeatq=="Foreigner")
+    {
+      boost = ["Berserker","Pretender","Beast"];
+      malus = ["Alter Ego"];
+    }
+    else if(classeatq=="Archer")
+    {
+      boost = ["Berserker","Saber"];
+      malus = ["Lancer","Beast","Ruler"];
+    }
+    else if(classeatq=="Saber")
+    {
+      boost = ["Berserker","Lancer"];
+      malus = ["Archer","Beast","Ruler"];
+    }
+    else if(classeatq=="Lancer")
+    {
+      boost = ["Berserker","Archer"];
+      malus = ["Saber","Beast","Ruler"];
+    }
+    else if(classeatq=="Assassin")
+    {
+      boost = ["Berserker","Rider"];
+      malus = ["Caster","Beast","Ruler"];
+    }
+    else if(classeatq=="Rider")
+    {
+      boost = ["Berserker","Caster"];
+      malus = ["Assassin","Beast","Ruler"];
+    }
+    else if(classeatq=="Caster")
+    {
+      boost = ["Berserker","Assassin"];
+      malus = ["Rider","Beast","Ruler"];
+    }
+    else if(classeatq=="Ruler")
+    {
+      boost = ["Berserker","Moon Cancer","Beast"];
+      malus = ["Avenger"];
+    }
+    else if(classeatq=="Moon Cancer")
+    {
+      boost = ["Berserker","Avenger","Beast"];
+      malus = ["Ruler"];
+    }
+    else if(classeatq=="Avenger")
+    {
+      boost = ["Berserker","Ruler","Beast"];
+      malus = ["Moon Cancer"];
+    }
+    else if(classeatq=="Berserker")
+    {
+      boost = ["Berserker","Archer","Saber","Lancer","Rider","Assassin","Caster","Ruler","Moon Cancer","Avenger","Pretender","Alter Ego","Beast"];
+      malus = ["Foreigner"];
+    }
+    else if(classeatq=="Shielder")
+    {
+      boost = [];
+      malus = [];
+    }
+    else if(classeatq=="Beast")
+    {
+      boost = ["Saber","Archer","Lancer","Rider","Assassin","Caster","Berserker"];
+      malus = ["Moon Cancer","Ruler","Avenger","Alter Ego","Pretender","Foreigner"];
+    }
+    tmpfocus = focus.filter((f:any)=>boost.includes(f.classe));
+    if(tmpfocus.length==0) tmpfocus = focus.filter((f:any)=>!malus.includes(f.classe));
+    if(tmpfocus.length==0) tmpfocus = focus.filter((f:any)=>malus.includes(f.classe));
+  
+    tmpfocus.sort((a: any,b: any) => {return a.pdv - b.pdv});
+
+    tmpfocus.forEach((t:any)=>console.log(t.classe,t.pdv));
+    
+    if(this.teamattaque==0)return this.team2.indexOf(tmpfocus[0]);
+    else return this.team1.indexOf(tmpfocus[0]);
   }
 
   passiveShielder()
@@ -2407,13 +2536,17 @@ export class AppComponent implements OnInit
     let g4 = ["Ruler","Avenger","Moon Cancer"];
 
     if(classeatq=="Shielder"||classecible=="Shielder"){mult = 1;}
-    if(classecible=="Berserker"||(classeatq=="Berserker"&&classecible!="Foreigner")){mult = 1.5;}
-
-    if(classecible=="Beast"&&(g1.includes(classeatq)||g2.includes(classeatq))){mult = malus;}
-    else if(classecible=="Beast"&&(g3.includes(classeatq)||g4.includes(classeatq))){mult = boost;}
-
-    else if(classeatq=="Beast"&&(g1.includes(classecible)||g2.includes(classecible))){mult = boost;}
-    else if(classeatq=="Beast"&&(g3.includes(classecible)||g4.includes(classecible))){mult = malus;}
+    else
+    {
+      if(classecible=="Berserker"||(classeatq=="Berserker"&&classecible!="Foreigner")){mult = 1.5;}
+      if(classecible=="Foreigner"&&classeatq=="Berserker"){mult = 0.75;}
+  
+      if(classecible=="Beast"&&(g1.includes(classeatq)||g2.includes(classeatq))){mult = malus;}
+      else if(classecible=="Beast"&&(g3.includes(classeatq)||g4.includes(classeatq))){mult = boost;}
+  
+      else if(classeatq=="Beast"&&(g1.includes(classecible)||g2.includes(classecible))){mult = boost;}
+      else if(classeatq=="Beast"&&(g3.includes(classecible)||g4.includes(classecible))){mult = malus;}
+    }
 
     if(mult==-1)
     {
@@ -2468,16 +2601,16 @@ export class AppComponent implements OnInit
     let cc = false;
     let ec = false;
 
-    let rdm = Math.round(Math.random()*9);
-    if(rdm==3)
+    let rdm = Math.round(Math.random()*99);
+    if(rdm<10)
     {
       cc = true;
       dmg = Math.round(dmg * 1.5);
     }
     else
     {
-      rdm = Math.round(Math.random()*9);
-      if(rdm==3)
+      rdm = Math.round(Math.random()*99);
+      if(rdm<5)
       {
         ec = true;
         dmg = 0;
@@ -2493,8 +2626,8 @@ export class AppComponent implements OnInit
     else
     {
       tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
-      if(mult==boost||mult==1.5){tmp.color='#f1da00';tmp.size='50px'}
-      else if(mult==malus){tmp.color='#4738ff';tmp.size='30px'}
+      if(mult>1){tmp.color='#f1da00';tmp.size='50px'}
+      else if(mult<1){tmp.color='#4738ff';tmp.size='30px'}
     }
 
     if(this.teamattaque==1)
@@ -2601,9 +2734,9 @@ export class AppComponent implements OnInit
       else
         diff=t2-t1;
 
-      let rdm = Math.round(Math.random()*(9-diff));
+      let rdm = Math.round(Math.random()*(99-(diff*10)));
 
-      if(rdm!=3)
+      if(rdm>10)
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
       }
@@ -2659,7 +2792,7 @@ export class AppComponent implements OnInit
         let cpt=0;
         this.team1 = team1.team.map((x:any)=>
         {
-          let tmp = data.find((d:any)=>d.id==x);
+          let tmp = JSON.parse(JSON.stringify(data.find((d:any)=>d.id==x)));
           let tmplevel = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==tmp.id);
           if(tmplevel)
           {
@@ -2681,7 +2814,7 @@ export class AppComponent implements OnInit
 
         this.team2 = team2.team.map((x:any)=>
         {
-          let tmp = data.find((d:any)=>d.id==x);
+          let tmp = JSON.parse(JSON.stringify(data.find((d:any)=>d.id==x)));
           let tmplevel = this.levels.find((l:any)=>l.user_id==this.adversaire&&l.servant_id==tmp.id);
           if(tmplevel)
           {
