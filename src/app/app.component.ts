@@ -90,8 +90,8 @@ import {
     trigger('slashOpacity', [
       state('0', style({ opacity: "0" })),
       state('1', style({ opacity: "1" })),
-      transition('0 => 1', animate('300ms ease-in')),
-      transition('1 => 0', animate('1000ms ease-out'))
+      transition('0 => 1', animate('50ms ease-in')),
+      transition('1 => 0', animate('800ms ease-out'))
     ]),
   ]
 })
@@ -713,8 +713,8 @@ export class AppComponent implements OnInit
         let pvp = this.pvps.find((p:any)=>p.user_id==pro.user_id);
         if(pvp)
         {
-          pro.compo = this.pvp.team;
-          pro.titlescompo = this.pvp.titles;
+          pro.compo = pvp.team;
+          pro.titlescompo = pvp.titles;
           pro.comp = [];
           pro.compo.forEach((c:any)=>pro.comp.push(this.data.find((d:any)=>d.id==c)));
         }
@@ -725,7 +725,7 @@ export class AppComponent implements OnInit
           pro.titlescompo = [];
         }
       });
-      this.myprofile = this.profiles.find((p:any)=>p.user_id==this.id)
+      //this.myprofile = this.profiles.find((p:any)=>p.user_id==this.id)
     });
   }
 
@@ -1828,7 +1828,6 @@ export class AppComponent implements OnInit
 
   clickServantProfileCompo(i:any)
   {
-    console.log(this.myprofile);
     this.compo = true;
     this.selectServant=true;
     this.state='formation';
@@ -2255,6 +2254,10 @@ export class AppComponent implements OnInit
       tmp.timer+=2000;
       if(tmp.timer>6000)this.dmgs.splice(this.dmgs.indexOf(tmp),1);
     });
+    persocible.atqanim = persoatq.classe;
+    persocible.atqanimdecal = 0;
+    if(persoatq.classe=="Lancer"||persoatq.classe=="Archer")persocible.atqanimdecal = 150;
+    if(persoatq.classe=="Assassin")persocible.atqanimdecal = 50;
 
     this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
@@ -2279,6 +2282,40 @@ export class AppComponent implements OnInit
       }
       this.timerAttaque+=100;
     },100);
+  }
+
+  getAtqAnim()
+  {
+    let retour = "Saber";
+    if(this.teamattaque==0)
+    {
+      if(this.team1[this.attaquant1])
+        retour = this.team1[this.attaquant1].classe;
+    }
+    else
+    {
+      if(this.team2[this.attaquant1])
+        retour = this.team2[this.attaquant1].classe;
+    }
+    console.log(retour);
+    return retour;
+  }
+  getAtqAnimDecal()
+  {
+    let retour = 20;
+    if(this.teamattaque==0)
+    {
+      if(this.team1[this.attaquant1])
+        if(this.team1[this.attaquant1].classe=="Lancer"||this.team1[this.attaquant1].classe=="Archer")
+          retour = 120;
+    }
+    else
+    {
+      if(this.team2[this.attaquant1])
+        if(this.team2[this.attaquant1].classe=="Lancer"||this.team2[this.attaquant1].classe=="Archer")
+          retour = 120;
+    }
+    return retour;
   }
 
   damage(atq:any,cible:any)
@@ -2470,12 +2507,16 @@ export class AppComponent implements OnInit
     this.combatInterval = setInterval(() => {
       let diff = 0;
 
+      let t1 = this.team1.filter((t:any)=>t.pdv>0).length;
+      let t2 = this.team2.filter((t:any)=>t.pdv>0).length;
+
       if(this.teamattaque==0)
-        diff=this.team1.length-this.team2.length;
+        diff=t1-t2;
       else
-        diff=this.team2.length-this.team1.length;
+        diff=t2-t1;
 
       let rdm = Math.round(Math.random()*(9-diff));
+
       if(rdm!=0)
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
@@ -2664,6 +2705,7 @@ export class AppComponent implements OnInit
   getSprite(perso:any)
   {
     let img = perso.sprite1;
+    if(!perso.sprite1) return "./assets/images/nosprite.png";
     if(perso.ascension==1&&perso.sprite2)img = perso.sprite2;
     else if(perso.ascension==2&&perso.sprite3)img = perso.sprite3;
     else if(perso.ascension==3&&perso.sprite3)img = perso.sprite3;
