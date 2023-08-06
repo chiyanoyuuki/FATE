@@ -627,3 +627,21 @@ height: 100%;
     box-shadow: black -9px 8px 15px;
     width:155px;
 }
+.containerbar .tothp{
+    position: absolute;
+left: -80px;
+color: green!important;
+-webkit-text-stroke: 1px;
+  -webkit-text-stroke-color: currentcolor;
+-webkit-text-stroke-color: black;
+font-size: 35px;
+}
+.containerbar .tothp2{
+    position: absolute;
+right: -80px;
+color: darkred!important;
+-webkit-text-stroke: 1px;
+  -webkit-text-stroke-color: currentcolor;
+-webkit-text-stroke-color: black;
+font-size: 35px;
+}

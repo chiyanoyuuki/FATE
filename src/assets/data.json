@@ -1945,6 +1945,7 @@
 	"nom":"Goetia",
 	"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2d/King_of_Demon_Gods_-_Goetia_Sprite.png/revision/latest/scale-to-width-down/350?cb=20190303084116",
 	"level":5,
+	"turn":true,
 	"classe":"Beast",
 	"img1":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-12/151_Goetia_2.png",
 	"img2":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-12/151_Goetia_4.png",

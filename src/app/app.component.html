@@ -9,14 +9,15 @@
 
       <div class="duelstats">
 
-        <p class="damage" *ngFor="let dmg of dmgs" [@dmgAnimation]="{value:dmg.anim, params:{pos:dmg.pos}}" [style.left]="dmg.left+'px'">-{{dmg.dmg}}</p>
+        <p [style.color]="dmg.color+'!important'" [style.font-size]="dmg.size+'!important'" class="damage" *ngFor="let dmg of dmgs" [@dmgAnimation]="{value:dmg.anim, params:{pos:dmg.pos}}" [style.left]="dmg.left+'px'">-{{dmg.dmg}}</p>
 
         <div>
+          <p class="containerStatsDuel" style="padding:0px">{{getFightName(id)}}</p>
           <div *ngFor="let perso of team1;let i=index" class="containerStatsDuel" [style.opacity]="perso.pdv>0?1:0.7">
             <p style="text-align: center;">{{perso.nom}}</p>
             <div style="display:flex;">
-              <p style="bottom: 35px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-              background-color: green;border-radius: 20px;border: 2px ridge #202020;right: -12px;z-index: 2;">{{perso.niveau?perso.niveau:0}}</p>
+              <p style="bottom: 12px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+              background-color: green;border-radius: 20px;border: 2px ridge #202020;left: 80px;z-index: 2;">{{perso.niveau?perso.niveau:0}}</p>
               <div [class.golden]="titlesduel[i]==1" class="profilePicture2" style="margin:0;position: relative;left:0px;border: 4px ridge #404040;">
                 <img draggable="false" class="profilePicture" src="{{getImg(id,perso)}}"/>
               </div>
@@ -34,16 +35,24 @@
                   </div>
                 </div>
               </div>
+              <img style="filter: drop-shadow(2px 0px 4px black);width:55px;position: absolute;bottom:21px;right:-35px" src="./assets/images/classes/{{perso.classe}}.png"/>
             </div>
           </div>
         </div>
 
+        <div class="containerbar" style="width:35%;height:40px;margin-top:20px;display:flex;background:linear-gradient(#202020, #cc5050);">
+          <p class="tothp">{{getTot(0)}}%</p>
+          <div class="hp" [style.width]="getTotalHp()+'%'"></div>
+          <p class="tothp2">{{getTot(1)}}%</p>
+        </div>
+
         <div>
+          <p class="containerStatsDuel2" style="padding:0px">{{getFightName(adversaire)}}</p>
           <div *ngFor="let perso of team2;let i=index" class="containerStatsDuel2" [style.opacity]="perso.pdv>0?1:0.7">
             <p style="text-align: center;">{{perso.nom}}</p>
             <div style="display: flex;">
-              <p style="bottom: 35px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-                background-color: darkred;border-radius: 20px;border: 2px ridge #202020;left: -12px;z-index: 2;">{{perso.niveau?perso.niveau:0}}</p>
+              <p style="bottom: 12px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+                background-color: darkred;border-radius: 20px;border: 2px ridge #202020;right: 80px;z-index: 2;">{{perso.niveau?perso.niveau:0}}</p>
               <div class="containerRightDuel2">
                 <div style="display:flex">
                   <div class="containerbar2" style="background:linear-gradient(#202020, #cc5050);">
@@ -61,6 +70,7 @@
               <div [class.golden]="titlesduel2[i]==1" class="profilePicture2" style="margin:0;position: relative;left:0px;border: 4px ridge #404040;">
                 <img draggable="false" class="profilePicture" src="{{getImg(adversaire,perso)}}"/>
               </div>
+              <img style="filter: drop-shadow(-2px 0px 4px black);width:55px;position: absolute;bottom:21px;left:-35px" src="./assets/images/classes/{{perso.classe}}.png"/>
             </div>
           </div>
         </div>
@@ -87,30 +97,6 @@
         </div>
       </div>
     </div>
-      
-<!--
-      <div style="position: relative;" *ngFor="let perso of team1;let i=index" [@idle]="getIdleState(i)" [@arriveleft]="arriveState[i]<0?'1':'0'">
-        <div  class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs1[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
-          <div [style.filter]="place==i&&attaquestate==1&&teamattaque==1?'invert()':'unset'" [@dashToTeam3]="{value:dashToTeam3[i], params:{arrivex3:arrivexaction3}}" [@dashToTeam2]="{value:dashToTeam[i], params:{arrivex:arrivexaction,arrivex2:arrivexaction2}}" style="position: relative;">
-            <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
-            <img draggable="false" [attr.id]="'perso1-'+i" [class.titleDuel]="titlesduel[i]==1"  src="{{getSprite(perso)}}" [style.transform]="perso.turn?'unset':'scaleX(-1)'"/>
-            <img class="opa0" [@slashOpacity]="slashOpacity[i]" src="./assets/images/slash.png" style="position:absolute;left:20px"/>
-          </div>
-        </div>
-      </div>
-
-      <div style="position: relative;" *ngFor="let perso of team2;let i=index" [@idle]="getIdleState2(i)" [@arriveright]="arriveState2[i]<0?'1':'0'">
-        <div  class="persoduel" [style.scale]="perso.scale+i*0.1" [style.left]="xs2[i]+'px'" [style.top]="ys[i]-(perso.scale>1.8?100:0)+'px'" >
-          <div [style.filter]="place==i&&attaquestate==1&&teamattaque==0?'invert()':''" [@dashToTeam3]="{value:dashToTeam4[i], params:{arrivex3:arrivexaction3}}" [@dashToTeam2]="{value:dashToTeam2[i], params:{arrivex:arrivexaction,arrivex2:arrivexaction2}}" style="position: relative;">
-            <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
-            <img  draggable="false" [attr.id]="'perso2-'+i" [class.titleDuel]="titlesduel2[i]==1" src="{{getSprite(perso)}}"  [style.transform]="!perso.turn?'unset':'scaleX(-1)'"/>
-            <img class="opa0" [@slashOpacity]="slashOpacity2[i]" src="./assets/images/slash.png" style="position:absolute;right:20px;transform: scaleX(-1)"/>
-            <p *ngIf="place==i&&attaquestate==1&&teamattaque==0">{{damage}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
--->
     
     <div *ngIf="state=='connection'">
       <img draggable="false" src="./assets/images/connScreen.png" style="width:100%"/>

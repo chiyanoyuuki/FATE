@@ -1606,6 +1606,29 @@ export class AppComponent implements OnInit
     }
   }
 
+  getTotalHp()
+  {
+    let tot1 = 0;
+    this.team1.forEach((t:any)=>{tot1+=t.pdv})
+    let tot2 = 0;
+    this.team2.forEach((t:any)=>{tot2+=t.pdv})
+
+    return Math.round((tot1/(tot1+tot2))*100);
+  }
+
+  getTot(i:any)
+  {
+    let tot1 = 0;
+    this.team1.forEach((t:any)=>{tot1+=t.pdv})
+    let tot2 = 0;
+    this.team2.forEach((t:any)=>{tot2+=t.pdv})
+
+    if(i==0)
+      return Math.round((tot1/(tot1+tot2))*100);
+    else
+      return Math.round((tot2/(tot1+tot2))*100);
+  }
+
   first(serv:any)
   {
     return this.titles.includes(serv.id) || (serv.level < 4&&serv.nom!="Craft Essence"&&this.userData.find((d:any)=>d.id==serv.id));
@@ -2319,11 +2342,11 @@ export class AppComponent implements OnInit
       else if(classeatq==g2[1]&&classecible==g2[2])mult=boost;
       else if(classeatq==g2[2]&&classecible==g2[1])mult=malus;
       //ALTER EGO
-      else if(g3[0]&&g1.includes(classecible)) mult=malus;
-      else if(g3[0]&&g2.includes(classecible)) mult=boost;
+      else if(classeatq==g3[0]&&g1.includes(classecible)) mult=malus;
+      else if(classeatq==g3[0]&&g2.includes(classecible)) mult=boost;
       //PRETENDER
-      else if(g3[1]&&g1.includes(classecible)) mult=boost;
-      else if(g3[1]&&g2.includes(classecible)) mult=malus;
+      else if(classeatq==g3[1]&&g1.includes(classecible)) mult=boost;
+      else if(classeatq==g3[1]&&g2.includes(classecible)) mult=malus;
       //GROUPE 3
       else if(classeatq==g3[0]&&classecible==g3[1])mult=malus;
       else if(classeatq==g3[1]&&classecible==g3[0])mult=boost;
@@ -2349,7 +2372,9 @@ export class AppComponent implements OnInit
     }
     dmg = Math.round(dmg*mult);
 
-    let tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0};
+    let tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px'};
+    if(mult==boost){tmp.color='#f1da00';tmp.size='50px'}
+    else if(mult==malus){tmp.color='#4738ff';tmp.size='30px'}
     if(this.teamattaque==1)
     {
       tmp.left=this.xs1[cible]+20;
@@ -2429,6 +2454,11 @@ export class AppComponent implements OnInit
       val=val*-1;
     }
     return val;
+  }
+
+  getFightName(i:any)
+  {
+    return this.users.find((u:any)=>u.id==i).nom;
   }
 
   startCombat()
