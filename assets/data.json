@@ -5057,6 +5057,7 @@
 	"img2":"./assets/images/servants/kirei/1.jpg",
 	"img3":"./assets/images/servants/kirei/2.jpg",
 	"img4":"./assets/images/servants/kirei/3.jpg",
+	"sprite1":"./assets/images/servants/kirei/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5171,6 +5172,7 @@
 	"img2":"./assets/images/servants/lilymorgan/1.png",
 	"img3":"./assets/images/servants/lilymorgan/2.png",
 	"img4":"./assets/images/servants/lilymorgan/3.png",
+	"sprite1":"./assets/images/servants/lilymorgan/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5182,6 +5184,7 @@
 	"img2":"./assets/images/servants/arjunasaber/1.png",
 	"img3":"./assets/images/servants/arjunasaber/2.png",
 	"img4":"./assets/images/servants/arjunasaber/3.png",
+	"sprite1":"./assets/images/servants/arjunasaber/sprite.png",
 	"special":true
     },
     {"scale":1,
@@ -5205,6 +5208,19 @@
 	"img2":"./assets/images/servants/marie/0.png",
 	"img3":"./assets/images/servants/marie/0.png",
 	"img4":"./assets/images/servants/marie/3.png",
+	"sprite1":"./assets/images/servants/marie/sprite.png",
+	"special":true
+    },
+    {"scale":1,
+	"id":413,
+	"nom":"Kiritsugu",
+	"level":4,
+	"classe":"Assassin",
+	"img1":"./assets/images/servants/kiritsugu/0.png",
+	"img2":"./assets/images/servants/kiritsugu/1.png",
+	"img3":"./assets/images/servants/kiritsugu/2.png",
+	"img4":"./assets/images/servants/kiritsugu/3.png",
+	"sprite1":"./assets/images/servants/kiritsugu/sprite.png",
 	"special":true
     }
 ]
