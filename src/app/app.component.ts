@@ -2412,7 +2412,7 @@ export class AppComponent implements OnInit
     let ec = false;
 
     let rdm = Math.round(Math.random()*9);
-    if(rdm==0)
+    if(rdm==3)
     {
       cc = true;
       dmg = Math.round(dmg * 1.5);
@@ -2420,7 +2420,7 @@ export class AppComponent implements OnInit
     else
     {
       rdm = Math.round(Math.random()*9);
-      if(rdm==0)
+      if(rdm==3)
       {
         ec = true;
         dmg = 0;
@@ -2546,7 +2546,7 @@ export class AppComponent implements OnInit
 
       let rdm = Math.round(Math.random()*(9-diff));
 
-      if(rdm!=0)
+      if(rdm!=3)
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
       }
