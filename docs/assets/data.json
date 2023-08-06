@@ -5222,5 +5222,15 @@
 	"img4":"./assets/images/servants/kiritsugu/3.png",
 	"sprite1":"./assets/images/servants/kiritsugu/sprite.png",
 	"special":true
+    },
+    {"scale":1,
+	"id":414,
+	"nom":"Cu Chulainn Summer",
+	"level":5,
+	"classe":"Rider",
+	"img1":"./assets/images/servants/cuchu/0.png",
+	"img2":"./assets/images/servants/cuchu/1.png",
+	"img3":"./assets/images/servants/cuchu/2.png",
+	"special":true
     }
 ]

@@ -78,6 +78,7 @@ import {
       transition('coup => dashavant', animate('400ms ease-out')),
       transition('idle => takedamage', animate('400ms ease-out')),
       transition('takedamage => idle', animate('400ms ease-in')),
+      transition('dashavant => takedamage', animate('400ms ease-out')),
       transition('takedamage => death', animate('1000ms'))
     ]),
 
@@ -2256,18 +2257,41 @@ export class AppComponent implements OnInit
       tmp.timer+=2000;
       if(tmp.timer>6000)this.dmgs.splice(this.dmgs.indexOf(tmp),1);
     });
+
+    let passiveShielder: any = this.passiveShielder();
+    let persoshield: any;
+
+    if(passiveShielder!=-1)
+    {
+      persoshield = persocible;
+      persocible.atqanim = "Shielder";
+      persocible.atqanimdecal = 0;
+      persoshield.animation="Shield";
+      persoshield.slash="1";
+      cible = passiveShielder;
+      if(this.teamattaque==0)persocible=this.team2[cible];
+      else persocible=this.team1[cible];
+      this.setAnimX2(cible,200,"dashavant",false);
+    }
+
     persocible.atqanim = persoatq.classe;
     persocible.atqanimdecal = 0;
     if(persoatq.classe=="Lancer"||persoatq.classe=="Archer")persocible.atqanimdecal = 150;
     if(persoatq.classe=="Assassin")persocible.atqanimdecal = 50;
-
+    
     this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
       if(this.timerAttaque==700)
       {
         let tmp = this.damage(i,cible);
         this.setAnimX(i,300,"coup");
-        this.setAnimX2(cible,-100,"takedamage",tmp);
+        if(passiveShielder==-1)this.setAnimX2(cible,-100,"takedamage",tmp);
+        else 
+        {
+          persoshield.animation="idle";
+          persoshield.slash="0";
+          this.setAnimX2(cible,-100,"takedamage",tmp);
+        }
       }
       if(this.timerAttaque==900)
       {
@@ -2286,6 +2310,38 @@ export class AppComponent implements OnInit
     },100);
   }
 
+  passiveShielder()
+  {
+    let ind = -1;
+    if(this.teamattaque==0)
+    {
+      for(let i=0;i<this.team2.length;i++)
+      {
+        let perso = this.team2[i];
+        if(ind==-1&&i!=this.place&&perso.pdv>0&&perso.classe=="Shielder")
+        {
+          let rdm = Math.round(Math.random()*99);
+          rdm=2;//test
+          if(rdm<20)ind = i;
+        }
+      }
+    }
+    else
+    {
+      for(let i=0;i<this.team1.length;i++)
+      {
+        let perso = this.team1[i];
+        if(ind==-1&&i!=this.place&&perso.pdv>0&&perso.classe=="Shielder")
+        {
+          let rdm = Math.round(Math.random()*99);
+          rdm=2;//test
+          if(rdm<20)ind = i;
+        }
+      }
+    }
+    return ind;
+  }
+
   getAtqAnim()
   {
     let retour = "Saber";
@@ -2299,7 +2355,6 @@ export class AppComponent implements OnInit
       if(this.team2[this.attaquant1])
         retour = this.team2[this.attaquant1].classe;
     }
-    console.log(retour);
     return retour;
   }
   getAtqAnimDecal()
