@@ -1443,7 +1443,7 @@
 	"img3":"https://gamepress.gg/grandorder/sites/grandorder/files/2020-08/111_Irisviel%20%28Holy%20Grail%29_1-3.png",
 	"img4":"https://gamepress.gg/grandorder/sites/grandorder/files/2020-08/111_Irisviel%20%28Holy%20Grail%29_4.png"
     },
-    {"scale":1,
+    {"scale":0.9,
 	"id":112,
 	"nom":"Shuten Douji",
 	"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/bc/Shutensprite1.png/revision/latest/scale-to-width-down/350?cb=20200216113322",
@@ -2160,7 +2160,8 @@
 	"img1":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-04/1681.jpg",
 	"img2":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-04/1681.jpg",
 	"img3":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-04/1681.jpg",
-	"img4":"./assets/images/servants/beastIIIR/3.png"
+	"img4":"./assets/images/servants/beastIIIR/3.png",
+	"turn":true
     },
     {"scale":1.1,
 	"id":169,
@@ -3079,7 +3080,8 @@
 	"img1":"https://gamepress.gg/grandorder/sites/grandorder/files/2019-04/240_Beast%20IIIL.png",
 	"img2":"https://gamepress.gg/grandorder/sites/grandorder/files/2019-04/240_Beast%20IIIL.png",
 	"img3":"https://gamepress.gg/grandorder/sites/grandorder/files/2019-04/240_Beast%20IIIL.png",
-	"img4":"./assets/images/servants/beastIIIL/3.png"
+	"img4":"./assets/images/servants/beastIIIL/3.png",
+	"turn":true
     },
     {"scale":1,
 	"id":241,
@@ -3924,7 +3926,7 @@
 	"img3":"https://gamepress.gg/grandorder/sites/grandorder/files/2021-03/306_Galatea_3.png",
 	"img4":"https://gamepress.gg/grandorder/sites/grandorder/files/2021-03/306_Galatea_4.png"
     },
-    {"scale":1,
+    {"scale":1.1,
 	"id":307,
 	"nom":"Miss Crane",
 	"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/d3/Miss_Crane_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20210427152347",
