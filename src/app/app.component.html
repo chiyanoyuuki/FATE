@@ -271,6 +271,8 @@
           </div>
           <div class="profileBotServs2">
             <div *ngFor="let serv of myprofile.comp;let i=index"  style="position:relative">
+              <p *ngIf="profile==id" style="bottom: -13px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+              background-color: green;border-radius: 20px;border: 2px ridge #202020;right: 15px;z-index: 2;">{{getServLevel2(serv)}}</p>
               <img style="filter: drop-shadow(0px 0px 3px black);width: 60px;position: absolute;z-index: 2;height: 60px;bottom: -30px;left:50px;" src="./assets/images/classes/{{serv.classe}}.png"/>
               <img [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" [class.golden]="id==profile&&myprofile.titlescompo[i]==1" draggable="false" src="{{getImg(myprofile.user_id,serv)}}"/>
             </div>
@@ -299,7 +301,7 @@
 
     <div *ngIf="state=='friends'">
       <button (click)="getUsers();getProfiles();getPvp();getHistoPulls()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
-      <p style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
+      <p class="clickable" (click)="triInvoc==true?triInvoc=false:triInvoc=true" style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">
         <div style="width:100%">

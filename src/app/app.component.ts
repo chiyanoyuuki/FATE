@@ -178,6 +178,7 @@ export class AppComponent implements OnInit
   public pvps: any[] = [];
   public pvp: any;
   public histpull: any;
+  public triInvoc = false;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -461,7 +462,7 @@ export class AppComponent implements OnInit
     {
       this.addServant(this.id,this.persosToInvoq[i],1);
     }
-    this.histoPull();
+    if(nb==10)this.histoPull();
     this.spendQuartz(nb*3);
     this.addpull(nb);
     this.persosInvoqued = [];
