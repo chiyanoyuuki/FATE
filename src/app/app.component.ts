@@ -177,6 +177,7 @@ export class AppComponent implements OnInit
   public cantSellTitle: any = [];
   public pvps: any[] = [];
   public pvp: any;
+  public histpull: any;
 
   public static revealed: boolean = false;
   public static perso: any;
@@ -198,6 +199,7 @@ export class AppComponent implements OnInit
   public ce: number[] = [0,0,0,0,0];
   public ascs: any[] = [];
   public duel: any[] = [];
+  public historiquePulls = false;
 
   public idleState: number[] = [0,0,0,0];
   public idleState2: number[] = [0,0,0,0];
@@ -209,6 +211,7 @@ export class AppComponent implements OnInit
   public arriveRight: string = "0";
   public titlesduel: any[] = [];
   public titlesduel2: any[] = [];
+  public histoPulls:any;
 
   public idpersotest = 342;
   public scaletest = 1;
@@ -385,6 +388,8 @@ export class AppComponent implements OnInit
 
   setProfile(id:any)
   {
+    this.histpull = this.histoPulls.filter((h:any)=>h.user_id==id);
+    this.histpull.sort((a:any,b:any)=>{return new Date(b.date).getTime() - new Date(a.date).getTime()});
     this.confirmTransfert = "Transfert Smurf";
     let tmp = this.profiles.find((p:any)=>p.user_id==id);
     if(tmp) this.myprofile = tmp;
@@ -463,6 +468,7 @@ export class AppComponent implements OnInit
     this.invocs = nb;
     this.summon();
     this.getTitles();
+    if(nb==10)this.getHistoPulls();
   }
 
   histoPull()
@@ -820,6 +826,7 @@ export class AppComponent implements OnInit
         this.getLevels();
         this.getTitles();
         this.getShop();
+        this.getHistoPulls();
         this.getProfiles();
         this.getLevels();
         this.state = "banner";
@@ -1985,6 +1992,28 @@ export class AppComponent implements OnInit
         });
       }
     }
+  }
+
+  getHistoPulls()
+  {
+    let ce = [385,386,387,388,389];
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetHistoPulls').subscribe(data=>
+    {
+      this.histoPulls = data;
+      this.histoPulls.forEach((h:any)=>{
+        let tmp: any = [];
+        h.pulls.forEach((p:any)=>
+        {
+          let serv = this.data.find((u:any)=>u.id==p);
+          tmp.push({img:serv.img1,cool:serv.level==4&&!ce.includes(serv.id),gigacool:serv.level==5&&!ce.includes(serv.id)});
+        });
+        h.pulls = tmp;
+      })
+      this.histpull = this.histoPulls.filter((h:any)=>h.user_id==this.id);
+    this.histpull.sort((a:any,b:any)=>{return new Date(b.date).getTime() - new Date(a.date).getTime()});
+    });
+    
+    
   }
 
   getProfiles()

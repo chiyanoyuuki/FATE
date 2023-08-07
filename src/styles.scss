@@ -156,6 +156,10 @@ text-align: center;
 color: white;
 box-shadow: black 10px 10px 10px;
 margin-top:10px;
+width: auto;
+padding: 5px 15px;
+white-space: nowrap;
+min-width:120px;
 }
 
 button:hover{
@@ -687,4 +691,24 @@ font-size: 35px;
     margin: 5px;
     position:relative;
     height:155px;
+}
+.histoPulls
+{
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    border: 2px ridge #bbb;
+    border-radius: 20px;
+    z-index: 5;
+    padding: 20px;
+    position: absolute;
+    left: 35%;
+    top: -8%;
+    max-height: 128%;
+    overflow-y: scroll;
+}
+.notcool{
+    filter: grayscale(1) brightness(0.5)
+}
+.gigacool{
+    border-color:gold!important;
 }

@@ -212,6 +212,7 @@
     </div>
 
     <div *ngIf="profile" class="profile">
+      
       <div class="fightInfos clickable3" (click)="showinfo=false;" *ngIf="showinfo">
         <p style="font-size: 50px;">Class Affinity</p>
         <div *ngFor="let row of fightInfos" class="rowInfos">
@@ -222,6 +223,16 @@
           </div>
         </div>
       </div>
+
+      <div class="histoPulls clickable3" (click)="historiquePulls=false;" *ngIf="historiquePulls">
+        <div *ngFor="let pull of histpull" class="pullbloc">
+          <p>{{pull.date | date:'dd/MM/yyyy - HH:mm:ss' }}</p>
+          <div style="display:flex">
+            <img [class.notcool]="!img.cool&&!img.gigacool" [class.gigacool]="img.gigacool" style="height:100px;width:70px;border:3px solid black" *ngFor="let img of pull.pulls" src="{{img.img}}"/>
+          </div>
+        </div>
+      </div>
+
       <img (click)="profile==id?clickServantProfile(-1):null" [class.golden]="first(myprofile.servant)" *ngIf="myprofile.servant" class="servProfile" [class.clickable]="profile==id" draggable="false" src="{{getImg(myprofile.user_id,myprofile.servant)}}"/>
       <div (click)="profile==id?clickServantProfile(-1):null" class="servProfile" [class.clickable]="profile==id" *ngIf="!myprofile.servant"></div>
       <div class="profileBotServs">
@@ -248,6 +259,7 @@
           <input type="text" class="desc" *ngIf="profile==id" [(ngModel)]="profiledesc" style="width:450px"/>
           <div style="display:flex;justify-content:space-around">
             <button [class.disabledButton]="user.smurf==0" style="width:140px" *ngIf="profile==id" (click)="transfert()">{{confirmTransfert}}</button>
+            <button (click)="historiquePulls=true;" class="clickable">Historique Pulls</button>
             <button [class.disabledButton]="myprofile.description==profiledesc||profiledesc.length>99" style="width:140px" *ngIf="profile==id" (click)="descProfile()">Valider</button>
           </div>
         </div>
@@ -265,7 +277,7 @@
             <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
           </div>
           <div style="position: absolute;bottom: 20px;display:flex;justify-content: space-evenly;width: 94%;">
-            <button (click)="getPvp()">Refresh</button>
+            <button (click)="getPvp();getHistoPulls();">Refresh</button>
             <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" (click)="adversaire=profile;launchDuel()">Duel</button>  
             <button>Historique</button>  
           </div>
@@ -286,7 +298,7 @@
     </div>
 
     <div *ngIf="state=='friends'">
-      <button (click)="getUsers();getProfiles();getPvp()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
+      <button (click)="getUsers();getProfiles();getPvp();getHistoPulls()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
       <p style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">
@@ -504,7 +516,7 @@
         
         <img draggable="false" style="box-shadow: green 0px 0px 25px;position:absolute;width:1400px;pointer-events: none;" src="./assets/images/frontBanner.png" />
   
-        <div style="position:absolute;left:410px;bottom:-10%;display:flex;">
+        <div style="position:absolute;left:420px;bottom:-10%;display:flex;">
           <img draggable="false" [class.disabled]="cantInvoq(1)" class="summon" style="margin-right:50px;" src="./assets/images/summon1.png" (click)="startSummon(1)"/>
           <img draggable="false" [class.disabled]="cantInvoq(10)" class="summon"  src="./assets/images/summon.png" (click)="startSummon(10)"/>
         </div>
