@@ -340,5 +340,41 @@
         "nom":"Give me more", 
         "desc":"Obtenir une ascension sur 20 servants", 
         "recompense":70
+    },
+    { 
+        "id":58, 
+        "nom":"This is the frontline", 
+        "desc":"Avoir 30 servants au niveau maximum", 
+        "recompense":90
+    },
+    { 
+        "id":59, 
+        "nom":"They'll defend me well", 
+        "desc":"Avoir 30 servants au dessus du niveauu 60", 
+        "recompense":60
+    },
+    { 
+        "id":60, 
+        "nom":"My army is ready", 
+        "desc":"Obtenir une ascension sur 30 servants", 
+        "recompense":30
+    },
+    { 
+        "id":61, 
+        "nom":"Watch them grow", 
+        "desc":"Avoir 40 servants au niveau maximum", 
+        "recompense":90
+    },
+    { 
+        "id":62, 
+        "nom":"They are my pride", 
+        "desc":"Avoir 40 servants au dessus du niveauu 60", 
+        "recompense":60
+    },
+    { 
+        "id":63, 
+        "nom":"Training in progress", 
+        "desc":"Obtenir une ascension sur 40 servants", 
+        "recompense":30
     }
 ]

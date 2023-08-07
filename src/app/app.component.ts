@@ -233,6 +233,24 @@ export class AppComponent implements OnInit
   public attaquestate = 0;
   public dmgs:any = [];
 
+  public fightInfos = [
+    {
+      firstrow:
+      [
+        {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:false},
+        {class:"Archer",desc:"Dodge stat greatly increased",done:false},
+        {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:false},
+        {class:"Avenger",desc:"Critical stat greatly increased",done:false},
+        {class:"Beast",desc:"Increasing damage on non beasts party members every turn",done:false},
+      ],
+      secondrow:
+      [
+        {class:"Berserker",desc:"Chance to hit up to 2 ennemies next to the initial target",done:false},
+      ]
+    }
+    
+  ]
+
   public teamattaque = 0;
 
   constructor(private http: HttpClient){
@@ -423,12 +441,36 @@ export class AppComponent implements OnInit
     {
       this.addServant(this.id,this.persosToInvoq[i],1);
     }
+    this.histoPull();
     this.spendQuartz(nb*3);
     this.addpull(nb);
     this.persosInvoqued = [];
     this.invocs = nb;
     this.summon();
     this.getTitles();
+  }
+
+  histoPull()
+  {
+    let tmp: any = [];
+    this.persosToInvoq.forEach((p:any)=>tmp.push(p.id));
+    const dataToSend = {
+      userid:this.id,
+      pulls:JSON.stringify(tmp)
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEaddHistoPull',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    );
   }
 
   getPersoTest()
@@ -1443,6 +1485,60 @@ export class AppComponent implements OnInit
           this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
         }
       }
+      cpt=58
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb100>29)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=59
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb60>29)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=60
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb30>29)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=61
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb100>39)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=62
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb60>39)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
+      cpt=63
+      if(!data.find((d:any)=>d.id==cpt))
+      {
+        if(nb30>39)
+        {
+          this.addSuccess(cpt);
+          this.successToClaim.push(this.succ.find((c:any)=>c.id==cpt));
+        }
+      }
     }); 
   }
 
@@ -1753,7 +1849,7 @@ export class AppComponent implements OnInit
   spendQuartz2(qte:number)
   {
     const dataToSend = {
-      id:this.users.find((u:any)=>u.id==this.adversaire).nom,
+      id:this.adversaire,
       qte:qte
     }
     from(
@@ -2201,7 +2297,56 @@ export class AppComponent implements OnInit
 
   endFight(t1:any,t2:any)
   {
-    if(t2==0)this.spendQuartz(-3);
+    let team1: any = [];
+    this.team1.forEach((t:any)=>{
+      team1.push(
+        {
+          ascension:t.ascension,
+          id:t.id,
+          niveau:t.niveau,
+          pdv:t.pdv,
+          np:t.np,
+          pdvmax:t.pdvmax,
+          title:t.title
+        })
+    });
+
+    let team2: any = [];
+    this.team2.forEach((t:any)=>{
+      team2.push(
+        {
+          ascension:t.ascension,
+          id:t.id,
+          niveau:t.niveau,
+          pdv:t.pdv,
+          np:t.np,
+          pdvmax:t.pdvmax,
+          title:t.title
+        })
+    })
+
+    const dataToSend = {
+      userid:this.id,
+      userid2:this.adversaire,
+      win:t2==0,
+      team1:JSON.stringify(team1),
+      team2:JSON.stringify(team2)
+    }
+    from(
+      fetch(
+        'https://www.chiya-no-yuuki.fr/FATEaddHistoPvp',
+        {
+          body: JSON.stringify(dataToSend),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors',
+        }
+      )
+    ).subscribe((response) => 
+    {
+      if(t2==0)this.spendQuartz(-3);
       else if(t1==0)this.spendQuartz2(-3);
       clearInterval(this.idleInterval);
       clearInterval(this.combatInterval);
@@ -2210,6 +2355,7 @@ export class AppComponent implements OnInit
       this.profile=this.adversaire;
       this.state="banner";
       return;
+    });
   }
 
   startDash()
@@ -2251,7 +2397,8 @@ export class AppComponent implements OnInit
     let fail = false;
     //Intelligence du coup
     let rdm = Math.round(Math.random()*99);
-    if(rdm>20)
+    if(teamcible.length==1){}
+    else if(rdm>20)
     {
       cible = this.getSmartCible(persoatq);
       persocible = teamcible[cible];
@@ -2302,41 +2449,53 @@ export class AppComponent implements OnInit
     
     this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
+      //COUP NORMAL
       if(this.timerAttaque==700)
       {
         if(fail){persoatq.fail=true;}
         let dmg = this.damage(i,cible,false);
-        let dmgcleave: any = [];
-        passiveBerserker.forEach((p:any)=>dmgcleave.push(this.damage(i,p,true)));
         this.setAnimX(i,300,"coup");
-        if(passiveShielder==-1)
-        {
-          this.setAnimX2(cible,-100,"takedamage",dmg);
-          for(let i=0;i<passiveBerserker.length;i++){this.setAnimX2(passiveBerserker[i],-100,"takedamage",dmgcleave[i]);}
-        }
-        else 
+        if(passiveShielder!=-1)
         {
           persoshield.animation="idle";
           persoshield.slash="0";
-          this.setAnimX2(cible,-100,"takedamage",dmg);
         }
+        this.setAnimX2(cible,-100,"takedamage",dmg);
       }
+      //CLEAVE
+      if(this.timerAttaque==800)
+      {
+        let dmgcleave: any = [];
+        passiveBerserker.forEach((p:any)=>dmgcleave.push(this.damage(i,p,true)));
+        for(let i=0;i<passiveBerserker.length;i++){this.setAnimX2(passiveBerserker[i],-100,"takedamage",dmgcleave[i]);}
+      }
+      //APRES COUP NORMAL
       if(this.timerAttaque==900)
+      {
+        teamcible.filter((t:any)=>t.negative).forEach((t:any)=>t.negative=false);
+        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
+        else this.setAnimX2(cible,0,"death",false);
+        this.setAnimX(i,200,"dashavant");
+      }
+      //APRES CLEAVE
+      if(this.timerAttaque==1000)
       {
         for(let i=0;i<passiveBerserker.length;i++)
         {
           if(persosCleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],0,"idle",false);
           else this.setAnimX2(passiveBerserker[i],0,"death",false);
         }
-        if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
-        else this.setAnimX2(cible,0,"death",false);
-        this.setAnimX(i,200,"dashavant");
       }
+      //RETOUR IDLE
       if(this.timerAttaque==1300)
       {
         persoatq.fail=false;
         this.setAnimX(i,0,"idle");
         if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash",false);
+      }
+      //RETOUR IDLE CLEAVE
+      if(this.timerAttaque==1400)
+      {
         for(let i=0;i<passiveBerserker.length;i++)
         {
           if(persosCleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],0,"endSlash",false);
@@ -2725,6 +2884,7 @@ export class AppComponent implements OnInit
       tmp.anim='1';
       clearInterval(tmpinterval);
     },50);
+    persocible.negative = true;
     persocible.pdv = persocible.pdv - dmg;
     if(persocible.pdv<0)persocible.pdv = 0;
     return ec;
@@ -2755,11 +2915,6 @@ export class AppComponent implements OnInit
       if(anim=="takedamage")
       {
         if(!miss)this.team2[cible].slash="1";
-        if(!miss)this.team2[cible].negative=true;
-      }
-      else if(anim=="idle")
-      {
-        this.team2[cible].negative=false;
       }
       else if(anim=="endSlash")
       {
@@ -2773,11 +2928,6 @@ export class AppComponent implements OnInit
       if(anim=="takedamage")
       {
         if(!miss)this.team1[cible].slash="1";
-        if(!miss)this.team1[cible].negative=true;
-      }
-      else if(anim=="idle")
-      {
-        this.team1[cible].negative=false;
       }
       else if(anim=="endSlash")
       {
@@ -2887,6 +3037,7 @@ export class AppComponent implements OnInit
           tmp.animation = "idle";
           tmp.arrivex = 0;
           tmp.negative = false;
+          tmp.atqanim = "Saber";
 
           tmp.np = 0;
           tmp.dmg = this.getDmg(tmp);
@@ -2909,6 +3060,7 @@ export class AppComponent implements OnInit
           tmp.animation = "idle";
           tmp.arrivex = 0;
           tmp.negative = false;
+          tmp.atqanim = "Saber";
 
           tmp.np = 0;
           tmp.dmg = this.getDmg(tmp);
@@ -2933,12 +3085,14 @@ export class AppComponent implements OnInit
     let rarete = 1+perso.level*0.3;
     if(perso.level==0) rarete = 1.5;
     let classeajoute = 1;
-    if(classe=="Shielder"||classe=="Beast")
-      classeajoute = 1.7;
-    else if(classe=="Ruler"||classe=="Avenger"||classe=="Moon Cancer")
+    if(classe=="Shielder")
       classeajoute = 1.5;
-    else if(classe=="Foreigner"||classe=="Pretender"||classe=="Alter Ego")
+    else if(classe=="Beast")
       classeajoute = 1.4;
+    else if(classe=="Ruler"||classe=="Avenger"||classe=="Moon Cancer")
+      classeajoute = 1.3;
+    else if(classe=="Foreigner"||classe=="Pretender"||classe=="Alter Ego")
+      classeajoute = 1.3;
     else if(classe=="Berserker"||classe=="Saber"||classe=="Rider")
       classeajoute = 1.2;
     else if(classe=="Lancer"||classe=="Assassin"||classe=="Archer")
@@ -2966,9 +3120,9 @@ export class AppComponent implements OnInit
       classeajoute = 0.9;
     else if(classe=="Avenger"||classe=="Moon Cancer")
       classeajoute = 1.1;
-    else if(classe=="Foreigner"||classe=="Pretender"||classe=="Alter Ego"||classe=="Beast")
+    else if(classe=="Berserker"||classe=="Foreigner"||classe=="Pretender"||classe=="Alter Ego"||classe=="Beast")
       classeajoute = 1.1;
-    else if(classe=="Berserker"||classe=="Saber"||classe=="Rider")
+    else if(classe=="Saber"||classe=="Rider")
       classeajoute = 1;
     else if(classe=="Lancer"||classe=="Assassin"||classe=="Archer")
       classeajoute = 1.1;

@@ -14,7 +14,7 @@
         <div>
           <p class="containerStatsDuel" style="padding:0px">{{getFightName(id)}}</p>
           <div *ngFor="let perso of team1;let i=index" class="containerStatsDuel" [style.opacity]="perso.pdv>0?1:0.7">
-            <p style="text-align: center;">{{perso.nom}}</p>
+            <div style="display:flex;"><p>{{perso.nom}}</p><div style="display: flex;position: absolute;right: 10px;top: 2px;"><p *ngFor="let item of [].constructor(perso.level);">☆</p></div></div>
             <div style="display:flex;">
               <p style="bottom: 12px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
               background-color: green;border-radius: 20px;border: 2px ridge #202020;left: 80px;z-index: 2;">{{perso.niveau?perso.niveau:0}}</p>
@@ -49,7 +49,7 @@
         <div>
           <p class="containerStatsDuel2" style="padding:0px">{{getFightName(adversaire)}}</p>
           <div *ngFor="let perso of team2;let i=index" class="containerStatsDuel2" [style.opacity]="perso.pdv>0?1:0.7">
-            <p style="text-align: center;">{{perso.nom}}</p>
+            <div style="display:flex;justify-content: right;"><p>{{perso.nom}}</p><div style="display: flex;position: absolute;left: 10px;top: 2px;"><p *ngFor="let item of [].constructor(perso.level);">☆</p></div></div>
             <div style="display: flex;">
               <p style="bottom: 12px;position: absolute;font-size: 17px;width: 25px;text-align: center;color: white;text-shadow: 1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
                 background-color: darkred;border-radius: 20px;border: 2px ridge #202020;right: 80px;z-index: 2;">{{perso.niveau?perso.niveau:0}}</p>
@@ -212,7 +212,15 @@
     </div>
 
     <div *ngIf="profile" class="profile">
-      <img style="position: absolute;z-index: 3;width: 50%;left: 25%;" class="clickable" (click)="showinfo=false;" *ngIf="showinfo" src="./assets/images/info_duel0.png"/>
+      <div style="position: absolute;z-index: 3;width: 50%;left: 25%;" class="clickable3" (click)="showinfo=false;" *ngIf="showinfo">
+        <p>Class Affinity</p>
+        <div style="display:flex;">
+          <div class="">
+            <p class="classNameInfos">Alter Ego</p>
+            <p class="classDescInfos">Trigger Guts on 1st death</p>
+          </div>
+        </div>
+      </div>
       <img (click)="profile==id?clickServantProfile(-1):null" [class.golden]="first(myprofile.servant)" *ngIf="myprofile.servant" class="servProfile" [class.clickable]="profile==id" draggable="false" src="{{getImg(myprofile.user_id,myprofile.servant)}}"/>
       <div (click)="profile==id?clickServantProfile(-1):null" class="servProfile" [class.clickable]="profile==id" *ngIf="!myprofile.servant"></div>
       <div class="profileBotServs">
@@ -244,7 +252,10 @@
         </div>
 
         <div class="desc2" style="right: 375px;position: absolute;width: 650px;">
-          <p>Composition :</p>
+          <div style="display:flex;justify-content: space-between;">
+            <p>Composition :</p>
+            <button (click)="showinfo=true" style="margin:0;">Infos</button>  
+          </div>
           <div class="profileBotServs2">
             <div *ngFor="let serv of myprofile.comp;let i=index"  style="position:relative">
               <img style="filter: drop-shadow(0px 0px 3px black);width: 60px;position: absolute;z-index: 2;height: 60px;bottom: -30px;left:50px;" src="./assets/images/classes/{{serv.classe}}.png"/>
@@ -252,15 +263,16 @@
             </div>
             <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
           </div>
-          <div style="position: absolute;bottom: 20px;display:flex;justify-content: space-between;">
+          <div style="position: absolute;bottom: 20px;display:flex;justify-content: space-evenly;width: 94%;">
             <button (click)="getPvp()">Refresh</button>
             <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" (click)="adversaire=profile;launchDuel()">Duel</button>  
-            <button (click)="showinfo=true">Infos</button>  
+            <button>Historique</button>  
           </div>
         </div>
 
         <div *ngIf="myprofilestats" class="desc2">
           <div style="display:flex;justify-content: space-between;"><p>Titles :</p><p> {{myprofilestats.titles}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Total servants :</p><p> {{myprofilestats.totservs}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Servants 5* :</p><p> {{myprofilestats.servant5}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Servants 4* :</p><p> {{myprofilestats.servant4}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Pulls :</p><p> {{myprofilestats.pulls}}</p></div>
