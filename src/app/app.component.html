@@ -212,12 +212,13 @@
     </div>
 
     <div *ngIf="profile" class="profile">
-      <div style="position: absolute;z-index: 3;width: 50%;left: 25%;" class="clickable3" (click)="showinfo=false;" *ngIf="showinfo">
-        <p>Class Affinity</p>
-        <div style="display:flex;">
-          <div class="">
-            <p class="classNameInfos">Alter Ego</p>
-            <p class="classDescInfos">Trigger Guts on 1st death</p>
+      <div class="fightInfos clickable3" (click)="showinfo=false;" *ngIf="showinfo">
+        <p style="font-size: 50px;">Class Affinity</p>
+        <div *ngFor="let row of fightInfos" class="rowInfos">
+          <div class="blocInfos" *ngFor="let classe of row.row" [style.background-color]="classe.done?'rgb(20, 20, 20)':'rgb(20, 0, 0)'">
+            <p style="text-decoration: underline;font-size: 30px;position: relative;left: 20px;">{{classe.class}}</p>
+            <p style="position: absolute;bottom: 30px;height: 40%;">{{classe.desc}}</p>
+            <img src="./assets/images/classes/{{classe.class}}.png" style="position: absolute;width: 70px;top: 8px;left: 8px;"/>
           </div>
         </div>
       </div>

@@ -256,7 +256,7 @@ color: white;
 
 .clickable3:hover
 {
-    opacity:0.8;
+    opacity:0.9;
     cursor:pointer;
 }
 
@@ -568,12 +568,12 @@ z-index:1;
     background-color: rgba(20,20,20,0.9);
     box-shadow: black 10px 10px 10px;
     border: 2px ridge #bbb;
+    border-radius:5px;
     height: 18px;
     top: 2px;
     position: relative;
     margin-right: 15px;
     width:200px;
-    border-radius:5px;
 }
 .hp{
     background:linear-gradient(#202020, #50cc50);
@@ -658,4 +658,33 @@ font-size: 35px;
     background: radial-gradient(rgba(200,200,20,1), rgba(150,20,20,0));
     border:10px dashed red;
     padding:8px;
+}
+.fightInfos p{
+    text-align: center;
+}
+.fightInfos{
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    border: 2px ridge #bbb;
+    border-radius: 20px;
+    z-index: 5;
+    padding: 20px;
+    position: absolute;
+    left: 8%;
+    width: 80%;
+}
+.fightInfos .rowInfos{
+    display: flex;
+    height: 30%;
+}
+.fightInfos .blocInfos{
+    width: 20%;
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    border: 2px ridge #bbb;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 5px;
+    position:relative;
+    height:155px;
 }

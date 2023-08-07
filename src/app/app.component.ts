@@ -235,7 +235,7 @@ export class AppComponent implements OnInit
 
   public fightInfos = [
     {
-      firstrow:
+      row:
       [
         {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:false},
         {class:"Archer",desc:"Dodge stat greatly increased",done:false},
@@ -243,12 +243,27 @@ export class AppComponent implements OnInit
         {class:"Avenger",desc:"Critical stat greatly increased",done:false},
         {class:"Beast",desc:"Increasing damage on non beasts party members every turn",done:false},
       ],
-      secondrow:
+    },
+    {
+      row:
       [
-        {class:"Berserker",desc:"Chance to hit up to 2 ennemies next to the initial target",done:false},
+        {class:"Berserker",desc:"Chance to hit up to 2 ennemies next to the initial target",done:true},
+        {class:"Caster",desc:"Starts the fight with his NP jauge charged a bit",done:false},
+        {class:"Foreigner",desc:"Obtain stealth after beeing hit",done:false},
+        {class:"Lancer",desc:"Chance to hit the attacker for a little amount",done:false},
+        {class:"Moon Cancer",desc:"Heals a percentage of damage dealt",done:false}
+      ],
+    },
+    {
+      row:
+      [
+        {class:"Pretender",desc:"Gives evade for one strike to non pretender party members",done:false},
+        {class:"Rider",desc:"Little chance to strike twice instead of one time",done:false},
+        {class:"Ruler",desc:"Gives every party member more DEF",done:false},
+        {class:"Saber",desc:"Chance to strike back when attacked",done:false},
+        {class:"Shielder",desc:"Chance to take the focus instead of one ally",done:true}
       ]
     }
-    
   ]
 
   public teamattaque = 0;
@@ -1849,7 +1864,7 @@ export class AppComponent implements OnInit
   spendQuartz2(qte:number)
   {
     const dataToSend = {
-      id:this.adversaire,
+      id:this.users.find((u:any)=>u.id==this.adversaire).nom,
       qte:qte
     }
     from(
