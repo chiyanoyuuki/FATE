@@ -1950,7 +1950,8 @@
 	"img1":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-12/151_Goetia_2.png",
 	"img2":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-12/151_Goetia_4.png",
 	"img3":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-12/151_Goetia_6.png",
-	"img4":"https://gamepress.gg/grandorder/sites/grandorder/files/2018-12/151_Goetia.png"
+	"img4":"./assets/images/servants/goetia/3.png",
+	"sprite3":"./assets/images/servants/goetia/sprite.png",
     },
     {"scale":1.3,
 	"id":152,
