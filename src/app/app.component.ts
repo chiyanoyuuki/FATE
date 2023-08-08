@@ -1651,7 +1651,7 @@ export class AppComponent implements OnInit
     }
     else if(servant)
     {
-      let tmp = this.getData();
+      let tmp = this.userData;
       tmp = tmp.find((d:any)=>d.id==servant.id);
       if(!tmp)return false;
       if(servant.level>3 && this.titles.includes(servant.id) && servant.qte == 1) return false;
@@ -1659,7 +1659,7 @@ export class AppComponent implements OnInit
     }
     else
     {
-      let tmp = this.getData();
+      let tmp = this.userData;
       return tmp.find((d:any)=>d.id==servantWithTitle.id) && this.titles.includes(servantWithTitle.id);
     }
   }
@@ -1679,10 +1679,21 @@ export class AppComponent implements OnInit
     {
       shop = shop.filter((s:any)=>(s.servantPrice||s.servantPriceWithTitle)&&s.nom!=this.user.nom);
     }
-
-    if(this.filterSellAvailable)
+    else if(this.filterSell=="Achat Possibles")
     {
       shop = shop.filter((s:any)=>this.got(s.price_quartz,s.servantPrice,s.servantPriceWithTitle)&&s.nom!=this.user.nom);
+    }
+    else if(this.filterSell=="Titles")
+    {
+      shop = shop.filter((s:any)=>s.servantWithTitle&&s.nom!=this.user.nom);
+    }
+    else if(this.filterSell=="Servants 5*")
+    {
+      shop = shop.filter((s:any)=>(s.servantWithTitle&&s.servantWithTitle.level==5)||(s.servant&&s.servant.level==5)&&s.nom!=this.user.nom);
+    }
+    else if(this.filterSell=="Servants 4*")
+    {
+      shop = shop.filter((s:any)=>(s.servantWithTitle&&s.servantWithTitle.level==4)||(s.servant&&s.servant.level==4)&&s.nom!=this.user.nom);
     }
 
     if(this.recherche!=""&&!this.createVente)
@@ -1772,6 +1783,7 @@ export class AppComponent implements OnInit
 
       this.users.forEach((u:any)=>{
         let ecart = this.getEcart(u.last,false,true,false);
+        u.lastinvoc = u.last;
         u.last = ecart;
         ecart = this.getEcart(u.conn,false,false,false);
         let ecartActivite = this.getEcart(u.maj,false,false,true);
@@ -1915,6 +1927,7 @@ export class AppComponent implements OnInit
         if(x.price_servant_id_with_title!=-1)tmp.servantPriceWithTitle = this.data.find((y:any)=>y.id==x.price_servant_id_with_title);
         return tmp;
       });
+      this.shop.sort((a:any,b:any)=>{return a.price_quartz - b.price_quartz})
     });
   }
 
@@ -2208,6 +2221,16 @@ export class AppComponent implements OnInit
     this.ascs = [];
     this.enhance=false;
     this.selectedServ=perso;
+  }
+
+  getFriends()
+  {
+    let users = this.users;
+    if(this.triInvoc)
+      this.users.sort((a: any,b: any) => new Date(b.lastinvoc).getTime() - new Date(a.lastinvoc).getTime());
+    else
+      this.users.sort((a: any,b: any) => b.score - a.score);
+    return users;
   }
 
   addLevel()

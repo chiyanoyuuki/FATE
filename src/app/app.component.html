@@ -1,3 +1,5 @@
+    <!-- <DUEL -->
+    
     <div *ngIf="state=='duel'">
       <img class="bgDuel" src="./assets/images/bgDuel.png" />
 
@@ -99,6 +101,8 @@
         </div>
       </div>
     </div>
+
+    <!-- <CONNECTION -->
     
     <div *ngIf="state=='connection'">
       <img draggable="false" src="./assets/images/connScreen.png" style="width:100%"/>
@@ -120,6 +124,8 @@
         </div>
       </div>
     </div>
+
+    <!-- <BIG CARD -->
 
     <div *ngIf="selectedServ!=undefined" class="bigCard" [class.alreadyPulled]="isNoData()&&alreadyPulled()">
       <div *ngIf="enhance" class="enhance">
@@ -155,6 +161,8 @@
         <p *ngIf="!isNoData()&&state=='formation'&&moreThan30()&&selectedServ.nom!='Craft Essence'" class="clickable" (click)="changeAsc()">Change Ascension</p>
       </div>
     </div>
+
+    <!-- <FORMATION -->
 
     <div *ngIf="state=='formation'" class="recap" style="position: absolute;top:120px;width:100%" >
       <p class="nbServ">{{getData().length}}</p>
@@ -210,6 +218,8 @@
         </div>
       </div>
     </div>
+
+    <!-- <PROFILE -->
 
     <div *ngIf="profile" class="profile">
       
@@ -299,13 +309,15 @@
       </div>
     </div>
 
+    <!-- <FRIENDS -->
+
     <div *ngIf="state=='friends'">
       <button (click)="getUsers();getProfiles();getPvp();getHistoPulls()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
-      <p class="clickable" (click)="triInvoc==true?triInvoc=false:triInvoc=true" style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
+      <p [class.red]="triInvoc" class="clickable" (click)="triInvoc==true?triInvoc=false:triInvoc=true" style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">
         <div style="width:100%">
-          <div *ngFor="let user of users;let i=index"  class="clickable clickable3" (click)="setProfile(user.id)">
+          <div *ngFor="let user of getFriends();let i=index"  class="clickable clickable3" (click)="setProfile(user.id)">
             <div style="display:flex;">
               <p style="color: white;font-size: 50px;position: absolute;left:10px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">{{(i+1)}}</p>
               <div class="score" style="left:85px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
@@ -332,6 +344,8 @@
         </div>
       </div>
     </div>
+
+    <!-- <HEADER -->
     
     <div *ngIf="state!='connection'&&state!='duel'">
       <div class="header" style="box-shadow: white 1px 1px 10px;width: 99%;height: 90px;background-color: rgba(100,150,200,0.8);border: 3px ridge #555;display:flex;justify-content: space-around;margin-bottom:20px;">
@@ -367,12 +381,16 @@
   
       <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'||state=='shop'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
   
+      <!-- <RECAP -->
+
       <div class="recap" *ngIf="state=='recap'" style="display:flex;justify-content: center;top: 270px;position: absolute;width: 100%;">
         <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="{{perso.img1}}"/>
         <div style="position: absolute;">
           <img draggable="false" style="width:130px" *ngFor="let perso of persosInvoqued" src="./assets/images/borders/{{perso.level}}.png"/>
         </div>
       </div>
+
+      <!-- <VENTE -->
       
       <div *ngIf="state=='shop'">
         <div *ngIf="createVente" class="creatVente">
@@ -424,13 +442,21 @@
             <button [class.disabledButton]="isDisabledSell()" style="width:200px;margin-top:0px;" (click)="this.recherche='';sellServant()">Vendre</button>
           </div>
         </div>
+
+        <!-- <SHOP -->
+
+
         <input type="text" placeholder="Recherche.." [(ngModel)]="recherche" style="left: 26%;position: relative;width:200px;top:-8px"/>
         <button style="position: absolute;left: 65%;top: 95px;width: 200px;" (click)="refreshBoutique()">Refresh</button>
         <div class="options" style="width:190px;top:95px;">
-          <p [class.red]="filterSell!=''" (click)="filterSell=''">Tout Voir</p>
-          <p [class.red]="filterSell!='Mes Ventes'" (click)="filterSell='Mes Ventes'">Mes Ventes</p>
-          <p [class.red]="filterSell!='Achat Quartz'" (click)="filterSell='Achat Quartz'">Achat Quartz</p>
-          <p [class.red]="filterSell!='Achat Echanges'" (click)="filterSell='Achat Echanges'">Achat Echanges</p>
+          <p [class.red]="filterSell!=''"                 (click)="filterSell=''">Tout Voir</p>
+          <p [class.red]="filterSell!='Mes Ventes'"       (click)="filterSell=='Mes Ventes'?filterSell='':filterSell='Mes Ventes'">Mes Ventes</p>
+          <p [class.red]="filterSell!='Achat Quartz'"     (click)="filterSell=='Achat Quartz'?filterSell='':filterSell='Achat Quartz'">Achat Quartz</p>
+          <p [class.red]="filterSell!='Achat Echanges'"   (click)="filterSell=='Achat Echanges'?filterSell='':filterSell='Achat Echanges'">Achat Echanges</p>
+          <p [class.red]="filterSell!='Achat Possibles'"  (click)="filterSell=='Achat Possibles'?filterSell='':filterSell='Achat Possibles'">Achat Possibles</p>
+          <p [class.red]="filterSell!='Titles'"           (click)="filterSell=='Titles'?filterSell='':filterSell='Titles'">Titles</p>
+          <p [class.red]="filterSell!='Servants 5*'"      (click)="filterSell=='Servants 5*'?filterSell='':filterSell='Servants 5*'">Servants 5*</p>
+          <p [class.red]="filterSell!='Servants 4*'"      (click)="filterSell=='Servants 4*'?filterSell='':filterSell='Servants 4*'">Servants 4*</p>
           <button (click)="this.recherche='';sellType='trade';sellQuartz='';persoToSell=undefined;persoToExchange=undefined;createVente=true"  style="margin-top:30px">Vendre</button>
         </div>
         <div style="display:flex;justify-content: center;">
@@ -474,6 +500,8 @@
         </div>
       </div>
       
+      <!-- <BANNIERE -->
+
       <div style="position:relative;height:505px;left:150px;width:fit-content" *ngIf="state=='banner'">
         <img draggable="false" style="position:absolute;width:1400px;" src="./assets/images/backBanner.png"/>
         <p  class="nextBann" >Next Banner : {{nextChangeBanner < 10?'0':''}}{{nextChangeBanner}}:{{nextChangeBanners < 10?'0':''}}{{nextChangeBanners}}</p>
@@ -523,6 +551,8 @@
           <img draggable="false" [class.disabled]="cantInvoq(10)" class="summon"  src="./assets/images/summon.png" (click)="startSummon(10)"/>
         </div>
       </div>
+
+      <!-- <INVOCATION -->
   
       <div [style.display]="state=='invocation'?'unset':'none'">
         <video muted id="video1"  width="1407px" height="580px" style="left:150px;position: absolute;" (ended)="videoEnd()">
@@ -547,6 +577,9 @@
         </div>
   
       </div>
+
+      <!-- <FOOTER -->
+
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
         <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
         <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
