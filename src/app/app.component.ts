@@ -105,7 +105,7 @@ export class AppComponent implements OnInit
 {
   public berserkerpassivechance1 = 75;
   public berserkerpassivechance2 = 25;
-  public shielderpassivechance = 25;
+  public shielderpassivechance = 50;
 
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
@@ -2878,7 +2878,6 @@ export class AppComponent implements OnInit
         if(ind==-1&&i!=this.place&&perso.pdv>0&&perso.classe=="Shielder")
         {
           let rdm = Math.round(Math.random()*99);
-          rdm=2;//test
           if(rdm<this.shielderpassivechance)ind = i;
         }
       }
@@ -2891,7 +2890,6 @@ export class AppComponent implements OnInit
         if(ind==-1&&i!=this.place&&perso.pdv>0&&perso.classe=="Shielder")
         {
           let rdm = Math.round(Math.random()*99);
-          rdm=2;//test
           if(rdm<this.shielderpassivechance)ind = i;
         }
       }
