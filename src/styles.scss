@@ -708,3 +708,28 @@ font-size: 35px;
 .gigacool{
     border-color:gold!important;
 }
+.boosts{
+    display: flex;
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    border: 2px ridge #bbb;
+    padding-left: 20px;
+    border-radius: 20px;
+    padding: 7px;
+      padding-left: 7px;
+    position: relative;
+    top: -16px;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-tooltip {
+    z-index: 8;
+    background-color: rgba(20,20,20,0.9);
+    box-shadow: black 10px 10px 10px;
+    font-size:15px;
+    font-family: 'font';
+    margin:0;
+    border-radius:20px;
+    padding:10px;
+}

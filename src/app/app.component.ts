@@ -3,6 +3,7 @@ import DATA from '../assets/data.json';
 import SUCC from '../assets/succes.json';
 import { HttpClient } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   trigger,
   state,
@@ -248,8 +249,8 @@ export class AppComponent implements OnInit
 
   public teambonus = [
     {classe:"Ruler",qte:1,desc:"All team takes 90% damage"},
-    {classe:"Assassin",qte:2,val:"Poisons are 10% stronger"},
-    {classe:"Berserker",qte:2,val:"10% More chance to steal the turn"}
+    {classe:"Assassin",qte:2,desc:"Poisons are 10% stronger"},
+    {classe:"Berserker",qte:2,desc:"10% More chance to steal the turn"}
   ]
   public bonus1: any;
   public bonus2: any;
@@ -3043,7 +3044,23 @@ export class AppComponent implements OnInit
         dmg = 0;
       }
     }
-    if(!ec&&classeatq=="Assassin"){persocible.poison+=Math.round(dmg*0.1);}
+
+    if(!ec&&classeatq=="Assassin")
+    {
+      let bonus = 0;
+      if(this.teamattaque==0)
+      {
+        if(this.bonus1.find((b:any)=>b.classe=="Assassin"))
+          bonus += 0.1;
+      }
+      else if(this.teamattaque==1)
+      {
+        if(this.bonus2.find((b:any)=>b.classe=="Assassin"))
+          bonus += 0.02;
+      }
+      persocible.poison+=Math.round(dmg*(0.1+bonus));
+    }
+
     this.addDmg(ec,cc,cible,persocible,dmg,mult,false);
     return ec;
   }
@@ -3172,9 +3189,21 @@ export class AppComponent implements OnInit
       let t2 = this.team2.filter((t:any)=>t.pdv>0).length;
 
       if(this.teamattaque==0)
+      {
         diff=t1-t2;
-      else
+        if(this.bonus1.find((b:any)=>b.classe=="Berserker"))
+          diff += 1;
+        if(this.bonus2.find((b:any)=>b.classe=="Berserker"))
+          diff -= 1;
+      }
+      else if(this.teamattaque==1)
+      {
         diff=t2-t1;
+        if(this.bonus2.find((b:any)=>b.classe=="Berserker"))
+          diff += 1;
+        if(this.bonus1.find((b:any)=>b.classe=="Berserker"))
+          diff -= 1;
+      }
 
       let rdm = Math.round(Math.random()*(99-(diff*10)));
       if(rdm>10)
@@ -3196,8 +3225,8 @@ export class AppComponent implements OnInit
 
         this.state="duel";
 
-        this.bonus1 = [];
-        this.bonus2 = [];
+        this.bonus1 = this.getBonuses(0);
+        this.bonus2 = this.getBonuses(1);
 
         let team1 = pvp.find((p:any)=>p.user_id == this.id);
         let team2 = pvp.find((p:any)=>p.user_id == this.profile);
@@ -3315,6 +3344,31 @@ export class AppComponent implements OnInit
     let ajoutlevel = Math.round(Math.random()*(perso.niveau?perso.niveau:1))*40+(perso.niveau?perso.niveau:1)*70;
     let title = perso.title?Math.round(Math.random()*1000)+500:0;
     return Math.round(((((Math.round(Math.random()*200)+300)+ajoutlevel)*classeajoute)*rarete)*asc+title);
+  }
+
+  getBonuses(i:any)
+  {
+    let bonus: any = [];
+    let compo: any = [];
+    if(i==0)
+    {
+      compo = this.pvps.find((p:any)=>p.user_id == this.id);
+    }
+    else
+    {
+      compo = this.pvps.find((p:any)=>p.user_id == this.profile);
+    }
+    let classes: any = [];
+    compo.team.forEach((t:any)=>{
+      classes.push(this.data.find((d:any)=>d.id==t).classe);
+    })
+    this.teambonus.forEach((t:any)=>{
+      if(classes.filter((c:any)=>c==t.classe).length>=t.qte)
+      {
+        bonus.push(t);
+      }
+    });
+    return bonus;
   }
 
   getDmg(perso:any)
