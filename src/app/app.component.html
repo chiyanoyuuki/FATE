@@ -234,11 +234,41 @@
         </div>
       </div>
 
+      <div class="fightInfos clickable3" (click)="showinfo2=false;" *ngIf="showinfo2" style="width:unset;left:24%">
+        <img src="./assets/images/avantages.png"/>
+      </div>
+
       <div class="histoPulls clickable3" (click)="historiquePulls=false;" *ngIf="historiquePulls">
         <div *ngFor="let pull of histpull" class="pullbloc">
-          <p>{{pull.date | date:'dd/MM/yyyy - HH:mm:ss' }}</p>
+          <p>{{pull.date | date:'HH:mm:ss - dd/MM/yyyy' }}</p>
           <div style="display:flex">
             <img [class.notcool]="!img.cool&&!img.gigacool" [class.gigacool]="img.gigacool" style="height:100px;width:70px;border:3px solid black" *ngFor="let img of pull.pulls" src="{{img.img}}"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="histoPulls" *ngIf="historiquePvp">
+        <div style="display:flex;justify-content: space-around;">
+          <p [class.red]="typeHistoPvp=='Combats lancés'" (click)="typeHistoPvp=(typeHistoPvp=='Combats lancés'?'Combats subis':'Combats lancés')" class="clickable">Combats lancés</p>
+          <p [class.red]="typeHistoPvp=='Combats subis'" (click)="typeHistoPvp=(typeHistoPvp=='Combats subis'?'Combats lancés':'Combats subis')" class="clickable">Combats subis</p>
+        </div>
+        <div class="clickable3" (click)="historiquePvp=false;" >
+          <div *ngFor="let pvp of getPvpHisto()">
+            <div style="display:flex;justify-content: space-between;border: 3px solid black;" 
+            [style.background-color]="(pvp.win==1&&pvp.user_id==profile&&typeHistoPvp=='Combats lancés')||(pvp.win==0&&pvp.user_id2==profile&&typeHistoPvp=='Combats subis')?'rgba(0,30,0,0.5)':'rgba(30,0,0,0.5)'">
+              <p>{{getUserName(pvp.user_id)}}</p>
+              <p style="position: absolute;text-align: center;width: 94%;">{{pvp.date | date:'HH:mm:ss - dd/MM/yyyy' }}</p>
+              <p>{{getUserName(pvp.user_id2)}}</p>
+            </div>
+            <div style="display:flex">
+              <div *ngFor="let perso of pvp.team1">
+                <img [class.notcool]="perso.pdv==0" style="height:100px;width:70px;" src="{{getImg2(perso)}}"/>
+              </div>
+              <p style="margin: 5px;top: 30px;position: relative;">VS</p>
+              <div *ngFor="let perso of pvp.team2">
+                <img [class.notcool]="perso.pdv==0" style="height:100px;width:70px;" src="{{getImg2(perso)}}"/>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -269,15 +299,18 @@
           <input type="text" class="desc" *ngIf="profile==id" [(ngModel)]="profiledesc" style="width:450px"/>
           <div style="display:flex;justify-content:space-around">
             <button [class.disabledButton]="user.smurf==0" style="width:140px" *ngIf="profile==id" (click)="transfert()">{{confirmTransfert}}</button>
-            <button (click)="historiquePulls=true;" class="clickable">Historique Pulls</button>
+            <button (click)="historiquePulls=true;">Historique Pulls</button>
             <button [class.disabledButton]="myprofile.description==profiledesc||profiledesc.length>99" style="width:140px" *ngIf="profile==id" (click)="descProfile()">Valider</button>
           </div>
         </div>
 
-        <div class="desc2" style="right: 375px;position: absolute;width: 650px;">
+        <div class="desc2" style="right: 420px;position: absolute;width: 620px;">
           <div style="display:flex;justify-content: space-between;">
             <p>Composition :</p>
-            <button (click)="showinfo=true" style="margin:0;">Infos</button>  
+            <div style="display:flex;">
+              <button (click)="showinfo=true" style="margin:0;">Passifs</button>  
+              <button (click)="showinfo2=true" style="margin:0;">Avantages</button> 
+            </div>
           </div>
           <div class="profileBotServs2">
             <div *ngFor="let serv of myprofile.comp;let i=index"  style="position:relative">
@@ -291,11 +324,11 @@
           <div style="position: absolute;bottom: 20px;display:flex;justify-content: space-evenly;width: 94%;">
             <button (click)="getPvp();getHistoPulls();">Refresh</button>
             <button [class.disabledButton]="myprofile.compo.length<4" *ngIf="profile!=id" (click)="adversaire=profile;launchDuel()">Duel</button>  
-            <button>Historique</button>  
+            <button (click)="historiquePvp=true">Historique</button>  
           </div>
         </div>
 
-        <div *ngIf="myprofilestats" class="desc2">
+        <div *ngIf="myprofilestats" class="desc2" style="width:330px">
           <div style="display:flex;justify-content: space-between;"><p>Titles :</p><p> {{myprofilestats.titles}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Total servants :</p><p> {{myprofilestats.totservs}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Servants 5* :</p><p> {{myprofilestats.servant5}}</p></div>
@@ -305,6 +338,10 @@
           <div style="display:flex;justify-content: space-between;"><p>Succès :</p><p> {{myprofilestats.success}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Nombre d'achats :</p><p> {{myprofilestats.nbAchats}}</p></div>
           <div style="display:flex;justify-content: space-between;"><p>Nombre de ventes :</p><p> {{myprofilestats.nbVentes}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Matchs lancés :</p><p> {{myprofilestats.pvplances}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Matchs lancés win :</p><p> {{myprofilestats.pvpgagnes}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Matchs subis :</p><p> {{myprofilestats.pvppris}}</p></div>
+          <div style="display:flex;justify-content: space-between;"><p>Matchs subis lose :</p><p> {{myprofilestats.pvpperdus}}</p></div>
         </div>
       </div>
     </div>
@@ -312,7 +349,7 @@
     <!-- <FRIENDS -->
 
     <div *ngIf="state=='friends'">
-      <button (click)="getUsers();getProfiles();getPvp();getHistoPulls()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
+      <button (click)="getUsers();getProfiles();getPvp();getHistoPulls();gethistoPvp()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
       <p [class.red]="triInvoc" class="clickable" (click)="triInvoc==true?triInvoc=false:triInvoc=true" style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">

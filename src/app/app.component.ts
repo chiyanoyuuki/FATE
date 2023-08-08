@@ -114,6 +114,7 @@ export class AppComponent implements OnInit
   public recherche = "";
   public shop: any;
   public majInterval: any;
+  public typeHistoPvp = "Combats lancés";
 
   public pseudo = "";
   public mdp = "";
@@ -201,6 +202,10 @@ export class AppComponent implements OnInit
   public ascs: any[] = [];
   public duel: any[] = [];
   public historiquePulls = false;
+  public historiquePvp = false;
+  public showinfo2 = false;
+  public histopvp = [];
+  public histpvp = [];
 
   public idleState: number[] = [0,0,0,0];
   public idleState2: number[] = [0,0,0,0];
@@ -389,8 +394,16 @@ export class AppComponent implements OnInit
 
   setProfile(id:any)
   {
+    this.typeHistoPvp = "Combats lancés";
+    this.historiquePulls = false;
+    this.historiquePvp = false;
+
     this.histpull = this.histoPulls.filter((h:any)=>h.user_id==id);
     this.histpull.sort((a:any,b:any)=>{return new Date(b.date).getTime() - new Date(a.date).getTime()});
+
+    this.histpvp = this.histopvp.filter((h:any)=>h.user_id==id||h.user_id2==id);
+    this.histpvp.sort((a:any,b:any)=>{return new Date(b.date).getTime() - new Date(a.date).getTime()});
+
     this.confirmTransfert = "Transfert Smurf";
     let tmp = this.profiles.find((p:any)=>p.user_id==id);
     if(tmp) this.myprofile = tmp;
@@ -829,6 +842,7 @@ export class AppComponent implements OnInit
         this.getShop();
         this.getHistoPulls();
         this.getProfiles();
+        this.gethistoPvp();
         this.getLevels();
         this.state = "banner";
         AppComponent.son.play();
@@ -836,6 +850,38 @@ export class AppComponent implements OnInit
         this.daily();
         this.getPvp();
       }
+    });
+  }
+
+  getPvpHisto():any
+  {
+    if(this.typeHistoPvp=="Combats lancés")
+    {
+      return this.histpvp.filter((h:any)=>h.user_id==this.profile);
+    }
+    else
+    {
+      return this.histpvp.filter((h:any)=>h.user_id2==this.profile);
+    }
+  }
+
+  
+  gethistoPvp()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetHistoPvp?').subscribe(data=>
+    {
+      this.histopvp = data;
+      this.histopvp.forEach((h:any)=>{
+        for(let i=0;i<h.team1.length;i++)
+        {
+          h.team1[i].perso = this.data.find((d:any)=>d.id==h.team1[i].id);
+        }
+        for(let i=0;i<h.team2.length;i++)
+        {
+          h.team2[i].perso = this.data.find((d:any)=>d.id==h.team2[i].id);
+        }
+      })
+      console.log(this.histopvp);
     });
   }
 
@@ -1704,7 +1750,9 @@ export class AppComponent implements OnInit
         (s.servant && s.servant.nom.toLowerCase().match(regexp)) ||
         (s.servantPrice && s.servantPrice.nom.toLowerCase().match(regexp)) ||
         (s.servantWithTitle && s.servantWithTitle.nom.toLowerCase().match(regexp)) ||
-        (s.servantPriceWithTitle && s.servantPriceWithTitle.nom.toLowerCase().match(regexp))
+        (s.servantPriceWithTitle && s.servantPriceWithTitle.nom.toLowerCase().match(regexp)) ||
+        (s.servantPriceWithTitle && s.servantPriceWithTitle.classe.toLowerCase().match(regexp)) ||
+        (s.servant && s.servant.classe.toLowerCase().match(regexp))
       );
     }
 
@@ -2356,6 +2404,19 @@ export class AppComponent implements OnInit
       else if(tmp.ascension==3)img = perso.img4;
     }
     return img;
+  }
+  getImg2(perso:any)
+  {
+    let img = perso.perso.img1;
+    if(perso.ascension==1)img = perso.perso.img2;
+    else if(perso.ascension==2)img = perso.perso.img3;
+    else if(perso.ascension==3)img = perso.perso.img4;
+    return img;
+  }
+
+  getUserName(id:any)
+  {
+    return this.users.find((u:any)=>u.id==id).nom;
   }
 
   getWidth(min:number,max:number)
