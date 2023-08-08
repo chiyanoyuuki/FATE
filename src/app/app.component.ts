@@ -73,13 +73,17 @@ import {
       state('takedamage', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('death', style({ left: "{{arrivex}}px", opacity:0 }), {params: {arrivex: '0'}}),
       transition('idle => dashavant', animate('400ms ease-in')),
+      transition('idle => takedamage', animate('400ms ease-out')),
       transition('dashavant => idle', animate('400ms ease-out')),
       transition('dashavant => coup', animate('400ms ease-in')),
-      transition('coup => dashavant', animate('400ms ease-out')),
-      transition('idle => takedamage', animate('400ms ease-out')),
-      transition('takedamage => idle', animate('400ms ease-in')),
       transition('dashavant => takedamage', animate('400ms ease-out')),
-      transition('takedamage => death', animate('1000ms'))
+      transition('coup => dashavant', animate('400ms ease-out')),
+      transition('takedamage => idle', animate('400ms ease-in')),
+
+      transition('takedamage => death', animate('1000ms')),
+      transition('dashavant => death', animate('1000ms')),
+      transition('idle => death', animate('1000ms')),
+      transition('coup => death', animate('1000ms'))
     ]),
 
     trigger('dmgAnimation', [
@@ -881,7 +885,6 @@ export class AppComponent implements OnInit
           h.team2[i].perso = this.data.find((d:any)=>d.id==h.team2[i].id);
         }
       })
-      console.log(this.histopvp);
     });
   }
 
@@ -2495,6 +2498,26 @@ export class AppComponent implements OnInit
     let i:any;
     let cible:any;
 
+    //Passive Assassin
+    for(let i=0;i<this.team1.length;i++)
+    {
+      let t = this.team1[i];
+      if(t.pdv>0&&t.poison>0)
+      {
+        this.addDmg(false,false,i,t,t.poison,1,true);
+        if(t.pdv-t.poison<=0)this.setAnimX22(t,0,"death",false);
+      }
+    }
+    for(let i=0;i<this.team2.length;i++)
+    {
+      let t2 = this.team2[i];
+      if(t2.pdv>0&&t2.poison>0)
+      {
+        this.addDmg(false,false,i,t2,t2.poison,1,true);
+        if(t2.pdv-t2.poison<=0)this.setAnimX22(t2,0,"death",false);
+      }
+    }
+
     let left1 = this.team1.filter((t:any)=>t.pdv>0);
     let left2 = this.team2.filter((t:any)=>t.pdv>0);
     let i1 = Math.round(Math.random()*(left1.length-1));
@@ -2578,6 +2601,12 @@ export class AppComponent implements OnInit
     
     this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
+      //NEGATIVE ASSASSIN
+      if(this.timerAttaque==200)
+      {
+        this.team1.filter((t:any)=>t.poison>0).forEach((t:any)=>t.negative=false);
+        this.team2.filter((t:any)=>t.poison>0).forEach((t:any)=>t.negative=false);
+      }
       //COUP NORMAL
       if(this.timerAttaque==700)
       {
@@ -2604,7 +2633,7 @@ export class AppComponent implements OnInit
         teamcible.filter((t:any)=>t.negative).forEach((t:any)=>t.negative=false);
         if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
         else this.setAnimX2(cible,0,"death",false);
-        this.setAnimX(i,200,"dashavant");
+        if(persoatq.pdv>0)this.setAnimX(i,200,"dashavant");
       }
       //APRES CLEAVE
       if(this.timerAttaque==1000)
@@ -2619,7 +2648,7 @@ export class AppComponent implements OnInit
       if(this.timerAttaque==1300)
       {
         persoatq.fail=false;
-        this.setAnimX(i,0,"idle");
+        if(persoatq.pdv>0)this.setAnimX(i,0,"idle");
         if(persocible.pdv>0)this.setAnimX2(cible,0,"endSlash",false);
       }
       //RETOUR IDLE CLEAVE
@@ -2705,6 +2734,23 @@ export class AppComponent implements OnInit
   getSmartCible(persoatq:any)
   {
     let classeatq = persoatq.classe;
+
+    if(classeatq=="Assassin")
+    {
+      let cibles;
+      if(this.teamattaque==0)cibles = this.team2;
+      else cibles = this.team1;
+
+      cibles = cibles.filter((c:any)=>c.pdv>0&&c.poison==0);
+
+      if(cibles.length>0)
+      {
+        let cible = cibles[Math.round(Math.random()*(cibles.length-1))];
+        if(this.teamattaque==0)return this.team2.indexOf(cible);
+        else return this.team1.indexOf(cible);
+      }
+    }
+
     let focus = this.team1.filter((t:any)=>t.pdv>0);
     if(this.teamattaque==0)focus = this.team2.filter((t:any)=>t.pdv>0);
 
@@ -2988,7 +3034,13 @@ export class AppComponent implements OnInit
         dmg = 0;
       }
     }
+    if(!ec&&classeatq=="Assassin"){persocible.poison+=Math.round(dmg*0.1);}
+    this.addDmg(ec,cc,cible,persocible,dmg,mult,false);
+    return ec;
+  }
 
+  addDmg(ec:any,cc:any,cible:any,persocible:any,dmg:any,mult:any,poison:any)
+  {
     let tmp: any;
 
     if(ec)
@@ -3000,12 +3052,14 @@ export class AppComponent implements OnInit
       tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
       if(mult>1){tmp.color='#f1da00';tmp.size='50px'}
       else if(mult<1){tmp.color='#4738ff';tmp.size='30px'}
+      if(poison){tmp.color='#003000';tmp.size='30px'}
     }
 
-    if(this.teamattaque==1)
+    if(this.team1.indexOf(persocible)!=-1)
     {
       tmp.left=this.xs1[cible]+20;
     }
+
     this.dmgs.push(tmp);
 
     let tmpinterval = setInterval(() => {
@@ -3016,7 +3070,6 @@ export class AppComponent implements OnInit
     persocible.negative = true;
     persocible.pdv = persocible.pdv - dmg;
     if(persocible.pdv<0)persocible.pdv = 0;
-    return ec;
   }
 
   setAnimX(i:any,x:any,anim:any)
@@ -3063,6 +3116,12 @@ export class AppComponent implements OnInit
         this.team1[cible].slash="0";
       }
     }
+  }
+
+  setAnimX22(perso:any,x:any,anim:any,miss:any)
+  {
+    perso.arrivex=x;
+    perso.animation=anim;
   }
 
   getXaction(val:any)
@@ -3167,6 +3226,7 @@ export class AppComponent implements OnInit
           tmp.arrivex = 0;
           tmp.negative = false;
           tmp.atqanim = "Saber";
+          tmp.poison = 0;
 
           tmp.np = 0;
           tmp.dmg = this.getDmg(tmp);
@@ -3190,6 +3250,7 @@ export class AppComponent implements OnInit
           tmp.arrivex = 0;
           tmp.negative = false;
           tmp.atqanim = "Saber";
+          tmp.poison = 0;
 
           tmp.np = 0;
           tmp.dmg = this.getDmg(tmp);
@@ -4190,11 +4251,8 @@ export class AppComponent implements OnInit
           if(x.price_servant_id_with_title!=-1)tmp.servantPriceWithTitle = this.data.find((y:any)=>y.id==x.price_servant_id_with_title);
           return tmp;
         });
-        console.log(sell);
-        console.log(data);
         if(data.find((d:any)=>d.id==sell.id&&d.bought_user_id==this.id))
         {
-          console.log("ok");
           if(sell.price_quartz!=-1)
           {
             let qte = sell.price_quartz;
