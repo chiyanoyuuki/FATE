@@ -4129,8 +4129,11 @@ export class AppComponent implements OnInit
           if(x.price_servant_id_with_title!=-1)tmp.servantPriceWithTitle = this.data.find((y:any)=>y.id==x.price_servant_id_with_title);
           return tmp;
         });
+        console.log(sell);
+        console.log(data);
         if(data.find((d:any)=>d.id==sell.id&&d.bought_user_id==this.id))
         {
+          console.log("ok");
           if(sell.price_quartz!=-1)
           {
             let qte = sell.price_quartz;
