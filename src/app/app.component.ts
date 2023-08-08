@@ -108,6 +108,8 @@ export class AppComponent implements OnInit
   public berserkerpassivechance2 = 25;
   public shielderpassivechance = 50;
 
+  public archerpassivedodgeboost = 25;
+
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
   public static cropstate: string = '0';
@@ -248,9 +250,10 @@ export class AppComponent implements OnInit
   public dmgs:any = [];
 
   public teambonus = [
-    {classe:"Ruler",qte:1,desc:"All team takes 90% damage"},
+    {classe:"Archer",qte:2,desc:"10% More chance to dodge for all team"},
     {classe:"Assassin",qte:2,desc:"Poisons are 10% stronger"},
-    {classe:"Berserker",qte:2,desc:"10% More chance to steal the turn"}
+    {classe:"Berserker",qte:2,desc:"10% More chance to steal the turn"},
+    {classe:"Ruler",qte:1,desc:"All team takes 90% damage"}
   ]
   public bonus1: any;
   public bonus2: any;
@@ -260,7 +263,7 @@ export class AppComponent implements OnInit
       row:
       [
         {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:false},
-        {class:"Archer",desc:"Dodge stat greatly increased",done:false},
+        {class:"Archer",desc:"Dodge stat greatly increased",done:true},
         {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:true},
         {class:"Avenger",desc:"Critical stat greatly increased",done:false},
         {class:"Beast",desc:"Increasing damage on non beasts party members every turn",done:false},
@@ -289,6 +292,8 @@ export class AppComponent implements OnInit
   ]
 
   public teamattaque = 0;
+
+  public consoletest = false;
 
   constructor(private http: HttpClient){
 
@@ -3037,7 +3042,24 @@ export class AppComponent implements OnInit
     }
     else
     {
-      rdm = Math.round(Math.random()*99);
+      let boost = 0;
+      if(persocible.class=="Archer")
+        boost += this.archerpassivedodgeboost;
+      if(this.team1.indexOf(persocible)!=-1)
+      {
+        if(this.bonus1.find((b:any)=>b.classe=="Archer"))
+          boost+=10;
+      }
+      if(this.team2.indexOf(persocible)!=-1)
+      {
+        if(this.bonus2.find((b:any)=>b.classe=="Archer"))
+          boost+=10;
+      }
+      
+      if(this.consoletest)
+        console.log("Passive Archer : " + boost);
+
+      rdm = Math.round(Math.random()*(99-boost));
       if(rdm<5)
       {
         ec = true;
@@ -3058,6 +3080,10 @@ export class AppComponent implements OnInit
         if(this.bonus2.find((b:any)=>b.classe=="Assassin"))
           bonus += 0.02;
       }
+
+      if(this.consoletest)
+        console.log("Passive Assassin : " + bonus);
+
       persocible.poison+=Math.round(dmg*(0.1+bonus));
     }
 
@@ -3068,17 +3094,23 @@ export class AppComponent implements OnInit
   addDmg(ec:any,cc:any,cible:any,persocible:any,dmg:any,mult:any,poison:any)
   {
     let tmp: any;
+    let bonus = 1;
 
     if(this.team1.indexOf(persocible)!=-1)
     {
       if(this.bonus1.find((b:any)=>b.classe=="Ruler"))
-        dmg = Math.round(dmg * 0.9);
+        bonus = 0.9;
     }
     else
     {
       if(this.bonus2.find((b:any)=>b.classe=="Ruler"))
-        dmg = Math.round(dmg * 0.9);
+        bonus = 0.9;
     }
+
+    if(this.consoletest)
+      console.log("Passive Ruler : " + bonus);
+
+    dmg = Math.round(dmg * bonus);
 
     if(ec)
     {
@@ -3188,24 +3220,29 @@ export class AppComponent implements OnInit
       let t1 = this.team1.filter((t:any)=>t.pdv>0).length;
       let t2 = this.team2.filter((t:any)=>t.pdv>0).length;
 
+      let bonus = 0;
+
       if(this.teamattaque==0)
       {
         diff=t1-t2;
         if(this.bonus1.find((b:any)=>b.classe=="Berserker"))
-          diff += 1;
+          bonus += 1;
         if(this.bonus2.find((b:any)=>b.classe=="Berserker"))
-          diff -= 1;
+          bonus -= 1;
       }
       else if(this.teamattaque==1)
       {
         diff=t2-t1;
         if(this.bonus2.find((b:any)=>b.classe=="Berserker"))
-          diff += 1;
+          bonus += 1;
         if(this.bonus1.find((b:any)=>b.classe=="Berserker"))
-          diff -= 1;
+          bonus -= 1;
       }
 
-      let rdm = Math.round(Math.random()*(99-(diff*10)));
+      if(this.consoletest)
+        console.log("Passive Berserker : " + bonus);
+
+      let rdm = Math.round(Math.random()*(99-((diff+bonus)*10)));
       if(rdm>10)
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
