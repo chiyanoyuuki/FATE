@@ -246,6 +246,14 @@ export class AppComponent implements OnInit
   public attaquestate = 0;
   public dmgs:any = [];
 
+  public teambonus = [
+    {classe:"Ruler",qte:1,desc:"All team takes 90% damage"},
+    {classe:"Assassin",qte:2,val:"Poisons are 10% stronger"},
+    {classe:"Berserker",qte:2,val:"10% More chance to steal the turn"}
+  ]
+  public bonus1: any;
+  public bonus2: any;
+
   public fightInfos = [
     {
       row:
@@ -2513,7 +2521,7 @@ export class AppComponent implements OnInit
       if(t.pdv>0&&t.poison>0)
       {
         this.addDmg(false,false,i,t,t.poison,1,true);
-        if(t.pdv-t.poison<=0)this.setAnimX22(t,0,"death",false);
+        if(t.pdv==0)this.setAnimX22(t,0,"death",false);
       }
     }
     for(let i=0;i<this.team2.length;i++)
@@ -2599,7 +2607,7 @@ export class AppComponent implements OnInit
     if(persoatq.classe=="Lancer"||persoatq.classe=="Archer")persocible.atqanimdecal = 150;
     if(persoatq.classe=="Assassin")persocible.atqanimdecal = 50;
     
-    this.setAnimX(i,200,"dashavant");
+    if(persoatq.pdv>0)this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
       //NEGATIVE ASSASSIN
       if(this.timerAttaque==100)
@@ -2610,15 +2618,18 @@ export class AppComponent implements OnInit
       //COUP NORMAL
       if(this.timerAttaque==700)
       {
-        if(fail){persoatq.fail=true;}
-        let dmg = this.damage(i,cible,false);
-        this.setAnimX(i,300,"coup");
+        if(persoatq.pdv>0)
+        {
+          if(fail){persoatq.fail=true;}
+          let dmg = this.damage(i,cible,false);
+          this.setAnimX(i,300,"coup");
+          this.setAnimX2(cible,-100,"takedamage",dmg);
+        }
         if(passiveShielder!=-1)
         {
           persoshield.animation="idle";
           persoshield.slash="0";
         }
-        this.setAnimX2(cible,-100,"takedamage",dmg);
       }
       //CLEAVE
       if(this.timerAttaque==800)
@@ -3043,6 +3054,17 @@ export class AppComponent implements OnInit
   {
     let tmp: any;
 
+    if(this.team1.indexOf(persocible)!=-1)
+    {
+      if(this.bonus1.find((b:any)=>b.classe=="Ruler"))
+        dmg = Math.round(dmg * 0.9);
+    }
+    else
+    {
+      if(this.bonus2.find((b:any)=>b.classe=="Ruler"))
+        dmg = Math.round(dmg * 0.9);
+    }
+
     if(ec)
     {
       tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:"Rate-",timer:0,color:'white',size:'40px', cc:cc, ec:ec};
@@ -3175,6 +3197,9 @@ export class AppComponent implements OnInit
         this.levels = levels;
 
         this.state="duel";
+
+        this.bonus1 = [];
+        this.bonus2 = [];
 
         let team1 = pvp.find((p:any)=>p.user_id == this.id);
         let team2 = pvp.find((p:any)=>p.user_id == this.profile);

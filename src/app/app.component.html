@@ -85,7 +85,7 @@
             <img *ngIf="perso.fail" style="z-index:5;position: absolute;top:0px;width:50px;height:50px" src="./assets/images/fail.png"/>
             <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
             <img draggable="false" [attr.id]="'perso1-'+i" [class.titleDuel]="titlesduel[i]==1"  src="{{getSprite(perso)}}" [style.transform]="perso.turn?'unset':'scaleX(-1)'"/>
-            <img class="opa0" [@slashOpacity]="perso.slash" src="./assets/images/atq/{{perso.atqanim}}.png" style="position:absolute;width:100%;height:100%;filter: drop-shadow(0px 0px 4px black)!important;left:-20px;" [style.left]="perso.atqanimdecal+'px'"/>
+            <img class="opa0" [@slashOpacity]="perso.slash" src="./assets/images/atq/{{perso.atqanim}}.png" style="position:absolute;width:100%;height:100%;filter: drop-shadow(0px 0px 4px black)!important;" [style.left]="perso.atqanimdecal+'px'"/>
           </div>
         </div>
       </div>
@@ -96,7 +96,7 @@
             <img *ngIf="perso.fail" style="z-index:5;position: absolute;top:0px;width:50px;height:50px" src="./assets/images/fail.png"/>
             <img draggable="false" class="shadow" src="./assets/images/shadow.png"/>
             <img  draggable="false" [attr.id]="'perso2-'+i" [class.titleDuel]="titlesduel2[i]==1" src="{{getSprite(perso)}}"  [style.transform]="!perso.turn?'unset':'scaleX(-1)'"/>
-            <img class="opa0" [@slashOpacity]="perso.slash" src="./assets/images/atq/{{perso.atqanim}}.png" style="position:absolute;width:100%;height:100%;transform: scaleX(-1);filter: drop-shadow(0px 0px 4px black)!important;right:-20px;" [style.right]="perso.atqanimdecal+'px'"/>
+            <img class="opa0" [@slashOpacity]="perso.slash" src="./assets/images/atq/{{perso.atqanim}}.png" style="position:absolute;width:100%;height:100%;transform: scaleX(-1);filter: drop-shadow(0px 0px 4px black)!important;" [style.right]="perso.atqanimdecal+'px'"/>
           </div>
         </div>
       </div>
@@ -249,8 +249,8 @@
 
       <div class="histoPulls" *ngIf="historiquePvp">
         <div style="display:flex;justify-content: space-around;">
-          <p [class.red]="typeHistoPvp=='Combats lancés'" (click)="typeHistoPvp=(typeHistoPvp=='Combats lancés'?'Combats subis':'Combats lancés')" class="clickable">Combats lancés</p>
-          <p [class.red]="typeHistoPvp=='Combats subis'" (click)="typeHistoPvp=(typeHistoPvp=='Combats subis'?'Combats lancés':'Combats subis')" class="clickable">Combats subis</p>
+          <p [class.red]="typeHistoPvp=='Combats lancés'" (click)="typeHistoPvp='Combats lancés'" class="clickable">Combats lancés</p>
+          <p [class.red]="typeHistoPvp=='Combats subis'" (click)="typeHistoPvp='Combats subis'" class="clickable">Combats subis</p>
         </div>
         <div class="clickable3" (click)="historiquePvp=false;" >
           <div *ngFor="let pvp of getPvpHisto()">
