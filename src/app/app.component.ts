@@ -3059,8 +3059,8 @@ export class AppComponent implements OnInit
       if(this.consoletest)
         console.log("Passive Archer : " + boost);
 
-      rdm = Math.round(Math.random()*(99-boost));
-      if(rdm<5)
+      rdm = Math.round(Math.random()*99);
+      if(rdm<(5+boost))
       {
         ec = true;
         dmg = 0;
@@ -3242,8 +3242,8 @@ export class AppComponent implements OnInit
       if(this.consoletest)
         console.log("Passive Berserker : " + bonus);
 
-      let rdm = Math.round(Math.random()*(99-((diff+bonus)*10)));
-      if(rdm>10)
+      let rdm = Math.round(Math.random()*99);
+      if(rdm>(10+((diff+bonus)*10)))
       {
         this.teamattaque==1?this.teamattaque=0:this.teamattaque=1;
       }
