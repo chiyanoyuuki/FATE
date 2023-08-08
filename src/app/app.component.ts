@@ -252,7 +252,7 @@ export class AppComponent implements OnInit
       [
         {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:false},
         {class:"Archer",desc:"Dodge stat greatly increased",done:false},
-        {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:false},
+        {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:true},
         {class:"Avenger",desc:"Critical stat greatly increased",done:false},
         {class:"Beast",desc:"Increasing damage on non beasts party members every turn",done:false},
       ],
@@ -2492,6 +2492,14 @@ export class AppComponent implements OnInit
 
   startDash()
   {
+    let left1 = this.team1.filter((t:any)=>t.pdv>0);
+    let left2 = this.team2.filter((t:any)=>t.pdv>0);
+    if(left1.length==0||left2.length==0)
+    {
+      this.endFight(left1.length,left2.length);
+      return;
+    }
+
     let persoatq:any;
     let persocible:any;
     let teamcible:any;
@@ -2517,17 +2525,9 @@ export class AppComponent implements OnInit
         if(t2.pdv-t2.poison<=0)this.setAnimX22(t2,0,"death",false);
       }
     }
-
-    let left1 = this.team1.filter((t:any)=>t.pdv>0);
-    let left2 = this.team2.filter((t:any)=>t.pdv>0);
+    
     let i1 = Math.round(Math.random()*(left1.length-1));
     let i2 = Math.round(Math.random()*(left2.length-1));
-
-    if(left1.length==0||left2.length==0)
-    {
-      this.endFight(left1.length,left2.length);
-      return;
-    }
 
     if(this.teamattaque==0)
     {
@@ -2602,7 +2602,7 @@ export class AppComponent implements OnInit
     this.setAnimX(i,200,"dashavant");
     this.attaqueInterval = setInterval(() => {
       //NEGATIVE ASSASSIN
-      if(this.timerAttaque==200)
+      if(this.timerAttaque==100)
       {
         this.team1.filter((t:any)=>t.poison>0).forEach((t:any)=>t.negative=false);
         this.team2.filter((t:any)=>t.poison>0).forEach((t:any)=>t.negative=false);
