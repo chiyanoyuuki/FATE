@@ -122,6 +122,8 @@ export class AppComponent implements OnInit
 
   public alteregopassiveheal = 0.3;
 
+  public saberpassiveincrease = 0.1;
+
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
   public static cropstate: string = '0';
@@ -277,7 +279,7 @@ export class AppComponent implements OnInit
         {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:true},
         {class:"Archer",desc:"Dodge stat greatly increased",done:true},
         {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:true},
-        {class:"Avenger",desc:"Critical stat greatly increased",done:false},
+        {class:"Avenger",desc:"Chance to strike back when attacked",done:false},
         {class:"Beast",desc:"Increasing damage on non beasts party members every turn",done:false},
       ],
     },
@@ -297,7 +299,7 @@ export class AppComponent implements OnInit
         {class:"Pretender",desc:"Gives evade for one strike to non pretender party members",done:false},
         {class:"Rider",desc:"Little chance to strike twice instead of one time",done:false},
         {class:"Ruler",desc:"Gives every party member more DEF",done:false},
-        {class:"Saber",desc:"Chance to strike back when attacked",done:false},
+        {class:"Saber",desc:"Dmg increase on strike, decrease on miss",done:true},
         {class:"Shielder",desc:"Chance to take the focus instead of one ally",done:true}
       ]
     }
@@ -3101,6 +3103,25 @@ export class AppComponent implements OnInit
 
       persocible.poison+=Math.round(dmg*(0.1+bonus));
     }
+
+    if(ec&&classeatq=="Saber")
+    {
+      let dec = Math.round(persoatq.dmg * this.saberpassiveincrease);
+      persoatq.dmg -= dec;
+      let i = 0;
+      if(this.teamattaque==0)i = this.team1.indexOf(persoatq);
+      else i = this.team2.indexOf(persoatq);
+      this.addDmg(false,false,i,persoatq,dec,1,"decrease",undefined);
+    }
+    else if(!ec&&classeatq=="Saber")
+    {
+      let inc = Math.round(persoatq.dmg * this.saberpassiveincrease);
+      persoatq.dmg += inc;
+      let i = 0;
+      if(this.teamattaque==0)i = this.team1.indexOf(persoatq);
+      else i = this.team2.indexOf(persoatq);
+      this.addDmg(false,false,i,persoatq,inc,1,"increase",undefined);
+    }
     
     this.addDmg(ec,cc,cible,persocible,dmg,mult,"normal",persoatq);
     return ec;
@@ -3111,30 +3132,33 @@ export class AppComponent implements OnInit
     let tmp: any;
     let bonus = 1;
 
-    if(this.team1.indexOf(persocible)!=-1)
+    if(dmg=="normal")
     {
-      if(this.bonus1.find((b:any)=>b.classe=="Ruler"))
-        bonus = this.rulerteamboost;
-    }
-    else
-    {
-      if(this.bonus2.find((b:any)=>b.classe=="Ruler"))
-        bonus = this.rulerteamboost;
-    }
-
-    if(this.consoletest && bonus != 1)
-      console.log("Passive Ruler : " + bonus);
-
-    dmg = Math.round(dmg * bonus);
-
-    if(persoatq && persoatq.classe=="Moon Cancer")
-    {
-      let i = 0;
-      if(this.teamattaque==0)
-        i = this.team1.indexOf(persoatq);
-      else 
-        i = this.team2.indexOf(persoatq);
-      this.addDmg(false,false,i,persoatq,Math.round(dmg*this.mooncancerpassiveheal),1,"heal",undefined);
+      if(this.team1.indexOf(persocible)!=-1)
+      {
+        if(this.bonus1.find((b:any)=>b.classe=="Ruler"))
+          bonus = this.rulerteamboost;
+      }
+      else
+      {
+        if(this.bonus2.find((b:any)=>b.classe=="Ruler"))
+          bonus = this.rulerteamboost;
+      }
+  
+      if(this.consoletest && bonus != 1)
+        console.log("Passive Ruler : " + bonus);
+  
+      dmg = Math.round(dmg * bonus);
+  
+      if(persoatq && persoatq.classe=="Moon Cancer")
+      {
+        let i = 0;
+        if(this.teamattaque==0)
+          i = this.team1.indexOf(persoatq);
+        else 
+          i = this.team2.indexOf(persoatq);
+        this.addDmg(false,false,i,persoatq,Math.round(dmg*this.mooncancerpassiveheal),1,"heal",undefined);
+      }
     }
 
     if(ec)
@@ -3148,6 +3172,8 @@ export class AppComponent implements OnInit
       else if(mult<1){tmp.color='#4738ff';tmp.size='30px'}
       if(type=="poison"){tmp.color='#003000';tmp.size='30px'}
       else if(type=="heal"){tmp.color='#0dc900';tmp.size='40px';tmp.dmg = "+"+dmg;}
+      else if(type=="decrease"){tmp.color='red';tmp.size='20px';tmp.dmg = "-"+dmg+" dmg";}
+      else if(type=="increase"){tmp.color='gold';tmp.size='20px';tmp.dmg = "+"+dmg+" dmg";}
     }
 
     if(this.team1.indexOf(persocible)!=-1)
@@ -3165,7 +3191,7 @@ export class AppComponent implements OnInit
 
     if(!ec)
     {
-      if(type!="heal")
+      if(type=="normal"||type=="poison")
       {
         persocible.negative = true;
         persocible.pdv = persocible.pdv - dmg;
@@ -3178,6 +3204,10 @@ export class AppComponent implements OnInit
             this.addDmg(false,false,cible,persocible,Math.round(persocible.pdvmax*this.alteregopassiveheal),1,"heal",undefined);
           }
         }
+      }
+      if(type!="heal")
+      {
+        
       }
       else
       {
