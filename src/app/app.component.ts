@@ -106,9 +106,19 @@ export class AppComponent implements OnInit
 {
   public berserkerpassivechance1 = 75;
   public berserkerpassivechance2 = 25;
+  public berserkerteamboost = 1;
+
   public shielderpassivechance = 50;
 
   public archerpassivedodgeboost = 25;
+  public archerteamboost = 10;
+
+  public assassinpassivepoison = 0.1;
+  public assassinteamboost = 0.02;
+
+  public rulerteamboost = 0.9;
+
+  public mooncancerpassiveheal = 0.1;
 
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
@@ -276,7 +286,7 @@ export class AppComponent implements OnInit
         {class:"Caster",desc:"Starts the fight with his NP jauge charged a bit",done:false},
         {class:"Foreigner",desc:"Obtain stealth after beeing hit",done:false},
         {class:"Lancer",desc:"Chance to hit the attacker for a little amount",done:false},
-        {class:"Moon Cancer",desc:"Heals a percentage of damage dealt",done:false}
+        {class:"Moon Cancer",desc:"Heals a percentage of damage dealt",done:true}
       ],
     },
     {
@@ -293,7 +303,7 @@ export class AppComponent implements OnInit
 
   public teamattaque = 0;
 
-  public consoletest = false;
+  public consoletest = true;
 
   constructor(private http: HttpClient){
 
@@ -2526,7 +2536,7 @@ export class AppComponent implements OnInit
       let t = this.team1[i];
       if(t.pdv>0&&t.poison>0)
       {
-        this.addDmg(false,false,i,t,t.poison,1,true);
+        this.addDmg(false,false,i,t,t.poison,1,"poison",undefined);
         if(t.pdv==0)this.setAnimX22(t,0,"death",false);
       }
     }
@@ -2535,7 +2545,7 @@ export class AppComponent implements OnInit
       let t2 = this.team2[i];
       if(t2.pdv>0&&t2.poison>0)
       {
-        this.addDmg(false,false,i,t2,t2.poison,1,true);
+        this.addDmg(false,false,i,t2,t2.poison,1,"poison",undefined);
         if(t2.pdv-t2.poison<=0)this.setAnimX22(t2,0,"death",false);
       }
     }
@@ -2563,7 +2573,10 @@ export class AppComponent implements OnInit
     let fail = false;
     //Intelligence du coup
     let rdm = Math.round(Math.random()*99);
-    if(teamcible.length==1){}
+    if(teamcible.filter((t:any)=>t.pdv>0).length==1)
+    {
+      fail = false;
+    }
     else if(rdm>20)
     {
       cible = this.getSmartCible(persoatq);
@@ -3048,15 +3061,15 @@ export class AppComponent implements OnInit
       if(this.team1.indexOf(persocible)!=-1)
       {
         if(this.bonus1.find((b:any)=>b.classe=="Archer"))
-          boost+=10;
+          boost+=this.archerteamboost;
       }
       if(this.team2.indexOf(persocible)!=-1)
       {
         if(this.bonus2.find((b:any)=>b.classe=="Archer"))
-          boost+=10;
+          boost+=this.archerteamboost;
       }
       
-      if(this.consoletest)
+      if(this.consoletest && boost!=0)
         console.log("Passive Archer : " + boost);
 
       rdm = Math.round(Math.random()*99);
@@ -3073,25 +3086,25 @@ export class AppComponent implements OnInit
       if(this.teamattaque==0)
       {
         if(this.bonus1.find((b:any)=>b.classe=="Assassin"))
-          bonus += 0.1;
+          bonus += this.assassinteamboost;
       }
       else if(this.teamattaque==1)
       {
         if(this.bonus2.find((b:any)=>b.classe=="Assassin"))
-          bonus += 0.02;
+          bonus += this.assassinteamboost;
       }
 
-      if(this.consoletest)
+      if(this.consoletest&&bonus!=0)
         console.log("Passive Assassin : " + bonus);
 
       persocible.poison+=Math.round(dmg*(0.1+bonus));
     }
-
-    this.addDmg(ec,cc,cible,persocible,dmg,mult,false);
+    
+    this.addDmg(ec,cc,cible,persocible,dmg,mult,"normal",persoatq);
     return ec;
   }
 
-  addDmg(ec:any,cc:any,cible:any,persocible:any,dmg:any,mult:any,poison:any)
+  addDmg(ec:any,cc:any,cible:any,persocible:any,dmg:any,mult:any,type:any,persoatq:any)
   {
     let tmp: any;
     let bonus = 1;
@@ -3099,18 +3112,28 @@ export class AppComponent implements OnInit
     if(this.team1.indexOf(persocible)!=-1)
     {
       if(this.bonus1.find((b:any)=>b.classe=="Ruler"))
-        bonus = 0.9;
+        bonus = this.rulerteamboost;
     }
     else
     {
       if(this.bonus2.find((b:any)=>b.classe=="Ruler"))
-        bonus = 0.9;
+        bonus = this.rulerteamboost;
     }
 
-    if(this.consoletest)
+    if(this.consoletest && bonus != 1)
       console.log("Passive Ruler : " + bonus);
 
     dmg = Math.round(dmg * bonus);
+
+    if(persoatq && persoatq.classe=="Moon Cancer")
+    {
+      let i = 0;
+      if(this.teamattaque==0)
+        i = this.team1.indexOf(persoatq);
+      else 
+        i = this.team2.indexOf(persoatq);
+      this.addDmg(false,false,i,persoatq,Math.round(dmg*this.mooncancerpassiveheal),1,"heal",undefined);
+    }
 
     if(ec)
     {
@@ -3118,10 +3141,11 @@ export class AppComponent implements OnInit
     }
     else
     {
-      tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
+      tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:"-"+dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
       if(mult>1){tmp.color='#f1da00';tmp.size='50px'}
       else if(mult<1){tmp.color='#4738ff';tmp.size='30px'}
-      if(poison){tmp.color='#003000';tmp.size='30px'}
+      if(type=="poison"){tmp.color='#003000';tmp.size='30px'}
+      else if(type=="heal"){tmp.color='#0dc900';tmp.size='40px';tmp.dmg = "+"+dmg;}
     }
 
     if(this.team1.indexOf(persocible)!=-1)
@@ -3136,9 +3160,21 @@ export class AppComponent implements OnInit
       tmp.anim='1';
       clearInterval(tmpinterval);
     },50);
-    persocible.negative = true;
-    persocible.pdv = persocible.pdv - dmg;
-    if(persocible.pdv<0)persocible.pdv = 0;
+
+    if(!ec)
+    {
+      if(type!="heal")
+      {
+        persocible.negative = true;
+        persocible.pdv = persocible.pdv - dmg;
+        if(persocible.pdv<0)persocible.pdv = 0;
+      }
+      else
+      {
+        persocible.pdv = persocible.pdv + dmg;
+        if(persocible.pdv>persocible.pdvmax)persocible.pdv = persocible.pdvmax;
+      }
+    }
   }
 
   setAnimX(i:any,x:any,anim:any)
@@ -3226,20 +3262,20 @@ export class AppComponent implements OnInit
       {
         diff=t1-t2;
         if(this.bonus1.find((b:any)=>b.classe=="Berserker"))
-          bonus += 1;
+          bonus += this.berserkerteamboost;
         if(this.bonus2.find((b:any)=>b.classe=="Berserker"))
-          bonus -= 1;
+          bonus -= this.berserkerteamboost;
       }
       else if(this.teamattaque==1)
       {
         diff=t2-t1;
         if(this.bonus2.find((b:any)=>b.classe=="Berserker"))
-          bonus += 1;
+          bonus += this.berserkerteamboost;
         if(this.bonus1.find((b:any)=>b.classe=="Berserker"))
-          bonus -= 1;
+          bonus -= this.berserkerteamboost;
       }
 
-      if(this.consoletest)
+      if(this.consoletest && bonus!=0)
         console.log("Passive Berserker : " + bonus);
 
       let rdm = Math.round(Math.random()*99);

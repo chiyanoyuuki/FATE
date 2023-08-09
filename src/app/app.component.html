@@ -11,7 +11,7 @@
 
       <div class="duelstats">
 
-        <p [class.cc]="dmg.cc" [style.color]="dmg.color+'!important'" [style.font-size]="dmg.cc?(dmg.size+20)+'px!important':dmg.size+'!important'" class="damage" *ngFor="let dmg of dmgs" [@dmgAnimation]="{value:dmg.anim, params:{pos:dmg.pos}}" [style.left]="dmg.left+'px'">-{{dmg.dmg}}</p>
+        <p [class.cc]="dmg.cc" [style.color]="dmg.color+'!important'" [style.font-size]="dmg.cc?(dmg.size+20)+'px!important':dmg.size+'!important'" class="damage" *ngFor="let dmg of dmgs" [@dmgAnimation]="{value:dmg.anim, params:{pos:dmg.pos}}" [style.left]="dmg.left+'px'">{{dmg.dmg}}</p>
 
         <div>
           <p class="containerStatsDuel" style="padding:0px">{{getFightName(id)}}</p>
