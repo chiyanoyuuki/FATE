@@ -120,6 +120,8 @@ export class AppComponent implements OnInit
 
   public mooncancerpassiveheal = 0.1;
 
+  public alteregopassiveheal = 0.3;
+
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
   public static cropstate: string = '0';
@@ -272,7 +274,7 @@ export class AppComponent implements OnInit
     {
       row:
       [
-        {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:false},
+        {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:true},
         {class:"Archer",desc:"Dodge stat greatly increased",done:true},
         {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:true},
         {class:"Avenger",desc:"Critical stat greatly increased",done:false},
@@ -3167,7 +3169,15 @@ export class AppComponent implements OnInit
       {
         persocible.negative = true;
         persocible.pdv = persocible.pdv - dmg;
-        if(persocible.pdv<0)persocible.pdv = 0;
+        if(persocible.pdv<=0)
+        {
+          persocible.pdv = 0;
+          if(persocible.passive>0 && persocible.classe=="Alter Ego")
+          {
+            persocible.passive--;
+            this.addDmg(false,false,cible,persocible,Math.round(persocible.pdvmax*this.alteregopassiveheal),1,"heal",undefined);
+          }
+        }
       }
       else
       {
@@ -3352,6 +3362,7 @@ export class AppComponent implements OnInit
           tmp.negative = false;
           tmp.atqanim = "Saber";
           tmp.poison = 0;
+          tmp.passive = 1;
 
           tmp.np = 0;
           tmp.dmg = this.getDmg(tmp);
@@ -3376,6 +3387,7 @@ export class AppComponent implements OnInit
           tmp.negative = false;
           tmp.atqanim = "Saber";
           tmp.poison = 0;
+          tmp.passive = 1;
 
           tmp.np = 0;
           tmp.dmg = this.getDmg(tmp);
@@ -3432,15 +3444,18 @@ export class AppComponent implements OnInit
       compo = this.pvps.find((p:any)=>p.user_id == this.profile);
     }
     let classes: any = [];
-    compo.team.forEach((t:any)=>{
-      classes.push(this.data.find((d:any)=>d.id==t).classe);
-    })
-    this.teambonus.forEach((t:any)=>{
-      if(classes.filter((c:any)=>c==t.classe).length>=t.qte)
-      {
-        bonus.push(t);
-      }
-    });
+    if(compo)
+    {
+      compo.team.forEach((t:any)=>{
+        classes.push(this.data.find((d:any)=>d.id==t).classe);
+      })
+      this.teambonus.forEach((t:any)=>{
+        if(classes.filter((c:any)=>c==t.classe).length>=t.qte)
+        {
+          bonus.push(t);
+        }
+      });
+    }
     return bonus;
   }
 
