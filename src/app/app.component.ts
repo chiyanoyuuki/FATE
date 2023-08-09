@@ -118,7 +118,7 @@ export class AppComponent implements OnInit
 
   public rulerteamboost = 0.9;
 
-  public mooncancerpassiveheal = 0.1;
+  public mooncancerpassiveheal = 0.2;
 
   public alteregopassiveheal = 0.3;
 
@@ -3132,7 +3132,7 @@ export class AppComponent implements OnInit
     let tmp: any;
     let bonus = 1;
 
-    if(dmg=="normal")
+    if(type=="normal")
     {
       if(this.team1.indexOf(persocible)!=-1)
       {
