@@ -3499,7 +3499,7 @@ export class AppComponent implements OnInit
 
   getNpCharge(perso:any,dmg:any)
   {
-    perso.npjauge += Math.floor(dmg/500);
+    perso.npjauge += Math.floor(dmg/300);
     if(perso.npjauge>100)perso.npjauge=100;
   }
 
