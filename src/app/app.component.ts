@@ -312,7 +312,7 @@ export class AppComponent implements OnInit
       row:
       [
         {class:"Berserker",desc:"Chance to hit up to 2 ennemies next to the initial target",done:true},
-        {class:"Caster",desc:"Starts the fight with his NP jauge charged a bit",done:false},
+        {class:"Caster",desc:"Starts the fight with his NP jauge charged a bit",done:true},
         {class:"Foreigner",desc:"Obtain stealth after beeing hit",done:false},
         {class:"Lancer",desc:"Chance to hit the attacker for a little amount",done:false},
         {class:"Moon Cancer",desc:"Heals a percentage of damage dealt",done:true}

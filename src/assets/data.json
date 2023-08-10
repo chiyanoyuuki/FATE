@@ -7924,6 +7924,11 @@
 		"scale":1,
 		"id":390,
 		"nom":"Rin Tohsaka",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/rin/0.jpg",
@@ -7937,6 +7942,11 @@
 		"scale":1,
 		"id":391,
 		"nom":"Noah",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Rider",
 		"img1":"./assets/images/servants/noah/0.jpg",
@@ -7950,6 +7960,11 @@
 		"scale":1,
 		"id":392,
 		"nom":"Suzuka Gozen Santa",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":4,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/suzukagozensanta/0.jpg",
@@ -7962,6 +7977,11 @@
 		"scale":1,
 		"id":393,
 		"nom":"Beast IV/S",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Beast",
 		"img1":"./assets/images/servants/beastivs/0.jpg",
@@ -7971,6 +7991,11 @@
 		"scale":1,
 		"id":394,
 		"nom":"Kirschtaria",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/kirschtaria/0.jpg",
@@ -7984,6 +8009,11 @@
 		"scale":1,
 		"id":395,
 		"nom":"Sakura Matou",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Alter Ego",
 		"img1":"./assets/images/servants/sakura/0.jpg",
@@ -7998,6 +8028,11 @@
 		"scale":1,
 		"id":396,
 		"nom":"Black Irisviel",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Avenger",
 		"img1":"./assets/images/servants/blackirisviel/0.jpg",
@@ -8011,6 +8046,11 @@
 		"scale":1,
 		"id":397,
 		"nom":"Galahad",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Shielder",
 		"img1":"./assets/images/servants/galahad/0.jpg",
@@ -8024,6 +8064,11 @@
 		"scale":1,
 		"id":398,
 		"nom":"Illyasviel",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Assassin",
 		"img1":"./assets/images/servants/illyasviel/0.jpg",
@@ -8036,6 +8081,11 @@
 		"scale":1,
 		"id":399,
 		"nom":"Kirei Kotomine",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Ruler",
 		"img1":"./assets/images/servants/kirei/0.jpg",
@@ -8049,6 +8099,11 @@
 		"scale":1,
 		"id":400,
 		"nom":"Marie Antoinette Alter",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Pretender",
 		"img1":"./assets/images/servants/marieantoinette/0.jpg",
@@ -8061,6 +8116,11 @@
 		"scale":1,
 		"id":401,
 		"nom":"Miyamoto Musashi Alter",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Berserker",
 		"img1":"./assets/images/servants/musashialter/0.jpg",
@@ -8073,6 +8133,11 @@
 		"scale":1,
 		"id":402,
 		"nom":"Mordred Trifas",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/mordredtrifas/0.jpg",
@@ -8086,6 +8151,11 @@
 		"scale":1,
 		"id":403,
 		"nom":"Shirou",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/shirou/0.jpg",
@@ -8100,6 +8170,11 @@
 		"scale":1,
 		"id":404,
 		"nom":"Maxwell's Demon",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/maxwell/0.jpg",
@@ -8112,6 +8187,11 @@
 		"scale":1,
 		"id":405,
 		"nom":"Mordred Alter",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Alter Ego",
 		"img1":"./assets/images/servants/mordredalter/0.jpg",
@@ -8124,6 +8204,11 @@
 		"scale":1,
 		"id":406,
 		"nom":"Alatariel",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Ruler",
 		"img1":"./assets/images/servants/alatariel/0.jpg",
@@ -8136,6 +8221,11 @@
 		"scale":1,
 		"id":408,
 		"nom":"Olga Marie",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Foreigner",
 		"img1":"./assets/images/servants/olgamarie/0.jpg",
@@ -8149,6 +8239,11 @@
 		"scale":1,
 		"id":409,
 		"nom":"Morgan Lily",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/lilymorgan/0.png",
@@ -8162,6 +8257,11 @@
 		"scale":1,
 		"id":410,
 		"nom":"Arjuna Saber",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/arjunasaber/0.png",
@@ -8175,6 +8275,11 @@
 		"scale":1,
 		"id":411,
 		"nom":"Manaka Sajyou",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/manaka/0.png",
@@ -8188,6 +8293,11 @@
 		"scale":1,
 		"id":412,
 		"nom":"Marie",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":4,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/marie/0.png",
@@ -8201,6 +8311,11 @@
 		"scale":1,
 		"id":413,
 		"nom":"Kiritsugu",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Assassin",
 		"img1":"./assets/images/servants/kiritsugu/0.png",
@@ -8214,6 +8329,11 @@
 		"scale":1,
 		"id":414,
 		"nom":"Cu Chulainn Summer",
+		"np":
+		{
+			"nom":"Temporary Phantasm",
+			"type":"AoE"
+		},
 		"level":5,
 		"classe":"Rider",
 		"img1":"./assets/images/servants/cuchu/0.png",
