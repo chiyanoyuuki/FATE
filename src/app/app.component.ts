@@ -68,11 +68,12 @@ import {
     ]),
 
     trigger('animationcombat', [
-      state('idle', style({ left: "0px" })),
-      state('dashavant', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
-      state('coup', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      state('idle',       style({ left: "0px" })),
+      state('dashavant',  style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      state('coup',       style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('takedamage', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
-      state('death', style({ left: "{{arrivex}}px", opacity:0 }), {params: {arrivex: '0'}}),
+      state('death',      style({ left: "{{arrivex}}px", opacity:0 }), {params: {arrivex: '0'}}),
+      state('np',         style({ left: "{{arrivex}}px", top: "-200px" }), {params: {arrivex: '0'}}),
       transition('idle => dashavant', animate('400ms ease-in')),
       transition('idle => takedamage', animate('400ms ease-out')),
       transition('dashavant => idle', animate('400ms ease-out')),
@@ -80,6 +81,8 @@ import {
       transition('dashavant => takedamage', animate('400ms ease-out')),
       transition('coup => dashavant', animate('400ms ease-out')),
       transition('takedamage => idle', animate('400ms ease-in')),
+      transition('idle => np', animate('400ms ease-out')),
+      transition('np => idle', animate('400ms ease-in')),
 
       transition('takedamage => death', animate('1000ms')),
       transition('dashavant => death', animate('1000ms')),
@@ -98,6 +101,17 @@ import {
       state('1', style({ opacity: "1" })),
       transition('0 => 1', animate('50ms ease-in')),
       transition('1 => 0', animate('800ms ease-out'))
+    ]),
+
+    trigger('npUsed', [
+      state('1', style({ left: "120%" })),
+      state('2', style({ left: "0%" })),
+      state('3', style({ left: "-20%" })),
+      state('4', style({ left: "-200%" })),
+      transition('1 => 2', animate('400ms ease-in')),
+      transition('2 => 3', animate('1500ms ease-out')),
+      transition('3 => 4', animate('600ms ease-out')),
+      transition('4 => 1', animate('0ms'))
     ]),
   ]
 })
@@ -123,6 +137,9 @@ export class AppComponent implements OnInit
   public alteregopassiveheal = 0.3;
 
   public saberpassiveincrease = 0.1;
+
+  public casterpassiveincrease = 30;
+  public casterteamboost = 15;
 
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
@@ -227,6 +244,7 @@ export class AppComponent implements OnInit
   public showinfo2 = false;
   public histopvp = [];
   public histpvp = [];
+  public personp: any = undefined;
 
   public idleState: number[] = [0,0,0,0];
   public idleState2: number[] = [0,0,0,0];
@@ -239,6 +257,7 @@ export class AppComponent implements OnInit
   public titlesduel: any[] = [];
   public titlesduel2: any[] = [];
   public histoPulls:any;
+  public npUsed = "0";
 
   public idpersotest = 342;
   public scaletest = 1;
@@ -262,11 +281,17 @@ export class AppComponent implements OnInit
   public musiquecombat: any;
   public attaquestate = 0;
   public dmgs:any = [];
-
+  public nps:any = [];
+  public npInterval: any;
+  public nptimer = 0;
+  public decalbgduelx = 0;
+  public decalbgduely = 0;
+  
   public teambonus = [
     {classe:"Archer",qte:2,desc:"10% More chance to dodge for all team"},
     {classe:"Assassin",qte:2,desc:"Poisons are 10% stronger"},
     {classe:"Berserker",qte:2,desc:"10% More chance to steal the turn"},
+    {classe:"Caster",qte:2,desc:"All team starts with NP charged a little"},
     {classe:"Ruler",qte:1,desc:"All team takes 90% damage"}
   ]
   public bonus1: any;
@@ -307,7 +332,7 @@ export class AppComponent implements OnInit
 
   public teamattaque = 0;
 
-  public consoletest = true;
+  public consoletest = false;
 
   constructor(private http: HttpClient){
 
@@ -2465,7 +2490,7 @@ export class AppComponent implements OnInit
           id:t.id,
           niveau:t.niveau,
           pdv:t.pdv,
-          np:t.np,
+          np:t.npjauge,
           pdvmax:t.pdvmax,
           title:t.title
         })
@@ -2479,7 +2504,7 @@ export class AppComponent implements OnInit
           id:t.id,
           niveau:t.niveau,
           pdv:t.pdv,
-          np:t.np,
+          np:t.npjauge,
           pdvmax:t.pdvmax,
           title:t.title
         })
@@ -2583,6 +2608,11 @@ export class AppComponent implements OnInit
     }
     else if(rdm>20)
     {
+      if(persoatq.npjauge==100 && persoatq.np)
+      {
+        persoatq.nplaunched=true;
+        this.personp = persoatq;
+      }
       cible = this.getSmartCible(persoatq);
       persocible = teamcible[cible];
     }
@@ -2594,9 +2624,16 @@ export class AppComponent implements OnInit
     this.attaquant1 = i;
     this.place = cible;
     
-    clearInterval(this.attaqueInterval);
+    persocible.atqanim = persoatq.classe;
+    persocible.atqanimdecal = 0;
     this.timerAttaque = 0;
     this.updateStates();
+    clearInterval(this.attaqueInterval);
+    if(persoatq.nplaunched)
+    {
+      this.npLaunched(persoatq,i,persocible,cible);
+      return;
+    }
 
     let passiveBerserker: any = [];
     let passiveShielder: any = this.passiveShielder();
@@ -2612,6 +2649,7 @@ export class AppComponent implements OnInit
       persoshield.slash="1";
       cible = passiveShielder;
       persocible=teamcible[cible];
+      persocible.atqanim = persoatq.classe;
       this.setAnimX2(cible,200,"dashavant",false);
     }
     else if(persoatq.classe=="Berserker")
@@ -2625,8 +2663,6 @@ export class AppComponent implements OnInit
       });
     }
 
-    persocible.atqanim = persoatq.classe;
-    persocible.atqanimdecal = 0;
     if(persoatq.classe=="Lancer"||persoatq.classe=="Archer")persocible.atqanimdecal = 150;
     if(persoatq.classe=="Assassin")persocible.atqanimdecal = 50;
     
@@ -2696,6 +2732,243 @@ export class AppComponent implements OnInit
       }
       this.timerAttaque+=100;
     },100);
+  }
+
+  npLaunched(perso:any, i:any,persocible:any,cible: any)
+  {
+
+    perso.npjauge = 0;
+    this.setAnimX(i,200,"np");
+    clearInterval(this.combatInterval);
+    this.timerAttaque = 0;
+    this.npUsed = "1";
+    this.attaqueInterval = setInterval(() => {
+      if(this.timerAttaque==500)
+      {
+        this.npUsed = "2";
+      }
+      if(this.timerAttaque==900)
+      {
+        this.npUsed = "3";
+      }
+      if(this.timerAttaque==2400)
+      {
+        this.npUsed = "4";
+      }
+      if(this.timerAttaque==3000)
+      {
+        if(perso.np.type=="AoE"){this.aoeNP(perso);}
+        else if(perso.np.type=="ST"){this.stNP(perso,persocible,cible);}
+        else if(perso.np.type=="Support"){this.supportNP(perso);}
+      }
+      if(this.timerAttaque>2000&&this.nps.length==0)
+      {
+        if(this.teamattaque==0)
+        {
+          this.team2.forEach((t:any)=>t.negative = false);
+        }
+        else
+        {
+          this.team1.forEach((t:any)=>t.negative = false);
+        }
+      }
+      if(this.timerAttaque==7000)
+      {
+        this.npUsed = "0";
+        this.setAnimX(i,200,"idle");
+        perso.nplaunched=false;
+        this.personp = undefined;
+        clearInterval(this.attaqueInterval);
+        this.startCombat();
+      }
+      this.timerAttaque+=100;
+    },100);
+  }
+
+  aoeNP(perso:any)
+  {
+    let dmgPerTick = Math.round(((perso.dmg*10)/4)/10);
+    this.nptimer = 0;
+        this.npInterval= setInterval(() => {
+          if(this.nptimer < 2000 && this.nptimer%200==0)
+          {
+            if(this.teamattaque==0)
+            {
+              for(let i=0;i<4;i++)
+              {
+                let persotodmg = this.team2[i];
+                if(persotodmg.pdv>0)
+                {
+                  let dmg = dmgPerTick - Math.round(dmgPerTick * Math.random()*0.5);
+                  let mult = this.getMultAffinity(perso.classe,persotodmg.classe);
+                  dmg = Math.round(dmg*mult);
+                  this.addDmg(false,false,i,persotodmg,dmg,mult,"normal",perso);
+                  if(persotodmg.pdv==0)this.setAnimX2(i,0,"death",false);
+                }
+              }
+            }
+            else 
+            {
+              for(let i=0;i<4;i++)
+              {
+                let persotodmg = this.team1[i];
+                if(persotodmg.pdv>0)
+                {
+                  let dmg = dmgPerTick - Math.round(dmgPerTick * Math.random()*0.5);
+                  let mult = this.getMultAffinity(perso.classe,persotodmg.classe);
+                  dmg = Math.round(dmg*mult);
+                  this.addDmg(false,false,i,persotodmg,dmg,mult,"normal",perso);
+                  if(persotodmg.pdv==0)this.setAnimX2(i,0,"death",false);
+                }
+              }
+            }
+          }
+          if(this.nptimer < 2000)
+          {
+            this.decalbgduelx = Math.round(Math.random()*30)-15;
+            this.decalbgduely = Math.round(Math.random()*30)-15;
+            let y = 0;
+            y = Math.round(Math.random()*3);
+            y = this.ys[y] + Math.round(Math.random()*300)-150;
+            let x = 0;
+            if(this.teamattaque==0){x=this.xs2[2]-50;}
+            else{x = this.xs1[2];}
+            let angle = Math.round(Math.random()*50)-25;
+            if(["Avenger","Beast","Caster","Moon Cancer",].includes(perso.classe))angle = 0;
+            let scale = (Math.round(Math.random()*100))/100;
+            x = x + Math.round(Math.random()*600)-300;
+
+            this.nps.push({x:x,y:y,angle:angle,scale:scale});
+          }
+          if(this.nptimer > 600 && this.nps.length>0)
+          {
+            this.decalbgduelx = Math.round(Math.random()*30)-15;
+            this.decalbgduely = Math.round(Math.random()*30)-15;
+            this.nps.splice(0,1);
+          }
+          if(this.nptimer==2700)
+          {
+            this.decalbgduelx = 0;
+            this.decalbgduely = 0;
+            clearInterval(this.npInterval);
+          }
+          this.nptimer+=50;
+        },50);
+  }
+
+  supportNP(perso:any)
+  {
+    let dmgPerTick = Math.round(((perso.dmg*10)/4)/10);
+    this.nptimer = 0;
+        this.npInterval= setInterval(() => {
+          if(this.nptimer < 2000 && this.nptimer%200==0)
+          {
+            if(this.teamattaque==0)
+            {
+              for(let i=0;i<4;i++)
+              {
+                let persotoheal = this.team1[i];
+                if(persotoheal.pdv>0)
+                {
+                  let dmg = dmgPerTick - Math.round(dmgPerTick * Math.random()*0.5);
+                  this.addDmg(false,false,i,persotoheal,dmg,1,"heal",perso);
+                }
+              }
+            }
+            else 
+            {
+              for(let i=0;i<4;i++)
+              {
+                let persotoheal = this.team2[i];
+                if(persotoheal.pdv>0)
+                {
+                  let dmg = dmgPerTick - Math.round(dmgPerTick * Math.random()*0.5);
+                  this.addDmg(false,false,i,persotoheal,dmg,1,"heal",perso);
+                }
+              }
+            }
+          }
+          if(this.nptimer < 2000)
+          {
+            let y = 0;
+            y = Math.round(Math.random()*3);
+            y = this.ys[y] + Math.round(Math.random()*300)-150;
+            let x = 0;
+            if(this.teamattaque==0){x=this.xs1[2]-50;}
+            else{x = this.xs2[2];}
+            let scale = (Math.round(Math.random()*100))/100;
+            x = x + Math.round(Math.random()*600)-300;
+
+            this.nps.push({x:x,y:y,angle:0,scale:scale});
+          }
+          if(this.nptimer > 600 && this.nps.length>0)
+          {
+            this.nps.splice(0,1);
+          }
+          if(this.nptimer==2700)
+          {
+            clearInterval(this.npInterval);
+          }
+          this.nptimer+=50;
+        },50);
+  }
+
+  stNP(perso:any,persocible:any,cible:any)
+  {
+    let dmgPerTick = Math.round((perso.dmg*4)/10);
+    this.nptimer = 0;
+        this.npInterval= setInterval(() => {
+          if(this.nptimer < 2000 && this.nptimer%200==0)
+          {
+            let dmg = dmgPerTick - Math.round(dmgPerTick * Math.random()*0.5);
+            let mult = this.getMultAffinity(perso.classe,persocible.classe);
+            dmg = Math.round(dmg*mult);
+            this.addDmg(false,false,cible,persocible,dmg,mult,"normal",perso);
+            if(persocible.pdv==0)this.setAnimX2(cible,0,"death",false);
+          }
+          if(this.nptimer < 2000)
+          {
+            this.decalbgduelx = Math.round(Math.random()*30)-15;
+            this.decalbgduely = Math.round(Math.random()*30)-15;
+            let y = 0;
+            y = this.ys[cible] + Math.round(Math.random()*100)-50;
+            let x = 0;
+            if(this.teamattaque==0){x=this.xs2[2]-50;}
+            else{x = this.xs1[2]+50;}
+            x = x + Math.round(Math.random()*100)-50;
+            let angle = Math.round(Math.random()*50)-25;
+            if(["Avenger","Beast","Caster","Moon Cancer",].includes(perso.classe))angle = 0;
+
+            this.nps.push({x:x,y:y,angle:angle,scale:1});
+          }
+          if(this.nptimer > 600 && this.nps.length>0)
+          {
+            this.decalbgduelx = Math.round(Math.random()*30)-15;
+            this.decalbgduely = Math.round(Math.random()*30)-15;
+            this.nps.splice(0,1);
+          }
+          if(this.nptimer==2700)
+          {
+            this.decalbgduelx = 0;
+            this.decalbgduely = 0;
+            clearInterval(this.npInterval);
+          }
+          this.nptimer+=50;
+        },50);
+  }
+
+  getTransform(np:any)
+  {
+    let t = "";
+    if(this.teamattaque==0)
+    {
+      t = "scaleX(-1) rotate("+np.angle+"deg)";
+    }
+    else
+    {
+      t = "rotate("+np.angle+"deg)";
+    }
+    return t;
   }
 
   updateStates()
@@ -2890,6 +3163,82 @@ export class AppComponent implements OnInit
     else return this.team1.indexOf(tmpfocus[0]);
   }
 
+  getMultAffinity(classeatq:any,classecible:any)
+  {
+    let mult = -1;
+    let boost = 2;
+    let malus = 0.5;
+
+    let g1 = ["Saber","Lancer","Archer"];
+    let g2 = ["Rider","Caster","Assassin"];
+    let g3 = ["Alter Ego","Pretender","Foreigner"];
+    let g4 = ["Ruler","Avenger","Moon Cancer"];
+
+    if(classeatq=="Shielder"||classecible=="Shielder"){mult = 1;}
+    else
+    {
+      if(classecible=="Berserker"||(classeatq=="Berserker"&&classecible!="Foreigner")){mult = 1.5;}
+      if(classecible=="Foreigner"&&classeatq=="Berserker"){mult = 0.75;}
+  
+      if(classecible=="Beast"&&(g1.includes(classeatq)||g2.includes(classeatq))){mult = malus;}
+      else if(classecible=="Beast"&&(g3.includes(classeatq)||g4.includes(classeatq))){mult = boost;}
+  
+      else if(classeatq=="Beast"&&(g1.includes(classecible)||g2.includes(classecible))){mult = boost;}
+      else if(classeatq=="Beast"&&(g3.includes(classecible)||g4.includes(classecible))){mult = malus;}
+    }
+
+    if(mult==-1)
+    {
+      //GROUPE 1
+      if(classeatq==g1[0]&&classecible==g1[1])mult=boost;
+      else if(classeatq==g1[1]&&classecible==g1[0])mult=malus;
+
+      else if(classeatq==g1[0]&&classecible==g1[2])mult=malus;
+      else if(classeatq==g1[2]&&classecible==g1[0])mult=boost;
+
+      else if(classeatq==g1[1]&&classecible==g1[2])mult=boost;
+      else if(classeatq==g1[2]&&classecible==g1[1])mult=malus;
+      //GROUPE 2
+      else if(classeatq==g2[0]&&classecible==g2[1])mult=boost;
+      else if(classeatq==g2[1]&&classecible==g2[0])mult=malus;
+
+      else if(classeatq==g2[0]&&classecible==g2[2])mult=malus;
+      else if(classeatq==g2[2]&&classecible==g2[0])mult=boost;
+
+      else if(classeatq==g2[1]&&classecible==g2[2])mult=boost;
+      else if(classeatq==g2[2]&&classecible==g2[1])mult=malus;
+      //ALTER EGO
+      else if(classeatq==g3[0]&&g1.includes(classecible)) mult=malus;
+      else if(classeatq==g3[0]&&g2.includes(classecible)) mult=boost;
+      //PRETENDER
+      else if(classeatq==g3[1]&&g1.includes(classecible)) mult=boost;
+      else if(classeatq==g3[1]&&g2.includes(classecible)) mult=malus;
+      //GROUPE 3
+      else if(classeatq==g3[0]&&classecible==g3[1])mult=malus;
+      else if(classeatq==g3[1]&&classecible==g3[0])mult=boost;
+
+      else if(classeatq==g3[0]&&classecible==g3[2])mult=boost;
+      else if(classeatq==g3[2]&&classecible==g3[0])mult=malus;
+
+      else if(classeatq==g3[1]&&classecible==g3[2])mult=malus;
+      else if(classeatq==g3[2]&&classecible==g3[1])mult=boost;
+      //GROUPE 4
+      else if(classeatq==g4[0]&&classecible==g4[1])mult=malus;
+      else if(classeatq==g4[1]&&classecible==g4[0])mult=boost;
+
+      else if(classeatq==g4[0]&&classecible==g4[2])mult=boost;
+      else if(classeatq==g4[2]&&classecible==g4[0])mult=malus;
+
+      else if(classeatq==g4[1]&&classecible==g4[2])mult=malus;
+      else if(classeatq==g4[2]&&classecible==g4[1])mult=boost;
+
+      else if((g1.includes(classeatq)||g2.includes(classeatq))&&classecible==g4[0])mult=malus;
+
+      else mult = 1;
+    }
+    return mult;
+  }
+
   passiveShielder()
   {
     let ind = -1;
@@ -2969,83 +3318,15 @@ export class AppComponent implements OnInit
       persocible = this.team1[cible];
     }
 
-    let boost = 2;
-    let malus = 0.5;
-    let dmg = persoatq.dmg;
-    let mult = (Math.round(Math.random()*30)+70)/100
-    dmg = dmg * mult;
-    mult = -1;
-
     let classeatq = persoatq.classe;
     let classecible = persocible.classe;
 
-    let g1 = ["Saber","Lancer","Archer"];
-    let g2 = ["Rider","Caster","Assassin"];
-    let g3 = ["Alter Ego","Pretender","Foreigner"];
-    let g4 = ["Ruler","Avenger","Moon Cancer"];
+    let dmg = persoatq.dmg;
+    let mult = (Math.round(Math.random()*30)+70)/100
+    dmg = dmg * mult;
 
-    if(classeatq=="Shielder"||classecible=="Shielder"){mult = 1;}
-    else
-    {
-      if(classecible=="Berserker"||(classeatq=="Berserker"&&classecible!="Foreigner")){mult = 1.5;}
-      if(classecible=="Foreigner"&&classeatq=="Berserker"){mult = 0.75;}
-  
-      if(classecible=="Beast"&&(g1.includes(classeatq)||g2.includes(classeatq))){mult = malus;}
-      else if(classecible=="Beast"&&(g3.includes(classeatq)||g4.includes(classeatq))){mult = boost;}
-  
-      else if(classeatq=="Beast"&&(g1.includes(classecible)||g2.includes(classecible))){mult = boost;}
-      else if(classeatq=="Beast"&&(g3.includes(classecible)||g4.includes(classecible))){mult = malus;}
-    }
-
-    if(mult==-1)
-    {
-      //GROUPE 1
-      if(classeatq==g1[0]&&classecible==g1[1])mult=boost;
-      else if(classeatq==g1[1]&&classecible==g1[0])mult=malus;
-
-      else if(classeatq==g1[0]&&classecible==g1[2])mult=malus;
-      else if(classeatq==g1[2]&&classecible==g1[0])mult=boost;
-
-      else if(classeatq==g1[1]&&classecible==g1[2])mult=boost;
-      else if(classeatq==g1[2]&&classecible==g1[1])mult=malus;
-      //GROUPE 2
-      else if(classeatq==g2[0]&&classecible==g2[1])mult=boost;
-      else if(classeatq==g2[1]&&classecible==g2[0])mult=malus;
-
-      else if(classeatq==g2[0]&&classecible==g2[2])mult=malus;
-      else if(classeatq==g2[2]&&classecible==g2[0])mult=boost;
-
-      else if(classeatq==g2[1]&&classecible==g2[2])mult=boost;
-      else if(classeatq==g2[2]&&classecible==g2[1])mult=malus;
-      //ALTER EGO
-      else if(classeatq==g3[0]&&g1.includes(classecible)) mult=malus;
-      else if(classeatq==g3[0]&&g2.includes(classecible)) mult=boost;
-      //PRETENDER
-      else if(classeatq==g3[1]&&g1.includes(classecible)) mult=boost;
-      else if(classeatq==g3[1]&&g2.includes(classecible)) mult=malus;
-      //GROUPE 3
-      else if(classeatq==g3[0]&&classecible==g3[1])mult=malus;
-      else if(classeatq==g3[1]&&classecible==g3[0])mult=boost;
-
-      else if(classeatq==g3[0]&&classecible==g3[2])mult=boost;
-      else if(classeatq==g3[2]&&classecible==g3[0])mult=malus;
-
-      else if(classeatq==g3[1]&&classecible==g3[2])mult=malus;
-      else if(classeatq==g3[2]&&classecible==g3[1])mult=boost;
-      //GROUPE 4
-      else if(classeatq==g4[0]&&classecible==g4[1])mult=malus;
-      else if(classeatq==g4[1]&&classecible==g4[0])mult=boost;
-
-      else if(classeatq==g4[0]&&classecible==g4[2])mult=boost;
-      else if(classeatq==g4[2]&&classecible==g4[0])mult=malus;
-
-      else if(classeatq==g4[1]&&classecible==g4[2])mult=malus;
-      else if(classeatq==g4[2]&&classecible==g4[1])mult=boost;
-
-      else if((g1.includes(classeatq)||g2.includes(classeatq))&&classecible==g4[0])mult=malus;
-
-      else mult = 1;
-    }
+    mult = this.getMultAffinity(classeatq,classecible);
+    
     dmg = Math.round(dmg*mult);
     if(cibleBerserk) dmg = Math.round(dmg*0.75);
     let cc = false;
@@ -3123,6 +3404,7 @@ export class AppComponent implements OnInit
       this.addDmg(false,false,i,persoatq,inc,1,"increase",undefined);
     }
     
+    this.getNpCharge(persoatq,dmg);
     this.addDmg(ec,cc,cible,persocible,dmg,mult,"normal",persoatq);
     return ec;
   }
@@ -3193,6 +3475,8 @@ export class AppComponent implements OnInit
     {
       if(type=="normal"||type=="poison")
       {
+        this.getNpCharge(persocible,dmg);
+
         persocible.negative = true;
         persocible.pdv = persocible.pdv - dmg;
         if(persocible.pdv<=0)
@@ -3205,16 +3489,18 @@ export class AppComponent implements OnInit
           }
         }
       }
-      if(type!="heal")
-      {
-        
-      }
-      else
+      if(type=="heal")
       {
         persocible.pdv = persocible.pdv + dmg;
         if(persocible.pdv>persocible.pdvmax)persocible.pdv = persocible.pdvmax;
       }
     }
+  }
+
+  getNpCharge(perso:any,dmg:any)
+  {
+    perso.npjauge += Math.floor(dmg/500);
+    if(perso.npjauge>100)perso.npjauge=100;
   }
 
   setAnimX(i:any,x:any,anim:any)
@@ -3286,11 +3572,7 @@ export class AppComponent implements OnInit
 
   startCombat()
   {
-    AppComponent.son.pause();
-    this.musiquecombat.play();
-    this.teamattaque = Math.round(Math.random());
-
-    this.combatInterval = setInterval(() => {
+      this.combatInterval = setInterval(() => {
       let diff = 0;
 
       let t1 = this.team1.filter((t:any)=>t.pdv>0).length;
@@ -3366,6 +3648,9 @@ export class AppComponent implements OnInit
           {
             clearInterval(this.arriveInterval);
             this.arriveInterval = setInterval(() => {
+              AppComponent.son.pause();
+              this.musiquecombat.play();
+              this.teamattaque = Math.round(Math.random());
               this.startIdleInterval();
               this.startCombat();
               clearInterval(this.arriveInterval);
@@ -3394,13 +3679,18 @@ export class AppComponent implements OnInit
           tmp.poison = 0;
           tmp.passive = 1;
 
-          tmp.np = 0;
+          tmp.npjauge = 0;
+          if(tmp.classe=="Caster")
+            tmp.npjauge += this.casterpassiveincrease;
+          if(this.bonus1.find((b:any)=>b.classe=="Caster"))
+            tmp.npjauge += this.casterteamboost;
           tmp.dmg = this.getDmg(tmp);
           tmp.pdv = this.getPdv(tmp);
           tmp.pdvmax = tmp.pdv;
           return tmp;
         });
 
+        cpt = 0;
         this.team2 = team2.team.map((x:any)=>
         {
           let tmp = JSON.parse(JSON.stringify(data.find((d:any)=>d.id==x)));
@@ -3419,7 +3709,11 @@ export class AppComponent implements OnInit
           tmp.poison = 0;
           tmp.passive = 1;
 
-          tmp.np = 0;
+          tmp.npjauge = 0;
+          if(tmp.classe=="Caster")
+            tmp.npjauge += this.casterpassiveincrease;
+          if(this.bonus2.find((b:any)=>b.classe=="Caster"))
+            tmp.npjauge += this.casterteamboost;
           tmp.dmg = this.getDmg(tmp);
           tmp.pdv = this.getPdv(tmp);
           tmp.pdvmax = tmp.pdv;
@@ -3434,6 +3728,8 @@ export class AppComponent implements OnInit
 
   getPdv(perso:any)
   {
+    if(perso.nom=="BB Summer")
+      console.log(perso);
     let asc = 1;
     if(perso.niveau>30)asc=1.1;
     if(perso.niveau>60)asc=1.2;
