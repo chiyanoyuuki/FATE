@@ -373,6 +373,7 @@
 
     <div *ngIf="state=='friends'">
       <button (click)="getUsers();getProfiles();getPvp();getHistoPulls();gethistoPvp()" style="position: absolute;top: 110px;left: 43%;width: 200px;">Refresh</button>
+      <p [class.red]="triInvoc" class="clickable" (click)="triInvoc==true?triInvoc=false:triInvoc=true" style="position:absolute;left: 715px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Wins</p>
       <p [class.red]="triInvoc" class="clickable" (click)="triInvoc==true?triInvoc=false:triInvoc=true" style="position:absolute;left: 1020px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Dernière Invocation</p>
       <p style="position:absolute;left: 1280px;top: 165px;z-index: 5;color: white;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">Connecté Depuis</p>
       <div class="containerScore" style="left:200px;width:1300px">
@@ -386,10 +387,12 @@
               <div class="score" style="left:105px;margin-top:10px;" [style.border-color]="user.id==id?'#bb9930':'#bbb'">
                 <p class="sc" style="top:-3px">{{user.quartz}}</p><img draggable="false" src="./assets/images/quartz.png"/>
               </div>
+              <p style="position:absolute;left: 543px;margin-top: 18px;color:green;text-shadow:unset">{{getWins(user.id)}}</p>
+              <div [style.background-color]="getWinColor(user.id)" style="position: absolute;left: 515px;width: 20px;height: 20px;border: 4px solid black;margin-top: 18px;"></div>
               <div *ngIf="getProfile(user.id).servant" class="profilePicture2" [class.golden]="isGold(user.id)">
                 <img  draggable="false" src="{{getImg(user.id,getProfile(user.id).servant)}}"/>
               </div>
-              <div style="position: absolute;left: 600px;padding-top: 4px;text-align: left;width:400px">
+              <div style="position: absolute;left: 645px;padding-top: 4px;text-align: left;width:400px">
                 <p style="text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.nom}}</p>
                 <p style="position:absolute;font-size:14px;text-shadow: 4px 0 black, 0 1px black, 1px 0 black, 0 -1px black;" [style.color]="user.id==id?'#bb9930':'white'">{{user.title}}</p>  
               </div>

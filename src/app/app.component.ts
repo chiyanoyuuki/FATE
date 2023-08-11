@@ -272,6 +272,9 @@ export class AppComponent implements OnInit
   public idleStateNumber: any[] = ["0","0","0","0"];
   public idleStateNumber2: any[] = ["0","0","0","0"];
 
+  public histowins: any = [];
+  public histowinstot: any = [];
+
   public combatInterval: any;
   public place:any = 0;
   public attaquant1:any = -1;
@@ -922,11 +925,81 @@ export class AppComponent implements OnInit
     }
   }
 
+  getWinColor(id:any)
+  {
+    let found = this.histowins.find((h:any)=>h.id==id);
+    if(id==this.id)
+    {
+      return 'rgb(30,30,30)';
+    }
+    else if(found)
+    {
+      if(found.win==1)
+      {
+        return 'rgb(0,90,0)';
+      }
+      else
+      {
+        return 'rgb(90,0,0)';
+      }
+    }
+    else
+    {
+      return 'rgb(90,90,90)';
+    }
+  }
   
   gethistoPvp()
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetHistoPvp?').subscribe(data=>
     {
+      this.histowinstot = [];
+
+      this.users.forEach((u:any)=>{
+        let myfights = data.filter((d:any)=>d.user_id==u.id);
+        let fightsme = data.filter((d:any)=>d.user_id2==u.id);
+  
+        let histowins:any = [];
+  
+        myfights.forEach((f:any)=>{
+          let found = histowins.find((h:any)=>h.id==f.user_id2);
+          if(!found)
+          {
+            histowins.push({id:f.user_id2, win:f.win, date:new Date(f.date)})
+          }
+          else
+          {
+            let date = new Date(f.date);
+            if(date > found.date)
+            {
+              found.win = f.win;
+              found.date = date;
+            }
+          }
+        })
+  
+        fightsme.forEach((f:any)=>{
+          let found = histowins.find((h:any)=>h.id==f.user_id);
+          if(!found)
+          {
+            histowins.push({id:f.user_id, win:!f.win, date:new Date(f.date)})
+          }
+          else
+          {
+            let date = new Date(f.date);
+            if(date > found.date)
+            {
+              found.win = !f.win;
+              found.date = date;
+            }
+          }
+        })
+        if(u.id==this.id)this.histowins = histowins;
+        this.histowinstot.push({id:u.id,wins:histowins.filter((h:any)=>h.win==1).length});
+      });
+
+      
+
       this.histopvp = data;
       this.histopvp.forEach((h:any)=>{
         for(let i=0;i<h.team1.length;i++)
@@ -2531,6 +2604,7 @@ export class AppComponent implements OnInit
       )
     ).subscribe((response) => 
     {
+      this.gethistoPvp();
       if(t2==0)this.spendQuartz(-3);
       else if(t1==0)this.spendQuartz2(-3);
       clearInterval(this.idleInterval);
@@ -2602,11 +2676,8 @@ export class AppComponent implements OnInit
     let fail = false;
     //Intelligence du coup
     let rdm = Math.round(Math.random()*99);
-    if(teamcible.filter((t:any)=>t.pdv>0).length==1)
-    {
-      fail = false;
-    }
-    else if(rdm>20)
+    
+    if(rdm>20)
     {
       if(persoatq.npjauge==100 && persoatq.np)
       {
@@ -2618,7 +2689,7 @@ export class AppComponent implements OnInit
     }
     else
     {
-      fail = true;
+      if(teamcible.filter((t:any)=>t.pdv>0).length>1) fail = true;
     }
 
     this.attaquant1 = i;
@@ -3497,6 +3568,10 @@ export class AppComponent implements OnInit
     }
   }
 
+  getWins(id:any){
+    return this.histowinstot.find((h:any)=>h.id==id).wins;
+  }
+
   getNpCharge(perso:any,dmg:any)
   {
     perso.npjauge += Math.floor(dmg/300);
@@ -3728,8 +3803,6 @@ export class AppComponent implements OnInit
 
   getPdv(perso:any)
   {
-    if(perso.nom=="BB Summer")
-      console.log(perso);
     let asc = 1;
     if(perso.niveau>30)asc=1.1;
     if(perso.niveau>60)asc=1.2;
