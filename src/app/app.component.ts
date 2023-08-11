@@ -2619,20 +2619,6 @@ export class AppComponent implements OnInit
 
   startDash()
   {
-    let left1 = this.team1.filter((t:any)=>t.pdv>0);
-    let left2 = this.team2.filter((t:any)=>t.pdv>0);
-    if(left1.length==0||left2.length==0)
-    {
-      this.endFight(left1.length,left2.length);
-      return;
-    }
-
-    let persoatq:any;
-    let persocible:any;
-    let teamcible:any;
-    let i:any;
-    let cible:any;
-
     //Passive Assassin
     for(let i=0;i<this.team1.length;i++)
     {
@@ -2652,7 +2638,21 @@ export class AppComponent implements OnInit
         if(t2.pdv-t2.poison<=0)this.setAnimX22(t2,0,"death",false);
       }
     }
-    
+
+    let left1 = this.team1.filter((t:any)=>t.pdv>0);
+    let left2 = this.team2.filter((t:any)=>t.pdv>0);
+    if(left1.length==0||left2.length==0)
+    {
+      this.endFight(left1.length,left2.length);
+      return;
+    }
+
+    let persoatq:any;
+    let persocible:any;
+    let teamcible:any;
+    let i:any;
+    let cible:any;
+        
     let i1 = Math.round(Math.random()*(left1.length-1));
     let i2 = Math.round(Math.random()*(left2.length-1));
 
@@ -2676,13 +2676,13 @@ export class AppComponent implements OnInit
     let fail = false;
     //Intelligence du coup
     let rdm = Math.round(Math.random()*99);
+    let launchnp = false;
     
     if(rdm>20)
     {
       if(persoatq.npjauge==100 && persoatq.np)
       {
-        persoatq.nplaunched=true;
-        this.personp = persoatq;
+        launchnp = true;
       }
       cible = this.getSmartCible(persoatq);
       persocible = teamcible[cible];
@@ -2700,10 +2700,39 @@ export class AppComponent implements OnInit
     this.timerAttaque = 0;
     this.updateStates();
     clearInterval(this.attaqueInterval);
-    if(persoatq.nplaunched)
+
+    if(launchnp)
     {
-      this.npLaunched(persoatq,i,persocible,cible);
-      return;
+      let smart = false;
+      if(persoatq.np.type=="Support")
+      {
+        let team:any;
+        if(this.teamattaque==0)team = this.team1.filter((t:any)=>t.pdv>0);
+        else team = this.team2.filter((t:any)=>t.pdv>0);
+        let cpt = 0;
+        let cpt2 = 0;
+        team.forEach((t:any)=>{
+          if(t.pdvmax-t.pdv>t.pdvmax*0.15)cpt++;
+          if(t.pdvmax-t.pdv>t.pdvmax*0.5)cpt2++;
+        })
+        if(cpt>team.length-2||cpt2>team.length-3)smart = true;
+      }
+      else if(persoatq.np.type=="ST")
+      {
+        if(persocible.pdv>25000)smart = true;
+      }
+      else if(persoatq.np.type=="AoE")
+      {
+        smart = true;
+      }
+
+      if(smart)
+      {
+        persoatq.nplaunched=true;
+        this.personp = persoatq;
+        this.npLaunched(persoatq,i,persocible,cible);
+        return;
+      }
     }
 
     let passiveBerserker: any = [];

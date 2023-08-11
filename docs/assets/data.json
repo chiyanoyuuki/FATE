@@ -8306,7 +8306,8 @@
 		"img3":"./assets/images/servants/marie/0.png",
 		"img4":"./assets/images/servants/marie/3.png",
 		"sprite1":"./assets/images/servants/marie/sprite.png",
-		"special":true
+		"special":true,
+		"turn":true
     },
     {
 		"scale":1,
