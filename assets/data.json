@@ -8093,7 +8093,8 @@
 		"img3":"./assets/images/servants/kirei/2.jpg",
 		"img4":"./assets/images/servants/kirei/3.jpg",
 		"sprite1":"./assets/images/servants/kirei/sprite.png",
-		"special":true
+		"special":true,
+		"turn":true
     },
     {
 		"scale":1,
