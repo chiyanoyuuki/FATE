@@ -57,7 +57,11 @@
 		{
 			"nom":"Excalibur",
 			"type":"AoE",
-			"dmg":38806
+			"dmg":38806,
+			"effets":
+			[
+				"increaseNpCharge"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f4/Artoria_Sprite1_2nd_Renewal.png/revision/latest/scale-to-width-down/350?cb=20200112075303",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e2/Artoria_Sprite2_2nd_Renewal.png/revision/latest/scale-to-width-down/350?cb=20200112075330",
@@ -77,7 +81,11 @@
 		{
 			"nom":"Excalibur morgan",
 			"type":"AoE",
-			"dmg":29337
+			"dmg":29337,
+			"effets":
+			[
+				"increaseNpCharge"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4f/Artoria_Pendragon_Alter_New_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20200201091301",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/63/Artoria_Pendragon_Alter_New_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20200201091308",
@@ -97,7 +105,11 @@
 		{
 			"nom":"Caliburn",
 			"type":"AoE",
-			"dmg":31610
+			"dmg":31610,
+			"effets":
+			[
+				"restoreHp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/56/Saber_Lily_Redone_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20200108005716",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/cb/Saber_Lily_Redone_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20200108005730",
@@ -117,7 +129,16 @@
 		{
 			"nom":"Laus saint claudius",
 			"type":"AoE",
-			"dmg":24917
+			"dmg":24917,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"defDown"
+			]
+			
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/31/Nero_Claudius_sprite1.png/revision/latest/scale-to-width-down/350?cb=20180920142229",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/ff/NeroSprite2.png/revision/latest/scale-to-width-down/350?cb=20180920142237",
@@ -137,7 +158,11 @@
 		{
 			"nom":"Balmung",
 			"type":"AoE",
-			"dmg":19005
+			"dmg":19005,
+			"effets":
+			[
+				"increaseNpCharge"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/47/Siegfried_new_1.png/revision/latest/scale-to-width-down/350?cb=20220728140141",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/b4/Siegfried_new_2.png/revision/latest/scale-to-width-down/350?cb=20220728140447",
@@ -157,7 +182,12 @@
 		{
 			"nom":"Crocea mors",
 			"type":"ST",
-			"dmg":46350
+			"dmg":46350,
+			"effets":
+			[
+				"atkUp",
+				"critUp"	
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/ce/Caesarsprite1.png/revision/latest/scale-to-width-down/350?cb=20200215021924",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/3b/Caesarsprite2.png/revision/latest/scale-to-width-down/350?cb=20200215021938",
@@ -177,7 +207,11 @@
 		{
 			"nom":"Photon ray",
 			"type":"AoE",
-			"dmg":28900
+			"dmg":28900,
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/13/AttilaSprite1.png/revision/latest/scale-to-width-down/350?cb=20200215155005",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4f/AttilaSprite2.png/revision/latest/scale-to-width-down/350?cb=20200215155010",
@@ -247,7 +281,15 @@
 		{
 			"nom":"Unlimited blade works",
 			"type":"AoE",
-			"dmg":19084
+			"dmg":19084,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"atkDown"			
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/77/EmiyaArcher_NewSprite1.png/revision/latest/scale-to-width-down/350?cb=20200216094150",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/41/EmiyaArcher_NewSprite2.png/revision/latest/scale-to-width-down/350?cb=20200216094159",
@@ -267,7 +309,12 @@
 		{
 			"nom":"Enuma elish",
 			"type":"AoE",
-			"dmg":27561
+			"dmg":27561,
+			"effets":
+			[
+				"increaseNpStrenght"
+			]
+			
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/00/Gilgamesh_Sprite1_New.png/revision/latest/scale-to-width-down/350?cb=20190919004859",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/93/Gilgamesh_Sprite2_New.png/revision/latest/scale-to-width-down/350?cb=20190919004915",
@@ -287,7 +334,11 @@
 		{
 			"nom":"Yew bow",
 			"type":"ST",
-			"dmg":25286
+			"dmg":25286,
+			"effets":
+			[
+				"atkUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f7/RobinNew1.png/revision/latest/scale-to-width-down/350?cb=20200216095344",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/aa/RobinNew2.png/revision/latest/scale-to-width-down/350?cb=20200216095352",
@@ -307,7 +358,11 @@
 		{
 			"nom":"Phoebus catastrophe",
 			"type":"AoE",
-			"dmg":20206
+			"dmg":20206,
+			"effets":
+			[
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/de/Atalantanew1.png/revision/latest/scale-to-width-down/350?cb=20190922171613",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/89/Atalantanew2.png/revision/latest/scale-to-width-down/350?cb=20190922171618",
@@ -327,7 +382,16 @@
 		{
 			"nom":"Eye euryale",
 			"type":"ST",
-			"dmg":27678
+			"dmg":27678,
+			"effets":
+			[
+				"atkUp"
+			],
+			"enemiesEffets":
+			[
+				"atkDown",
+				"charm"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f9/Euryale_Sprite1_New.png/revision/latest/scale-to-width-down/350?cb=20200813145532",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/29/Euryale_Sprite2_New.png/revision/latest/scale-to-width-down/350?cb=20200813145535",
@@ -347,7 +411,11 @@
 		{
 			"nom":"Stella",
 			"type":"AoE",
-			"dmg":26807
+			"dmg":26807,
+			"effets":
+			[
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/90/Arash_Renewal_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20201204172658",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c9/Arash_Renewal_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20201204172652",
@@ -367,7 +435,16 @@
 		{
 			"nom":"Gae bolg",
 			"type":"ST",
-			"dmg":46018
+			"dmg":46018,
+			"effets":
+			[
+				"sureHit"
+			],
+			"enemiesEffets":
+			[
+				"death",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c1/CuNew_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20220430121633",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/87/CuNew_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20220430120724",
@@ -387,7 +464,17 @@
 		{
 			"nom":"Bathory erzsebet",
 			"type":"AoE",
-			"dmg":19947
+			"dmg":19947,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"debuffResistDown",
+				"curse"
+			]
+			
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/08/Liznew1.png/revision/latest/scale-to-width-down/350?cb=20180927145743",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2d/Liznew2.png/revision/latest/scale-to-width-down/350?cb=20180927145806",
@@ -432,7 +519,17 @@
 		{
 			"nom":"Gae bolg prototype",
 			"type":"ST",
-			"dmg":31404
+			"dmg":31404,
+			"effets":
+			[
+				"quickUp",
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"defDown",
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/85/Cu_Proto_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20220428073835",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/88/Cu_Proto_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20220428073842",
@@ -477,7 +574,11 @@
 		{
 			"nom":"Magna voluisse magnum",
 			"type":"AoE",
-			"dmg":27936
+			"dmg":27936,
+			"effets":
+			[
+				"atkUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/5b/Romulus_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20200216093841",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f2/Romulus_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20200216094012",
@@ -497,7 +598,15 @@
 		{
 			"nom":"Bellerophon",
 			"type":"AoE",
-			"dmg":26221
+			"dmg":26221,
+			"effets":
+			[
+				"critUp"
+			],
+			"enemiesEffets":
+			[
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/3a/MedusaRiderNew_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20180929105429",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/7c/MedusaRiderNew_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20180929105440",
@@ -517,7 +626,11 @@
 		{
 			"nom":"Ascalon",
 			"type":"ST",
-			"dmg":21514
+			"dmg":21514,
+			"effets":
+			[
+				"defUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/64/Saint_George_1_Sprite.png/revision/latest/scale-to-width-down/350?cb=20201216144924",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/07/Saint_George_2_Sprite.png/revision/latest/scale-to-width-down/350?cb=20201216144936",
@@ -537,7 +650,15 @@
 		{
 			"nom":"Queen annes revenge",
 			"type":"AoE",
-			"dmg":24682
+			"dmg":24682,
+			"effets":
+			[
+				"critUp"
+			],
+			"enemiesEffets":
+			[
+				"npChargeDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/51/Blackbeard_Renewal_1_Sprite.png/revision/latest/scale-to-width-down/350?cb=20210908151451",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/76/Blackbeard_Renewal_2_Sprite.png/revision/latest/scale-to-width-down/350?cb=20210908151453",
@@ -560,7 +681,6 @@
 			"effets":
 			[
 				"defUp",
-				"defUp",
 				"atkUp"
 			]
 		},
@@ -582,7 +702,11 @@
 		{
 			"nom":"Dan no ura eight boat leap",
 			"type":"ST",
-			"dmg":56063
+			"dmg":56063,
+			"effets":
+			[
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/ec/Ushiwakamaru_1_Renewal_Sprite.png/revision/latest/scale-to-width-down/350?cb=20210120102618",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/32/Ushiwakamaru_2_Renewal_Sprite.png/revision/latest/scale-to-width-down/350?cb=20210120102616",
@@ -602,7 +726,11 @@
 		{
 			"nom":"Bucephalus",
 			"type":"AoE",
-			"dmg":28137
+			"dmg":28137,
+			"effets":
+			[
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/aa/AlexanderNewStage1.png/revision/latest/scale-to-width-down/350?cb=20220503153904",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/76/AlexanderNewStage2.png/revision/latest/scale-to-width-down/350?cb=20220503153911",
@@ -622,7 +750,13 @@
 		{
 			"nom":"Guillotine breaker",
 			"type":"AoE",
-			"dmg":15184
+			"dmg":15184,
+			"effets":
+			[
+				"removeDeBuffs",
+				"critUp",
+				"restoreHp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/65/Marie1Sprite.png/revision/latest/scale-to-width-down/350?cb=20200214222151",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/84/Marie2Sprite.png/revision/latest/scale-to-width-down/350?cb=20200214222210",
@@ -642,7 +776,15 @@
 		{
 			"nom":"Tarasque",
 			"type":"AoE",
-			"dmg":19555
+			"dmg":19555,
+			"effets":
+			[
+				"atkUp"
+			],
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/a7/MarthaStage1New.png/revision/latest/scale-to-width-down/350?cb=20190929073336",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/da/MarthaStage2New.png/revision/latest/scale-to-width-down/350?cb=20190929073341",
@@ -662,7 +804,15 @@
 		{
 			"nom":"Rule breaker",
 			"type":"ST",
-			"dmg":17251
+			"dmg":17251,
+			"effets":
+			[
+				"increaseNpCharge"
+			],
+			"enemiesEffets":
+			[
+				"removeBuffs"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/0f/MedeaNew_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20200216095653",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/af/MedeaNew_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20200216095658",
@@ -682,7 +832,16 @@
 		{
 			"nom":"Prelatis spellbook",
 			"type":"AoE",
-			"dmg":6999
+			"dmg":6999,
+			"effets":
+			[
+				"increaseNpCharge"
+			],
+			"enemiesEffets":
+			[
+				"atkDown",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/a4/Gillescastersprite1.png/revision/latest/scale-to-width-down/350?cb=20200216101332",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/12/Gillescastersprite2.png/revision/latest/scale-to-width-down/350?cb=20200216101336",
@@ -728,7 +887,11 @@
 		{
 			"nom":"First folio",
 			"type":"AoE",
-			"dmg":17731
+			"dmg":17731,
+			"enemiesEffets":
+			[
+				"stun"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/13/Shakespearesprite1.png/revision/latest/scale-to-width-down/350?cb=20200216122324",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e6/Shakespearesprite2.png/revision/latest/scale-to-width-down/350?cb=20200216122105",
@@ -748,7 +911,11 @@
 		{
 			"nom":"Ticktock bomb",
 			"type":"AoE",
-			"dmg":14604
+			"dmg":14604,
+			"enemiesEffets":
+			[
+				"curse"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/7b/Mephissprite1.png/revision/latest/scale-to-width-down/350?cb=20181010140753",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/02/MephistophelesSprite2.png/revision/latest/scale-to-width-down/350?cb=20181014082433",
@@ -819,7 +986,16 @@
 		{
 			"nom":"Wicker man",
 			"type":"AoE",
-			"dmg":14861
+			"dmg":14861,
+			"effets":
+			[
+				"atkUp"
+			],
+			"enemiesEffets":
+			[
+				"defDown",
+				"burn"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/eb/Cu_Chulainn_Caster_New_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20210613013132",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/0e/Cu_Chulainn_Caster_New_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20210613013159",
@@ -839,7 +1015,11 @@
 		{
 			"nom":"Swallow reversal",
 			"type":"ST",
-			"dmg":34798
+			"dmg":34798,
+			"effets":
+			[
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/d7/S039_Stage1_Sprite.png/revision/latest/scale-to-width-down/350?cb=20220430121339",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/ec/S039_Stage2_Sprite.png/revision/latest/scale-to-width-down/350?cb=20220430121355",
@@ -859,7 +1039,16 @@
 		{
 			"nom":"Zabaniya cursed arm",
 			"type":"ST",
-			"dmg":24111
+			"dmg":24111,
+			"effets":
+			[
+				"increaseNpCharge",
+				"atkUp"
+			],
+			"enemiesEffets":
+			[
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2e/Hassan_new_sprite1.png/revision/latest/scale-to-width-down/350?cb=20180919144304",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/18/Hassan_new_sprite2.png/revision/latest/scale-to-width-down/350?cb=20180921135730",
@@ -884,7 +1073,7 @@
 				"death",
 				"defDown",
 				"removeBuffs",
-				"stun"
+				"charm"
 			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/49/Stheno_Sprite1_New.png/revision/latest/scale-to-width-down/350?cb=20200813145626",
@@ -905,7 +1094,16 @@
 		{
 			"nom":"All i do kill",
 			"type":"ST",
-			"dmg":42403
+			"dmg":42403,
+			"effets":
+			[
+				"reduceHp",
+				"critUp"
+			],
+			"enemiesEffets":
+			[
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/a5/JingKeStage1New.png/revision/latest/scale-to-width-down/350?cb=20200215154538",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/1a/JingKeStage2New.png/revision/latest/scale-to-width-down/350?cb=20200215154543",
@@ -925,7 +1123,12 @@
 		{
 			"nom":"La mort espoir",
 			"type":"ST",
-			"dmg":24055
+			"dmg":24055,
+			"enemiesEffets":
+			[
+				"death",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/72/Sansonsprite1.png/revision/latest/scale-to-width-down/350?cb=20200216122933",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/83/Sansonsprite2.png/revision/latest/scale-to-width-down/350?cb=20200216122936",
@@ -945,7 +1148,15 @@
 		{
 			"nom":"Christine christine",
 			"type":"AoE",
-			"dmg":12396
+			"dmg":12396,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"debuffResistDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e6/Phantomsprite1.png/revision/latest/scale-to-width-down/350?cb=20200216092455",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/42/Phantomsprite2.png/revision/latest/scale-to-width-down/350?cb=20200216092501",
@@ -967,9 +1178,9 @@
 			"type":"Support",
 			"enemiesEffets":
 			[
-				"stun",
+				"charm",
 				"defDown",
-				"atkUp"
+				"atkDown"
 			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/8a/Mataharisprite1.png/revision/latest/scale-to-width-down/350?cb=20200216095901",
@@ -990,7 +1201,12 @@
 		{
 			"nom":"Phantom maiden",
 			"type":"ST",
-			"dmg":31024
+			"dmg":31024,
+			"effets":
+			[
+				"restoreHp",
+				"atkUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/48/Carmillanew1.png/revision/latest/scale-to-width-down/350?cb=20200216093354",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2f/Carmillanew2.png/revision/latest/scale-to-width-down/350?cb=20200216093401",
@@ -1010,7 +1226,11 @@
 		{
 			"nom":"Nine lives",
 			"type":"ST",
-			"dmg":44700
+			"dmg":44700,
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/5d/Heracles_new_sprite1.png/revision/latest/scale-to-width-down/350?cb=20200222125830",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/82/Heracles_new_sprite2.png/revision/latest/scale-to-width-down/350?cb=20200222125840",
@@ -1030,7 +1250,11 @@
 		{
 			"nom":"Knight owner",
 			"type":"AoE",
-			"dmg":15331
+			"dmg":15331,
+			"effets":
+			[
+				"atkUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/ee/Lancelot_NewSprite1.png/revision/latest/scale-to-width-down/350?cb=20180911092724",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/55/Lancelot_NewSprite2.png/revision/latest/scale-to-width-down/350?cb=20180911092724",
@@ -1050,7 +1274,11 @@
 		{
 			"nom":"God force",
 			"type":"ST",
-			"dmg":62849
+			"dmg":62849,
+			"enemiesEffets":
+			[
+				"stun"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f9/LuBu_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20190808083920",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/fb/LuBu_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20190808083921",
@@ -1070,7 +1298,12 @@
 		{
 			"nom":"Crying warmonger",
 			"type":"AoE",
-			"dmg":21019
+			"dmg":21019,
+			"effets":
+			[
+				"ignoreDef",
+				"restoreHp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2d/SpartacusStage1New.png/revision/latest/scale-to-width-down/350?cb=20200328082109",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/15/SpartacusStage2New.png/revision/latest/scale-to-width-down/350?cb=20200328082115",
@@ -1090,7 +1323,12 @@
 		{
 			"nom":"Golden spark",
 			"type":"ST",
-			"dmg":63818
+			"dmg":63818,
+			"enemiesEffets":
+			[
+				"busterDefDown",
+				"stun"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/8b/Kintoki_new_1.png/revision/latest/scale-to-width-down/350?cb=20200216100042",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f1/Kintoki_new_2.png/revision/latest/scale-to-width-down/350?cb=20200216100047",
@@ -1110,7 +1348,15 @@
 		{
 			"nom":"Kazikli bey",
 			"type":"ST",
-			"dmg":49331
+			"dmg":49331,
+			"effets":
+			[
+				"critUp"
+			],
+			"enemiesEffets":
+			[
+				"artsDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/02/Vladsprite1.png/revision/latest/scale-to-width-down/350?cb=20220514121249",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/43/Vladsprite2.png/revision/latest/scale-to-width-down/350?cb=20220514121306",
@@ -1179,7 +1425,12 @@
 		{
 			"nom":"Anthanaton ten thousand",
 			"type":"AoE",
-			"dmg":25089
+			"dmg":25089,
+			"enemiesEffets":
+			[
+				"atkDown",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/ad/Dariussprite1.png/revision/latest/scale-to-width-down/350?cb=20180924161846",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/0b/Dariussprite2.png/revision/latest/scale-to-width-down/350?cb=20180924161851",
@@ -1199,7 +1450,13 @@
 		{
 			"nom":"Transforming flame emitting meditation",
 			"type":"AoE",
-			"dmg":25540
+			"dmg":25540,
+			"enemiesEffets":
+			[
+				"stun",
+				"burn"
+			]
+
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/23/KiyohimeNewSprite1.png/revision/latest/scale-to-width-down/350?cb=20190102102305",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/d4/KiyohimeNewSprite2.png/revision/latest/scale-to-width-down/350?cb=20190102102313",
@@ -1219,7 +1476,15 @@
 		{
 			"nom":"Bloodbath crown",
 			"type":"AoE",
-			"dmg":23903
+			"dmg":23903,
+			"effets":
+			[
+				"reduceHp"
+			],
+			"enemiesEffets":
+			[
+				"atkUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4a/Ericsprite1.png/revision/latest/scale-to-width-down/350?cb=20220514120926",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/04/Ericsprite2.png/revision/latest/scale-to-width-down/350?cb=20220514120934",
@@ -1239,7 +1504,12 @@
 		{
 			"nom":"Napping dazzling sunshine and feasting",
 			"type":"AoE",
-			"dmg":21104
+			"dmg":21104,
+			"effets":
+			[
+				"stun",
+				"restoreHp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/98/TamamoCatNewSprite1.png/revision/latest/scale-to-width-down/350?cb=20190102102336",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/9a/TamamoCatNewSprite2.png/revision/latest/scale-to-width-down/350?cb=20190102102347",
@@ -1285,7 +1555,13 @@
 		{
 			"nom":"Tri star amore mio",
 			"type":"ST",
-			"dmg":38093
+			"dmg":38093,
+			"enemiesEffets":
+			[
+				"atkDown",
+				"npChargeDown",
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/8a/OrionSprite1New.png/revision/latest/scale-to-width-down/350?cb=20181006052401",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c8/OrionSprite2New.png/revision/latest/scale-to-width-down/350?cb=20181008081022",
@@ -1305,7 +1581,15 @@
 		{
 			"nom":"Bathory halloween erzsebet",
 			"type":"AoE",
-			"dmg":21647
+			"dmg":21647,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"curse"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/36/Screenshot_2017-01-16-23-35-17.png/revision/latest/scale-to-width-down/350?cb=20180929072248",
 		"level":4,
@@ -1348,7 +1632,15 @@
 		{
 			"nom":"Hamesh avanim",
 			"type":"ST",
-			"dmg":40543
+			"dmg":40543,
+			"effets":
+			[
+				"sureHit"
+			],
+			"enemiesEffets":
+			[
+				"skillSteal"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/1a/Davidsprite1.png/revision/latest/scale-to-width-down/350?cb=20200216123455",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/75/Davidsprite2.png/revision/latest/scale-to-width-down/350?cb=20200216123500",
@@ -1368,7 +1660,15 @@
 		{
 			"nom":"Durindana",
 			"type":"AoE",
-			"dmg":17232
+			"dmg":17232,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/33/Hektor_Updated_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20191218160112",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/14/Hektor_Updated_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20191218160059",
@@ -1388,7 +1688,11 @@
 		{
 			"nom":"Golden wild hunt",
 			"type":"AoE",
-			"dmg":23285
+			"dmg":23285,
+			"effets":
+			[
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/1b/Drake_new_sprite1.png/revision/latest/scale-to-width-down/350?cb=20200215155501",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/48/Drake_new_sprite2.png/revision/latest/scale-to-width-down/350?cb=20200215155508",
@@ -1453,7 +1757,15 @@
 		{
 			"nom":"Mumyou sandanzuki",
 			"type":"ST",
-			"dmg":52630
+			"dmg":52630,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/9c/Okita_Souji_Sprite1_2nd_Renewal.png/revision/latest/scale-to-width-down/350?cb=20201002123051",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c0/Okita_Souji_Sprite2_2nd_Renewal.png/revision/latest/scale-to-width-down/350?cb=20201002123052",
@@ -1491,7 +1803,12 @@
 		{
 			"nom":"Gae bolg alternative",
 			"type":"ST",
-			"dmg":57380
+			"dmg":57380,
+			"enemiesEffets":
+			[
+				"stun",
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2b/Scathach_Renewal_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20200918195857",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f8/Scathach_Renewal_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20200918195859",
@@ -1511,7 +1828,12 @@
 		{
 			"nom":"Gae dearg gae buidhe",
 			"type":"ST",
-			"dmg":36524
+			"dmg":36524,
+			"enemiesEffets":
+			[
+				"removeBuffs",
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/af/DiarmuidLancer_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20220514122139",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/61/DiarmuidLancer_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20220514122145",
@@ -1531,7 +1853,12 @@
 		{
 			"nom":"Caladbolg",
 			"type":"AoE",
-			"dmg":22766
+			"dmg":22766,
+			"enemiesEffets":
+			[
+				"defDown",
+				"debuffResistDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c3/Fergus_stage_1.png/revision/latest/scale-to-width-down/350?cb=20200216123625",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/a8/Fergus_stage_2.png/revision/latest/scale-to-width-down/350?cb=20200216123630",
@@ -1551,7 +1878,11 @@
 		{
 			"nom":"Excalibur morgan santa alter",
 			"type":"AoE",
-			"dmg":33355
+			"dmg":33355,
+			"effets":
+			[
+				"increaseNpCharge"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/1e/Santasprite.png/revision/latest/scale-to-width-down/350?cb=20200216123655",
 		"level":4,
@@ -1569,7 +1900,12 @@
 		{
 			"nom":"Nursery rhyme",
 			"type":"AoE",
-			"dmg":13155
+			"dmg":13155,
+			"enemiesEffets":
+			[
+				"defDown",
+				"npChargeDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/31/Rhymesprite1.png/revision/latest/scale-to-width-down/350?cb=20200216123912",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4c/Rhymesprite2.png/revision/latest/scale-to-width-down/350?cb=20200216123923",
@@ -1589,7 +1925,11 @@
 		{
 			"nom":"Maria ripper",
 			"type":"ST",
-			"dmg":43668
+			"dmg":43668,
+			"effets":
+			[
+				"defUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/1d/Jack_Renewal_1_Sprite.png/revision/latest/scale-to-width-down/350?cb=20200325132437",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/21/Jack_Renewal_2_Sprite.png/revision/latest/scale-to-width-down/350?cb=20200325132443",
@@ -1609,7 +1949,11 @@
 		{
 			"nom":"Clarent blood arthur",
 			"type":"AoE",
-			"dmg":26337
+			"dmg":26337,
+			"effets":
+			[
+				"increaseNpCharge"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c2/Mode_red_new_1.png/revision/latest/scale-to-width-down/350?cb=20190922170626",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/d3/Mode_red_new_2.png/revision/latest/scale-to-width-down/350?cb=20190922170631",
@@ -1629,7 +1973,15 @@
 		{
 			"nom":"System keraunos",
 			"type":"AoE",
-			"dmg":26139
+			"dmg":26139,
+			"effets":
+			[
+				"reduceHp"
+			],
+			"enemiesEffets":
+			[
+				"stun"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/d2/Nikola_Tesla_Renewal_1_Sprite.png/revision/latest/scale-to-width-down/350?cb=20220317150345",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/41/Nikola_Tesla_Renewal_2_Sprite.png/revision/latest/scale-to-width-down/350?cb=20220317150349",
@@ -1649,7 +2001,16 @@
 		{
 			"nom":"Rhongomyniad alter",
 			"type":"AoE",
-			"dmg":27590
+			"dmg":27590,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"npSteal",
+				"curse"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c1/Artorialancersprite1.png/revision/latest/scale-to-width-down/350?cb=20220428073417",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/6c/ArtoriaLancerAlterSprite2.png/revision/latest/scale-to-width-down/350?cb=20220428073441",
@@ -1669,7 +2030,11 @@
 		{
 			"nom":"Sword paracelsus",
 			"type":"AoE",
-			"dmg":12450
+			"dmg":12450,
+			"enemiesEffets":
+			[
+				"atkDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/60/Paracelsussprite1.png/revision/latest/scale-to-width-down/350?cb=20200216124611",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/b0/Paracelsussprite2.png/revision/latest/scale-to-width-down/350?cb=20200216124617",
@@ -1689,7 +2054,11 @@
 		{
 			"nom":"Dimension steam",
 			"type":"AoE",
-			"dmg":22809
+			"dmg":22809,
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/c8/Sprite-Stage1-Charles_Babbage.png/revision/latest/scale-to-width-down/350?cb=20181014081704",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/aa/CharlesBabbageSprite2.png/revision/latest/scale-to-width-down/350?cb=20181014081700",
@@ -1734,7 +2103,15 @@
 		{
 			"nom":"Blasted tree",
 			"type":"AoE",
-			"dmg":32143
+			"dmg":32143,
+			"effets":
+			[
+				"stun"
+			],
+			"enemiesEffets":
+			[
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/a/ab/Frankensteinsprite1.png/revision/latest/scale-to-width-down/350?cb=20220430114327",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/2e/Frankensteinsprite2.png/revision/latest/scale-to-width-down/350?cb=20220430114333",
@@ -1750,6 +2127,12 @@
 		"scale":1.2,
 		"id":83,
 		"nom":"Solomon Grand Caster",
+		"np":
+		{
+			"nom":"Ars Nova",
+			"type":"AoE",
+			"dmg":30000		
+		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/00/SolomonGrandCasterSprite.png/revision/latest/scale-to-width-down/350?cb=20180625203406",
 		"level":5,
 		"classe":"Caster",
@@ -1766,7 +2149,12 @@
 		{
 			"nom":"Pashupata",
 			"type":"AoE",
-			"dmg":27462
+			"dmg":27462,
+			"enemiesEffets":
+			[
+				"death",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/7b/Arjuna_New_1.png/revision/latest/scale-to-width-down/350?cb=20190620133508",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/5c/Arjuna_New_2.png/revision/latest/scale-to-width-down/350?cb=20190620133513",
@@ -1786,7 +2174,11 @@
 		{
 			"nom":"Vasavi shakti",
 			"type":"AoE",
-			"dmg":29531
+			"dmg":29531,
+			"enemiesEffets":
+			[
+				"busterDefDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/93/Karna_Sprite1_New.png/revision/latest/scale-to-width-down/350?cb=20190616030017",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/52/Karna_Sprite2_New.png/revision/latest/scale-to-width-down/350?cb=20190616030016",
@@ -1826,7 +2218,15 @@
 		{
 			"nom":"Mac luin",
 			"type":"AoE",
-			"dmg":20269
+			"dmg":20269,
+			"effets":
+			[
+				"debuffResistUp"
+			],
+			"enemiesEffets":
+			[
+				"atkDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/42/Fionn_mac_Cumhaill_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20200227081554",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/01/Fionn_mac_Cumhaill_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20200227081555",
@@ -1846,7 +2246,11 @@
 		{
 			"nom":"Brynhild romantia",
 			"type":"ST",
-			"dmg":51890
+			"dmg":51890,
+			"effets":
+			[
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/dd/BrynhildrNewSprite1.png/revision/latest/scale-to-width-down/350?cb=20200625034043",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/86/BrynhildrNewSprite2.png/revision/latest/scale-to-width-down/350?cb=20200625034008",
@@ -1866,7 +2270,15 @@
 		{
 			"nom":"Grendel buster",
 			"type":"ST",
-			"dmg":47075
+			"dmg":47075,
+			"effets":
+			[
+				"sureHit"
+			],
+			"enemiesEffets":
+			[
+			 	"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/b1/Beowulf_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20181014084333",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/6c/Beowulf_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20181010133219",
@@ -1886,7 +2298,13 @@
 		{
 			"nom":"Fax caelestis",
 			"type":"ST",
-			"dmg":48713
+			"dmg":48713,
+			"enemiesEffets":
+			[
+				"burn",
+				"defDown",
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e6/NeroBride_NewSprite1.png/revision/latest/scale-to-width-down/350?cb=20190113172602",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/0c/NeroBride_NewSprite2.png/revision/latest/scale-to-width-down/350?cb=20190113172122",
@@ -1906,7 +2324,17 @@
 		{
 			"nom":"Amalavijnana boundary emptiness",
 			"type":"AoE",
-			"dmg":29519
+			"dmg":29519,
+			"effets":
+			[
+				"ignoreDef",
+				"removeDeBuffs",
+				"increaseNpCharge"
+			],
+			"enemiesEffets":
+			[
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/51/Void_new_1.png/revision/latest/scale-to-width-down/350?cb=20181013100556",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/42/Void_new_2.png/revision/latest/scale-to-width-down/350?cb=20181013100600",
@@ -1926,7 +2354,16 @@
 		{
 			"nom":"Vijnapti matrata mystic eyes death perception",
 			"type":"ST",
-			"dmg":55147
+			"dmg":55147,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"defDown",
+				"death"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/be/Shiki_new.png/revision/latest/scale-to-width-down/228?cb=20181011140138",
 		"level":4,
@@ -1944,7 +2381,12 @@
 		{
 			"nom":"Twin arm big crunch",
 			"type":"AoE",
-			"dmg":23626
+			"dmg":23626,
+			"enemiesEffets":
+			[
+				"removeBuffs",
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/67/Amakusa_Shirou_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20210303150749",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/b4/Amakusa_Shirou_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20210303150748",
@@ -1964,7 +2406,13 @@
 		{
 			"nom":"Hippogriff",
 			"type":"AoE",
-			"dmg":20782
+			"dmg":20782,
+			"effets":
+			[
+				"ignoreDef",
+				"evade",
+				"critUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/6/61/Astolfosprite1.png/revision/latest/scale-to-width-down/350?cb=20200216140536",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/5e/Astolfosprite2.png/revision/latest/scale-to-width-down/350?cb=20200216140541",
@@ -1984,7 +2432,13 @@
 		{
 			"nom":"Gate babylon",
 			"type":"AoE",
-			"dmg":20867
+			"dmg":20867,
+			"enemiesEffets":
+			[
+				"npStrengthDown",
+				"critDown",
+				"debuffResistDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4a/Kogilsprite1.png/revision/latest/scale-to-width-down/350?cb=20190302162537",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/9e/Kogilsprite2.png/revision/latest/scale-to-width-down/350?cb=20190302162556",
@@ -2004,7 +2458,12 @@
 		{
 			"nom":"Enfer chateau dif",
 			"type":"AoE",
-			"dmg":33131
+			"dmg":33131,
+			"enemiesEffets":
+			[
+				"curse",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e7/DantesNewSprite1.png/revision/latest/scale-to-width-down/350?cb=20200216131028",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/d1/DantesNewSprite2.png/revision/latest/scale-to-width-down/350?cb=20200216131033",
@@ -2053,7 +2512,12 @@
 		{
 			"nom":"Curruid coinchenn",
 			"type":"ST",
-			"dmg":33470
+			"dmg":33470,
+			"effets":
+			[
+				"atkUp",
+				"defUp"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/88/CuAlterSprite1.png/revision/latest/scale-to-width-down/350?cb=20220429055254",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/25/CuAlterSprite2.png/revision/latest/scale-to-width-down/350?cb=20220429055247",
@@ -2073,7 +2537,12 @@
 		{
 			"nom":"Chariot my love",
 			"type":"ST",
-			"dmg":46765
+			"dmg":46765,
+			"enemiesEffets":
+			[
+				"debuffResistDown"
+			]
+
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e0/Medb_new_1.png/revision/latest/scale-to-width-down/286?cb=20181019130713",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/2/22/Medb_new_2.png/revision/latest/scale-to-width-down/286?cb=20181019130722",
@@ -2093,7 +2562,13 @@
 		{
 			"nom":"Sanat kumara",
 			"type":"AoE",
-			"dmg":23320
+			"dmg":23320,
+			"enemiesEffets":
+			[
+				"defDown",
+				"critDown",
+				"debuffResistDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4d/HelenaSprite1.png/revision/latest/scale-to-width-down/350?cb=20200216125134",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/8/84/HelenaSprite2.png/revision/latest/scale-to-width-down/350?cb=20200216125138",
@@ -2113,7 +2588,11 @@
 		{
 			"nom":"Brahmastra",
 			"type":"ST",
-			"dmg":35549
+			"dmg":35549,
+			"enemiesEffets":
+			[
+				"busterDefDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/4e/Rama_Sprite1_New.png/revision/latest/scale-to-width-down/350?cb=20190618025141",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/0/04/Rama_Sprite2_New.png/revision/latest/scale-to-width-down/350?cb=20190618030725",
@@ -2133,8 +2612,17 @@
 		{
 			"nom":"Shen qiang wu er da",
 			"type":"ST",
-			"dmg":46309
-		},
+			"dmg":46309,
+			"effets":
+			[
+				"ignoreDef"
+			],
+			"enemiesEffets":
+			[
+				"defDown",
+				"death"
+			]
+					},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/40/LiShuwenLancer_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20220428071341",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/73/LiShuwenLancer_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20220428071558",
 		"sprite3":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/df/LiShuwenLancer_Sprite3.png/revision/latest/scale-to-width-down/350?cb=20220428071717",
@@ -2153,7 +2641,14 @@
 		{
 			"nom":"Wfd",
 			"type":"AoE",
-			"dmg":11563
+			"dmg":11563,
+			"enemiesEffets":
+			[
+				"skillSteal",
+				"npSteal",
+				"critDown",
+				"atkDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/78/EdisonSprite1.png/revision/latest/scale-to-width-down/350?cb=20220430122730",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/cb/EdisonSprite2.png/revision/latest/scale-to-width-down/350?cb=20220430122735",
@@ -2173,7 +2668,16 @@
 		{
 			"nom":"Tsago degi naleya",
 			"type":"AoE",
-			"dmg":23127
+			"dmg":23127,
+			"effets":
+			[
+				"restoreHp",
+				"debuffResistUp"
+			],	
+			"enemiesEffets":
+			[
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/5/54/GeronimoSprite1.png/revision/latest/scale-to-width-down/350?cb=20220430122901",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/c/ce/Geronimo2Sprite.png/revision/latest/scale-to-width-down/350?cb=20220430122907",
@@ -2193,7 +2697,15 @@
 		{
 			"nom":"Thunderer",
 			"type":"ST",
-			"dmg":35417
+			"dmg":35417,
+			"effets":
+			[
+				"sureHit"
+			],
+			"enemiesEffets":
+			[
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/1b/Billysprite1.png/revision/latest/scale-to-width-down/350?cb=20200216101843",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/e/e5/Billysprite2.png/revision/latest/scale-to-width-down/350?cb=20200216101848",
@@ -2258,7 +2770,12 @@
 		{
 			"nom":"Ionioi hetairoi",
 			"type":"AoE",
-			"dmg":37589
+			"dmg":37589,
+			"enemiesEffets":
+			[
+				"critDown",
+				"defDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/40/Iskandar_New1.png/revision/latest/scale-to-width-down/350?cb=20180909072720",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f9/Iskandar_New2.png/revision/latest/scale-to-width-down/350?cb=20180909072721",
@@ -2278,7 +2795,12 @@
 		{
 			"nom":"Chronos rose",
 			"type":"ST",
-			"dmg":34630
+			"dmg":34630,
+			"enemiesEffets":
+			[
+				"critDown",
+				"npChargeDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/15/EmiyaAssassin_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20200216102059",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/f/f6/EmiyaAssassin_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20200216102103",
@@ -2298,7 +2820,12 @@
 		{
 			"nom":"Zabaniya hundred personas",
 			"type":"ST",
-			"dmg":37229
+			"dmg":37229,
+			"enemiesEffets":
+			[
+				"artsDefDown",
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/9f/Asakostage1.png/revision/latest/scale-to-width-down/350?cb=20200216104033",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/7/7a/Asakostage2.png/revision/latest/scale-to-width-down/350?cb=20200216104038",
@@ -2340,7 +2867,17 @@
 		{
 			"nom":"Multicolored poison shinpen kidoku",
 			"type":"AoE",
-			"dmg":29520
+			"dmg":29520,
+			"enemiesEffets":
+			[
+				"debuffResistDown",
+				"defDown",
+				"atkDown",
+				"npStrengthDown",
+				"critDown",
+				"skillSteal",
+				"toxic"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/b/bc/Shutensprite1.png/revision/latest/scale-to-width-down/350?cb=20200216113322",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/3a/Shutensprite2.png/revision/latest/scale-to-width-down/350?cb=20200216113327",
@@ -2360,7 +2897,15 @@
 		{
 			"nom":"Five elements mountain buddha palm",
 			"type":"ST",
-			"dmg":37856
+			"dmg":37856,
+			"effets":
+			[
+				"ignoreDef"	
+			],
+			"enemiesEffets":
+			[
+				"critDown"
+			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/d/dd/Xuanzang_Sprite1.png/revision/latest/scale-to-width-down/350?cb=20200216113424",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/3e/Xuanzang_Sprite2.png/revision/latest/scale-to-width-down/350?cb=20200216113429",
@@ -4640,7 +5185,14 @@
 			"type":"Support",
 			"effets":
 			[
-				"heal"
+				"atkUp",
+				"restoreHp"
+			],
+			"enemiesEffets":
+			[
+				"defDown",
+				"removeBuffs",
+				"critDown"
 			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/9/92/Qin_Liangyu_1.png/revision/latest/scale-to-width-down/350?cb=20181203060236",
@@ -5080,8 +5632,9 @@
 			[
 				"applyGuts",
 				"debuffResistUp",
-				"restoreHp"
+				"restoreHp"	
 			]
+		
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/3/3a/Asclepius_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20190623153900",
 		"sprite2":"https://vignette.wikia.nocookie.net/fategrandorder/images/1/16/Asclepius_Sprite_2.png/revision/latest/scale-to-width-down/350?cb=20190623153746",
@@ -5541,7 +6094,6 @@
 				"atkUp",
 				"ignoreInvincible",
 				"debuffResistUp",
-				"atkUp",
 				"critUp"
 			]
 		},
@@ -5785,7 +6337,7 @@
 			[
 				"atkUp",
 				"removeDeBuffs",
-				"Enforcement"
+				"enforcement"
 			]
 		},
 		"sprite1":"https://vignette.wikia.nocookie.net/fategrandorder/images/4/41/Artoria_Caster_Sprite_1.png/revision/latest/scale-to-width-down/350?cb=20200812064728",
@@ -6718,7 +7270,6 @@
 			"effets":
 			[
 				"atkUp",
-				"atkUp",
 				"critUp",
 				"restoreHp"
 			]
@@ -6836,7 +7387,6 @@
 				"atkUp",
 				"strikeBack"
 			],
-
 			"enemiesEffets":
 			[
 				"defDown"
@@ -6963,7 +7513,7 @@
 			[
 				"atkUp",
 				"invincible",
-				"dmgCut",
+				"dmgCut,",
 				"defUp"
 			]
 		},
@@ -7396,7 +7946,6 @@
 			[
 				"atkUp",
 				"critUp",
-				"critUp",
 				"increaseNpCharge"
 			]
 		},
@@ -7784,7 +8333,7 @@
 			"dmg":0,
 			"effets":
 			[
-				"defUp",
+				"defUp" ,
 				"defUp",
 				"defUp"
 			]
@@ -7857,36 +8406,6 @@
     },
     {
 		"scale":1,
-		"id":407,
-		"nom":"Tonelico",
-		"level":5,
-		"np":
-		{
-			"nom":"Memory of Londinium",
-			"type":"AOE",
-			"dmg":0,
-			"effets":
-			[
-				"invincible",
-				"atkUp",
-				"reduceSkillCooldown",
-				"atkUp"
-			],
-			"enemiesEffets":
-			[
-				"defDown"
-			]
-		},
-		"classe":"Caster",
-		"img1":"./assets/images/servants/tonelico/0.jpg",
-		"img2":"./assets/images/servants/tonelico/1.jpg",
-		"img3":"./assets/images/servants/tonelico/2.jpg",
-		"img4":"./assets/images/servants/tonelico/3.jpg",
-		"special":true
-    },
-    
-    {
-		"scale":1,
 		"id":385,
 		"nom":"Craft Essence",
 		"img1":"https://gamepress.gg/grandorder/sites/grandorder/files/2017-07/craft_essence_002.jpg",
@@ -7924,11 +8443,6 @@
 		"scale":1,
 		"id":390,
 		"nom":"Rin Tohsaka",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/rin/0.jpg",
@@ -7942,11 +8456,6 @@
 		"scale":1,
 		"id":391,
 		"nom":"Noah",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Rider",
 		"img1":"./assets/images/servants/noah/0.jpg",
@@ -7960,11 +8469,6 @@
 		"scale":1,
 		"id":392,
 		"nom":"Suzuka Gozen Santa",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":4,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/suzukagozensanta/0.jpg",
@@ -7977,11 +8481,6 @@
 		"scale":1,
 		"id":393,
 		"nom":"Beast IV/S",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Beast",
 		"img1":"./assets/images/servants/beastivs/0.jpg",
@@ -7993,8 +8492,16 @@
 		"nom":"Kirschtaria",
 		"np":
 		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
+			"nom":"Grand Order/Anima Animusphere",
+			"type":"AoE",
+			"effets":
+			[
+				"removeBuffs",
+				"atkUp",
+				"ignoreDef",
+				"ignoreInvincible"
+			]
+	
 		},
 		"level":5,
 		"classe":"Caster",
@@ -8009,11 +8516,6 @@
 		"scale":1,
 		"id":395,
 		"nom":"Sakura Matou",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Alter Ego",
 		"img1":"./assets/images/servants/sakura/0.jpg",
@@ -8028,11 +8530,6 @@
 		"scale":1,
 		"id":396,
 		"nom":"Black Irisviel",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Avenger",
 		"img1":"./assets/images/servants/blackirisviel/0.jpg",
@@ -8046,11 +8543,6 @@
 		"scale":1,
 		"id":397,
 		"nom":"Galahad",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Shielder",
 		"img1":"./assets/images/servants/galahad/0.jpg",
@@ -8064,28 +8556,20 @@
 		"scale":1,
 		"id":398,
 		"nom":"Illyasviel",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Assassin",
 		"img1":"./assets/images/servants/illyasviel/0.jpg",
 		"img2":"./assets/images/servants/illyasviel/1.jpg",
 		"img3":"./assets/images/servants/illyasviel/2.jpg",
 		"img4":"./assets/images/servants/illyasviel/3.jpg",
-		"special":true
+		"sprite1":"./assets/images/servants/illyasviel/sprite1.png",
+		"special":true,
+		"turn":true
     },
     {
 		"scale":1,
 		"id":399,
 		"nom":"Kirei Kotomine",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Ruler",
 		"img1":"./assets/images/servants/kirei/0.jpg",
@@ -8093,18 +8577,12 @@
 		"img3":"./assets/images/servants/kirei/2.jpg",
 		"img4":"./assets/images/servants/kirei/3.jpg",
 		"sprite1":"./assets/images/servants/kirei/sprite.png",
-		"special":true,
-		"turn":true
+		"special":true
     },
     {
 		"scale":1,
 		"id":400,
 		"nom":"Marie Antoinette Alter",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Pretender",
 		"img1":"./assets/images/servants/marieantoinette/0.jpg",
@@ -8117,11 +8595,6 @@
 		"scale":1,
 		"id":401,
 		"nom":"Miyamoto Musashi Alter",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Berserker",
 		"img1":"./assets/images/servants/musashialter/0.jpg",
@@ -8134,11 +8607,6 @@
 		"scale":1,
 		"id":402,
 		"nom":"Mordred Trifas",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/mordredtrifas/0.jpg",
@@ -8152,11 +8620,6 @@
 		"scale":1,
 		"id":403,
 		"nom":"Shirou",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/shirou/0.jpg",
@@ -8171,11 +8634,6 @@
 		"scale":1,
 		"id":404,
 		"nom":"Maxwell's Demon",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/maxwell/0.jpg",
@@ -8188,11 +8646,6 @@
 		"scale":1,
 		"id":405,
 		"nom":"Mordred Alter",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Alter Ego",
 		"img1":"./assets/images/servants/mordredalter/0.jpg",
@@ -8205,11 +8658,6 @@
 		"scale":1,
 		"id":406,
 		"nom":"Alatariel",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Ruler",
 		"img1":"./assets/images/servants/alatariel/0.jpg",
@@ -8220,13 +8668,37 @@
     },
     {
 		"scale":1,
-		"id":408,
-		"nom":"Olga Marie",
+		"id":407,
+		"nom":"Tonelico",
+		"level":5,
 		"np":
 		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
+			"nom":"Memory of Londinium",
+			"type":"AOE",
+			"dmg":0,
+			"effets":
+			[
+				"invincible",
+				"atkUp",
+				"reduceSkillCooldown",
+				"atkUp"
+			],
+			"enemiesEffets":
+			[
+				"defDown"
+			]
 		},
+		"classe":"Caster",
+		"img1":"./assets/images/servants/tonelico/0.jpg",
+		"img2":"./assets/images/servants/tonelico/1.jpg",
+		"img3":"./assets/images/servants/tonelico/2.jpg",
+		"img4":"./assets/images/servants/tonelico/3.jpg",
+		"special":false
+    },
+    {
+		"scale":1,
+		"id":408,
+		"nom":"Olga Marie",
 		"level":5,
 		"classe":"Foreigner",
 		"img1":"./assets/images/servants/olgamarie/0.jpg",
@@ -8240,11 +8712,6 @@
 		"scale":1,
 		"id":409,
 		"nom":"Morgan Lily",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/lilymorgan/0.png",
@@ -8258,11 +8725,6 @@
 		"scale":1,
 		"id":410,
 		"nom":"Arjuna Saber",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Saber",
 		"img1":"./assets/images/servants/arjunasaber/0.png",
@@ -8276,11 +8738,6 @@
 		"scale":1,
 		"id":411,
 		"nom":"Manaka Sajyou",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/manaka/0.png",
@@ -8294,11 +8751,6 @@
 		"scale":1,
 		"id":412,
 		"nom":"Marie",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":4,
 		"classe":"Caster",
 		"img1":"./assets/images/servants/marie/0.png",
@@ -8306,18 +8758,12 @@
 		"img3":"./assets/images/servants/marie/0.png",
 		"img4":"./assets/images/servants/marie/3.png",
 		"sprite1":"./assets/images/servants/marie/sprite.png",
-		"special":true,
-		"turn":true
+		"special":true
     },
     {
 		"scale":1,
 		"id":413,
 		"nom":"Kiritsugu",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Assassin",
 		"img1":"./assets/images/servants/kiritsugu/0.png",
@@ -8331,11 +8777,6 @@
 		"scale":1,
 		"id":414,
 		"nom":"Cu Chulainn Summer",
-		"np":
-		{
-			"nom":"Temporary Phantasm",
-			"type":"AoE"
-		},
 		"level":5,
 		"classe":"Rider",
 		"img1":"./assets/images/servants/cuchu/0.png",
@@ -8343,5 +8784,223 @@
 		"img3":"./assets/images/servants/cuchu/2.png",
 		"img4":"./assets/images/servants/cuchu/3.png",
 		"special":true
+    },
+    {
+		"scale":1,
+		"id":415,
+		"nom":"Arthur Alter",
+		"sprite1":"./assets/images/servants/arthuralter/S1.png",
+		"sprite2":"./assets/images/servants/arthuralter/S2.png",
+		"sprite3":"./assets/images/servants/arthuralter/S3.png",
+		"level":5,
+		"classe":"Avenger",
+		"img1":"./assets/images/servants/arthuralter/0.jpg",
+		"img2":"./assets/images/servants/arthuralter/1.jpg",
+		"img3":"./assets/images/servants/arthuralter/2.jpg",
+		"img4":"./assets/images/servants/arthuralter/3.jpg",
+		"special":true
+    },
+    {
+		"scale":0.7,
+		"id":416,
+		"nom":"Camazotz",
+		"sprite1":"./assets/images/servants/camazotz/sprite.png",
+		"level":5,
+		"classe":"Beast",
+		"img1":"./assets/images/servants/camazotz/0.jpg",
+		"img2":"./assets/images/servants/camazotz/0.jpg",
+		"img3":"./assets/images/servants/camazotz/0.jpg",
+		"img4":"./assets/images/servants/camazotz/4.jpg",
+		"special":true
+    },
+    {
+		"scale":1,
+		"id":417,
+		"nom":"Beni-enma Alter",
+		"sprite1":"./assets/images/servants/enma/sprite.png",
+		"level":5,
+		"classe":"Berserker",
+		"img1":"./assets/images/servants/enma/0.jpg",
+		"img2":"./assets/images/servants/enma/0.jpg",
+		"img3":"./assets/images/servants/enma/0.jpg",
+		"img4":"./assets/images/servants/enma/0.jpg",
+		"special":true
+    },
+    {
+		"scale":1,
+		"id":418,
+		"nom":"Ereshkigal Alter",
+		"sprite1":"./assets/images/servants/ereshalter/sprite.png",
+		"level":5,
+		"classe":"Lancer",
+		"img1":"./assets/images/servants/ereshalter/0.png",
+		"img2":"./assets/images/servants/ereshalter/0.png",
+		"img3":"./assets/images/servants/ereshalter/0.png",
+		"img4":"./assets/images/servants/ereshalter/4.png",
+		"special":true
+    },
+	{
+		"scale":1,
+		"id":419,
+		"nom":"Artoria Berserker",
+		"level":5,
+		"np":
+		{
+			"nom":"Sword of Inherited Hopes",
+			"type":"ST",
+			"dmg":0,
+			"effets":
+			[
+				"enforcement",
+				"ignoreInvincible"
+			],
+			"enemiesEffets":
+			[
+				"critDown"
+			]
+		},
+		"classe":"Berserker",
+		"img1":"./assets/images/servants/artoriaBerserker/0.png",
+		"img2":"./assets/images/servants/artoriaBerserker/1.png",
+		"img3":"./assets/images/servants/artoriaBerserker/2.png",
+		"img4":"./assets/images/servants/artoriaBerserker/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/artoriaBerserker/sprite0.png",
+		"sprite2":"./assets/images/servants/artoriaBerserker/sprite1.png",
+		"sprite3":"./assets/images/servants/artoriaBerserker/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":420,
+		"nom":"Suzuka Gozen Summer",
+		"level":5,
+		"np":
+		{
+			"nom":"Midsummer Paradise - Nimbus Garden",
+			"type":"AoE",
+			"dmg":0,
+			"effets":
+			[
+				"ignoreInvincible"
+			]
+		},
+		"classe":"Rider",
+		"img1":"./assets/images/servants/suzukaGozenSummer/0.png",
+		"img2":"./assets/images/servants/suzukaGozenSummer/1.png",
+		"img3":"./assets/images/servants/suzukaGozenSummer/2.png",
+		"img4":"./assets/images/servants/suzukaGozenSummer/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/suzukaGozenSummer/sprite0.png",
+		"sprite2":"./assets/images/servants/suzukaGozenSummer/sprite1.png",
+		"sprite3":"./assets/images/servants/suzukaGozenSummer/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":421,
+		"nom":"Chloe von Einzbern Summer",
+		"level":5,
+		"np":
+		{
+			"nom":"Delivering the Richly Coloured Black and White to You",
+			"type":"AoE",
+			"dmg":0,
+			"enemiesEffets":
+			[
+				"npChargeDown"
+			]
+		},
+		"classe":"Avenger",
+		"img1":"./assets/images/servants/chloevonEinzbernSummer/0.png",
+		"img2":"./assets/images/servants/chloevonEinzbernSummer/1.png",
+		"img3":"./assets/images/servants/chloevonEinzbernSummer/2.png",
+		"img4":"./assets/images/servants/chloevonEinzbernSummer/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/chloevonEinzbernSummer/sprite0.png",
+		"sprite2":"./assets/images/servants/chloevonEinzbernSummer/sprite1.png",
+		"sprite3":"./assets/images/servants/chloevonEinzbernSummer/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":422,
+		"nom":"UDK Barghest",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Archer",
+		"img1":"./assets/images/servants/uDKBarghest/0.jpg",
+		"img2":"./assets/images/servants/uDKBarghest/1.jpg",
+		"img3":"./assets/images/servants/uDKBarghest/2.jpg",
+		"img4":"./assets/images/servants/uDKBarghest/3.jpg",
+		"special":false,
+		"sprite1":"./assets/images/servants/uDKBarghest/sprite0.png",
+		"sprite2":"./assets/images/servants/uDKBarghest/sprite1.png",
+		"sprite3":"./assets/images/servants/uDKBarghest/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":423,
+		"nom":"Cait Cú Cerpriestess",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Pretender",
+		"img1":"./assets/images/servants/caitCuCerpriestess/0.jpg",
+		"img2":"./assets/images/servants/caitCuCerpriestess/1.jpg",
+		"img3":"./assets/images/servants/caitCuCerpriestess/2.jpg",
+		"img4":"./assets/images/servants/caitCuCerpriestess/3.jpg",
+		"special":false,
+		"sprite1":"./assets/images/servants/caitCuCerpriestess/sprite0.png",
+		"sprite2":"./assets/images/servants/caitCuCerpriestess/sprite1.png",
+		"sprite3":"./assets/images/servants/caitCuCerpriestess/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":424,
+		"nom":"Mélusine Ruler",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Ruler",
+		"img1":"./assets/images/servants/mélusineRuler/0.jpg",
+		"img2":"./assets/images/servants/mélusineRuler/1.jpg",
+		"img3":"./assets/images/servants/mélusineRuler/2.jpg",
+		"img4":"./assets/images/servants/mélusineRuler/3.jpg",
+		"special":false,
+		"sprite1":"./assets/images/servants/mélusineRuler/sprite0.png",
+		"sprite2":"./assets/images/servants/mélusineRuler/sprite1.png",
+		"sprite3":"./assets/images/servants/mélusineRuler/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":425,
+		"nom":"Cnoc na Riabh",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Foreigner",
+		"img1":"./assets/images/servants/cnocnaRiabh/0.jpg",
+		"img2":"./assets/images/servants/cnocnaRiabh/1.jpg",
+		"img3":"./assets/images/servants/cnocnaRiabh/2.jpg",
+		"img4":"./assets/images/servants/cnocnaRiabh/3.jpg",
+		"special":false,
+		"sprite1":"./assets/images/servants/cnocnaRiabh/sprite0.png",
+		"sprite2":"./assets/images/servants/cnocnaRiabh/sprite1.png",
+		"sprite3":"./assets/images/servants/cnocnaRiabh/sprite2.png"
     }
 ]
