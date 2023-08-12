@@ -4661,7 +4661,7 @@ export class AppComponent implements OnInit
 
         for(let i=0;i<p.team.length;i++)
         {
-          let perso = this.data.find((d:any)=>d.id==p.team[i]);
+          let perso = JSON.parse(JSON.stringify(this.data.find((d:any)=>d.id==p.team[i])));
           perso.niveau = p.levels[i];
           perso.ascension = p.ascs[i];
           perso.title = true;
