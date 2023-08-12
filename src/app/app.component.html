@@ -46,7 +46,7 @@
         <p style="position: relative;top:6px" *ngIf="getBonusesPvm().length==0">No bonus</p>
       </div>
 
-      <div class="persopvm" style="position:absolute;display:flex;justify-content: space-evenly;width:80%;top:60%;left:10%">
+      <div class="persopvm" style="position:absolute;display:flex;justify-content: space-evenly;width:80%;top:50%;left:10%">
         <div *ngFor="let perso of getPersoPvm()">
           <div style="display:flex;position: absolute;top: -40px;z-index:9">
             <p style="margin-right:5px;">({{perso.niveau}})</p>
@@ -501,7 +501,7 @@
       </div>
   
       <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'||state=='shop'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
-      <img draggable="false" src="./assets/images/{{modepvm=='easy'?'bgpvm':'bgpvm2'}}.png" [style.display]="state=='pvm'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
+      <img *ngIf="state=='pvm'" draggable="false" src="./assets/images/pvm/{{getPvmBg()}}.png" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:71%"/>
   
       <!-- <RECAP -->
 

@@ -2984,7 +2984,7 @@ export class AppComponent implements OnInit
           {
             if(this.teamattaque==0)
             {
-              for(let i=0;i<4;i++)
+              for(let i=0;i<this.team2.length;i++)
               {
                 let persotodmg = this.team2[i];
                 if(persotodmg.pdv>0)
@@ -2999,7 +2999,7 @@ export class AppComponent implements OnInit
             }
             else 
             {
-              for(let i=0;i<4;i++)
+              for(let i=0;i<this.team1.length;i++)
               {
                 let persotodmg = this.team1[i];
                 if(persotodmg.pdv>0)
@@ -3055,7 +3055,7 @@ export class AppComponent implements OnInit
           {
             if(this.teamattaque==0)
             {
-              for(let i=0;i<4;i++)
+              for(let i=0;i<this.team1.length;i++)
               {
                 let persotoheal = this.team1[i];
                 if(persotoheal.pdv>0)
@@ -3067,7 +3067,7 @@ export class AppComponent implements OnInit
             }
             else 
             {
-              for(let i=0;i<4;i++)
+              for(let i=0;i<this.team2.length;i++)
               {
                 let persotoheal = this.team2[i];
                 if(persotoheal.pdv>0)
@@ -4001,7 +4001,7 @@ export class AppComponent implements OnInit
           return tmp;
         });
 
-        for(let i=0;i<4;i++)
+        for(let i=0;i<this.team2.length;i++)
         {
           let tmp = this.team2[i];
           if(this.modepvm=='hard')tmp.niveau = tmp.niveau + 100;
@@ -4676,6 +4676,23 @@ export class AppComponent implements OnInit
   {
     if(this.modepvm=="easy")return this.users.find((u:any)=>u.id==this.id).pvm_easy;
     else return this.users.find((u:any)=>u.id==this.id).pvm_hard;
+  }
+
+  addUserLevel(i:any)
+  {
+    if(this.modepvm=="easy")this.users.find((u:any)=>u.id==this.id).pvm_easy += i;
+    else this.users.find((u:any)=>u.id==this.id).pvm_hard += i;
+  }
+
+  getPvmBg()
+  {
+    let level = 0;
+
+    if(this.modepvm=="easy")level = this.users.find((u:any)=>u.id==this.id).pvm_easy;
+    else level = this.users.find((u:any)=>u.id==this.id).pvm_hard;
+
+    if(level>this.getPvmMaxLevel())return this.pvm.find((p:any)=>p.level==level-1).bg;
+    else return this.pvm.find((p:any)=>p.level==level).bg;
   }
 
   getPvmMaxLevel()

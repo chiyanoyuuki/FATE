@@ -8523,7 +8523,8 @@
 		"img3":"./assets/images/servants/sakura/2.jpg",
 		"img4":"./assets/images/servants/sakura/3.jpg",
 		"sprite1":"./assets/images/servants/sakura/sprite.png",
-		"sprite4":"./assets/images/servants/sakura/sprite2.png",
+		"sprite2":"./assets/images/servants/sakura/sprite.png",
+		"sprite3":"./assets/images/servants/sakura/sprite2.png",
 		"special":true
     },
     {
