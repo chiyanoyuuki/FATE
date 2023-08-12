@@ -245,6 +245,7 @@ export class AppComponent implements OnInit
   public histopvp = [];
   public histpvp = [];
   public personp: any = undefined;
+  public modepvm = 'easy';
 
   public idleState: number[] = [0,0,0,0];
   public idleState2: number[] = [0,0,0,0];
@@ -258,10 +259,12 @@ export class AppComponent implements OnInit
   public titlesduel2: any[] = [];
   public histoPulls:any;
   public npUsed = "0";
+  public fightpvm = false;
 
   public idpersotest = 342;
   public scaletest = 1;
   public test = false;
+  public pvm:any = [];
 
   public adversaire: any = undefined;
   public team1: any[] = [];
@@ -274,6 +277,8 @@ export class AppComponent implements OnInit
 
   public histowins: any = [];
   public histowinstot: any = [];
+
+  public lastpage = '';
 
   public combatInterval: any;
   public place:any = 0;
@@ -632,7 +637,7 @@ export class AppComponent implements OnInit
   loadPerso()
   {
     let perso: any;
-    let rdm = Math.floor(Math.random()*1000);
+    let rdm = Math.floor(Math.random()*10000);
     if(rdm==666)
     {
       let persos = this.data.filter((d:any)=>d.level==0&&d.nom!="Craft Essence");
@@ -909,6 +914,7 @@ export class AppComponent implements OnInit
         this.timerQuartz = 400000;
         this.daily();
         this.getPvp();
+        this.getPvm();
       }
     });
   }
@@ -2143,6 +2149,7 @@ export class AppComponent implements OnInit
 
   clickServantProfileCompo(i:any)
   {
+    this.lastpage = this.state;
     this.compo = true;
     this.selectServant=true;
     this.state='formation';
@@ -2224,7 +2231,7 @@ export class AppComponent implements OnInit
       });
       if(!this.profiles.find((p:any)=>p.user_id==this.id))
       {
-        let prof = {user_id:this.id,servant_id:-1,servants:[],description:'Pas de description..',succes:[],servs:[],titleserv:-1,titleservs:[],compo:[],titlescompo:[]};
+        let prof = {user_id:this.id,servant_id:-1,servants:[],description:'Pas de description..',succes:[],servs:[],titleserv:-1,titleservs:[],compo:[],titlescompo:[0,0,0,0]};
         this.profiledesc = "Pas de description..";
         this.myprofile = prof;
         this.profiles.push(prof);
@@ -2553,6 +2560,62 @@ export class AppComponent implements OnInit
     return (min/max)*100;
   }
 
+  endFight2(t1:any,t2:any)
+  {
+    if(t2==0)
+    {
+      let accountlevel = this.getPvmLevel();
+      let maxmodelevel = this.getPvmMaxLevel();
+
+      if(accountlevel<=maxmodelevel)
+      {
+        if(this.modepvm=="easy"){this.spendQuartz(-10);}
+        else {this.spendQuartz(-30);}
+
+        const dataToSend = {
+          userid:this.id
+        }
+        from(
+          fetch(
+            'https://www.chiya-no-yuuki.fr/FATEaddPvm'+this.modepvm,
+            {
+              body: JSON.stringify(dataToSend),
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              mode: 'no-cors',
+            }
+          )
+        ).subscribe((response) => 
+        {
+          this.getUsers();
+          this.resetFight();
+        });
+      }
+      else
+      {
+        if(this.modepvm=="easy"){this.spendQuartz(-3);}
+        else {this.spendQuartz(-6);}
+        this.resetFight();
+      }
+    }
+    else
+    {
+      this.resetFight();
+    }
+    
+  }
+
+  resetFight()
+  {
+    this.state = 'pvm';
+    this.team1 = [];
+    this.team2 = [];
+    clearInterval(this.idleInterval);
+    clearInterval(this.combatInterval);
+  }
+
   endFight(t1:any,t2:any)
   {
     let team1: any = [];
@@ -2605,8 +2668,6 @@ export class AppComponent implements OnInit
     ).subscribe((response) => 
     {
       this.gethistoPvp();
-      if(t2==0)this.spendQuartz(-3);
-      else if(t1==0)this.spendQuartz2(-3);
       clearInterval(this.idleInterval);
       clearInterval(this.combatInterval);
       this.team1 = [];
@@ -2643,7 +2704,8 @@ export class AppComponent implements OnInit
     let left2 = this.team2.filter((t:any)=>t.pdv>0);
     if(left1.length==0||left2.length==0)
     {
-      this.endFight(left1.length,left2.length);
+      if(!this.fightpvm)this.endFight(left1.length,left2.length);
+      else this.endFight2(left1.length,left2.length);
       return;
     }
 
@@ -2680,7 +2742,7 @@ export class AppComponent implements OnInit
     
     if(rdm>20)
     {
-      if(persoatq.npjauge==100 && persoatq.np)
+      if(persoatq.npjauge==100)
       {
         launchnp = true;
       }
@@ -2704,6 +2766,23 @@ export class AppComponent implements OnInit
     if(launchnp)
     {
       let smart = false;
+      if(!persoatq.np||persoatq.np.nom=="Stolen NP")
+      {
+        persoatq.np = 
+        {
+          "nom":"Stolen NP",
+          "type":"AoE",
+        }
+        let rdm = Math.round(Math.random());
+        if(rdm==0)
+        {
+          persoatq.np = 
+          {
+            "nom":"Stolen NP",
+            "type":"Support",
+          }
+        }
+      }
       if(persoatq.np.type=="Support")
       {
         let team:any;
@@ -2715,11 +2794,14 @@ export class AppComponent implements OnInit
           if(t.pdvmax-t.pdv>t.pdvmax*0.15)cpt++;
           if(t.pdvmax-t.pdv>t.pdvmax*0.5)cpt2++;
         })
-        if(cpt>team.length-2||cpt2>team.length-3)smart = true;
+        if(cpt>team.length-2||cpt2>team.length-3||persoatq.pdvmax-persoatq.pdv>persoatq.pdvmax*0.7)smart = true;
       }
       else if(persoatq.np.type=="ST")
       {
-        if(persocible.pdv>25000)smart = true;
+        let leftennemies;
+        if(this.teamattaque==0)leftennemies = left2.length;
+        else leftennemies = left1.length;
+        if(persocible.pdv>25000||leftennemies==1)smart = true;
       }
       else if(persoatq.np.type=="AoE")
       {
@@ -2832,6 +2914,14 @@ export class AppComponent implements OnInit
       }
       this.timerAttaque+=100;
     },100);
+  }
+
+  clickPvm()
+  {
+    let tmp = this.profiles.find((p:any)=>p.user_id==this.id);
+    if(tmp) this.myprofile = tmp;
+    else this.myprofile = {servs:[]};
+    this.state='pvm';
   }
 
   npLaunched(perso:any, i:any,persocible:any,cible: any)
@@ -3830,6 +3920,110 @@ export class AppComponent implements OnInit
     });
   }
 
+  launchDuelPvm()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
+    {
+      this.duel = pvp;
+      this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(levels=>
+      {
+        this.fightpvm = true;
+        this.levels = levels;
+
+        this.state="duel";
+
+        this.bonus1 = this.getBonuses(0);
+        this.bonus2 = this.getBonusesPvm();
+
+        let team1 = pvp.find((p:any)=>p.user_id == this.id);
+        this.team2 = JSON.parse(JSON.stringify(this.getPersoPvm()));
+
+        this.titlesduel = team1.titles;
+
+        this.arriveLeft = "0";
+        this.arriveRight = "0";
+
+        this.arriveState = [this.getRdm2(),this.getRdm2(),this.getRdm2(),this.getRdm2()];
+        this.arriveState2 = [this.getRdm2(),this.getRdm2(),this.getRdm2(),this.getRdm2()];
+        
+        this.arriveInterval = setInterval(() => {
+          let allinf = true;
+          for(let i=0;i<4;i++)
+          {
+            this.arriveState[i]-=100;
+            this.arriveState2[i]-=100;
+            if(this.arriveState[i]>=0)allinf=false;
+            if(this.arriveState2[i]>=0)allinf=false;
+          }
+          if(allinf)
+          {
+            clearInterval(this.arriveInterval);
+            this.arriveInterval = setInterval(() => {
+              AppComponent.son.pause();
+              this.musiquecombat.play();
+              this.teamattaque = Math.round(Math.random());
+              this.startIdleInterval();
+              this.startCombat();
+              clearInterval(this.arriveInterval);
+            },200);
+          }
+        },100);
+
+        let data = JSON.parse(JSON.stringify(this.data));
+
+        let cpt=0;
+        this.team1 = team1.team.map((x:any)=>
+        {
+          let tmp = JSON.parse(JSON.stringify(data.find((d:any)=>d.id==x)));
+          let tmplevel = this.levels.find((l:any)=>l.user_id==this.id&&l.servant_id==tmp.id);
+          if(tmplevel)
+          {
+            tmp.ascension = tmplevel.ascension;
+            tmp.niveau = tmplevel.level;
+          }
+          tmp.title = team1.titles[cpt++]==1;
+          
+          tmp.animation = "idle";
+          tmp.arrivex = 0;
+          tmp.negative = false;
+          tmp.atqanim = "Saber";
+          tmp.poison = 0;
+          tmp.passive = 1;
+
+          tmp.npjauge = 0;
+          if(tmp.classe=="Caster")
+            tmp.npjauge += this.casterpassiveincrease;
+          if(this.bonus1.find((b:any)=>b.classe=="Caster"))
+            tmp.npjauge += this.casterteamboost;
+          tmp.dmg = this.getDmg(tmp);
+          tmp.pdv = this.getPdv(tmp);
+          tmp.pdvmax = tmp.pdv;
+          return tmp;
+        });
+
+        for(let i=0;i<4;i++)
+        {
+          let tmp = this.team2[i];
+          if(this.modepvm=='hard')tmp.niveau = tmp.niveau + 100;
+          tmp.animation = "idle";
+          tmp.arrivex = 0;
+          tmp.negative = false;
+          tmp.atqanim = "Saber";
+          tmp.poison = 0;
+          tmp.passive = 1;
+          tmp.npjauge = 0;if(tmp.classe=="Caster")
+          tmp.npjauge += this.casterpassiveincrease;
+          if(this.bonus2.find((b:any)=>b.classe=="Caster"))
+            tmp.npjauge += this.casterteamboost;
+          tmp.dmg = this.getDmg(tmp);
+          tmp.pdv = this.getPdv(tmp);
+          tmp.pdvmax = tmp.pdv;
+        }
+        this.profile = undefined;
+      });
+    });
+  }
+
   getPdv(perso:any)
   {
     let asc = 1;
@@ -3884,6 +4078,22 @@ export class AppComponent implements OnInit
         }
       });
     }
+    return bonus;
+  }
+
+  getBonusesPvm()
+  {
+    let bonus: any = [];
+    let classes: any = [];
+    let compo: any = this.getPersoPvm();
+
+    compo.forEach((c:any)=>classes.push(c.classe));
+      this.teambonus.forEach((t:any)=>{
+        if(classes.filter((c:any)=>c==t.classe).length>=t.qte)
+        {
+          bonus.push(t);
+        }
+      });
     return bonus;
   }
 
@@ -4096,6 +4306,7 @@ export class AppComponent implements OnInit
 
   changeProfile(id:any)
   {
+    this.state = this.lastpage;
     this.selectServant = false;
     this.setProfile(this.id);
     if(this.ind==-1)
@@ -4438,6 +4649,84 @@ export class AppComponent implements OnInit
     ).subscribe(x=>{
       this.refreshBoutique();
     });
+  }
+
+  getPvm()
+  {
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvm').subscribe(data=>
+    {
+      this.pvm = data;
+      this.pvm.forEach((p:any)=>{
+        let team: any = [];
+
+        for(let i=0;i<p.team.length;i++)
+        {
+          let perso = this.data.find((d:any)=>d.id==p.team[i]);
+          perso.niveau = p.levels[i];
+          perso.ascension = p.ascs[i];
+          perso.title = true;
+          team.push(perso);
+        }
+        p.team = team;
+      });
+    });
+  }
+
+  getPvmLevel()
+  {
+    if(this.modepvm=="easy")return this.users.find((u:any)=>u.id==this.id).pvm_easy;
+    else return this.users.find((u:any)=>u.id==this.id).pvm_hard;
+  }
+
+  getPvmMaxLevel()
+  {
+    return Math.max.apply(Math, this.pvm.map(function(o:any) { return o.level; }))
+  }
+
+  getPvmName()
+  {
+    let level = 0;
+
+    if(this.modepvm=="easy")level = this.users.find((u:any)=>u.id==this.id).pvm_easy;
+    else level = this.users.find((u:any)=>u.id==this.id).pvm_hard;
+
+    if(level>this.getPvmMaxLevel())return this.pvm.find((p:any)=>p.level==level-1).nom;
+    else return this.pvm.find((p:any)=>p.level==level).nom;
+  }
+
+  getPvmRec()
+  {
+    let rec = 0;
+
+    let accountlevel = this.getPvmLevel();
+    let maxmodelevel = this.getPvmMaxLevel();
+
+    if(this.modepvm=="easy")
+    {
+      if(accountlevel<=maxmodelevel)
+        rec = 10;
+      else
+        rec = 3;
+    }
+    else
+    {
+      if(accountlevel<=maxmodelevel)
+        rec = 30;
+      else
+        rec = 6;
+    }
+    return rec;
+  }
+
+  getPersoPvm()
+  {
+    let level = 0;
+
+    if(this.modepvm=="easy")level = this.users.find((u:any)=>u.id==this.id).pvm_easy;
+    else level = this.users.find((u:any)=>u.id==this.id).pvm_hard;
+
+    if(level>this.getPvmMaxLevel())return this.pvm.find((p:any)=>p.level==level-1).team;
+    else return this.pvm.find((p:any)=>p.level==level).team;
   }
 
   buyServ2(sell:any)

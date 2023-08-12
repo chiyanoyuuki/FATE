@@ -1,3 +1,62 @@
+    <!-- <PVM -->
+    
+    <div *ngIf="state=='pvm'">
+      <div class="datapvm">
+        <div style="justify-content: center;">
+          <p>{{getPvmName()}}</p>
+        </div>
+        <div>
+          <p [class.red]="modepvm=='hard'" (click)="modepvm=='easy'?modepvm='hard':modepvm='easy'" class="clickable" style="text-decoration: underline;">Mode {{modepvm}}</p>
+          <button (click)="launchDuelPvm()">Fight</button>
+          <p>Etage {{(getPvmLevel()+1) + '/' + (getPvmMaxLevel()+1)}}</p>
+        </div>
+        <div>
+          <div style="display:flex">
+            <p style="font-size: 20px;">Recompense : {{getPvmRec()}}</p>
+            <img style="width:20px;" draggable="false" src="./assets/images/quartz.png"/>
+          </div>
+          <p style="font-size: 20px;color: #aaa;" *ngIf="getPvmLevel()>getPvmMaxLevel()">Pas encore de nouvel étage</p>
+        </div>
+      </div>
+
+      <div class="desc2" style="position: absolute;top:40%">
+        <div style="display:flex;justify-content: space-between;">
+          <div style="display:flex;">
+            <button (click)="getPvp();" style="margin:0;">Refresh</button>
+            <button (click)="showinfo=true" style="margin:0;">Passifs</button>  
+            <button (click)="showinfo2=true" style="margin:0;">Avantages</button> 
+          </div>
+        </div>
+        <div style="display:flex;position: absolute;margin-top: 7px;" class="clickable" (click)="setProfile(id)">
+          <div *ngFor="let serv of myprofile.comp;let i=index" style="position:relative">
+            <div [class.golden]="myprofile.titlescompo[i]==1" class="profilePicture2" style="margin:0;position: relative;left:0px;border: 4px ridge #404040;">
+              <img draggable="false" class="profilePicture" src="{{getImg(id,serv)}}"/>
+            </div>         
+          </div>
+          <div class="emptyserv" [class.clickable]="profile==id" (click)="profile==id?clickServantProfileCompo(i):null" *ngFor="let item of [].constructor(4-myprofile.compo.length);let i=index"></div>
+        </div>
+      </div>
+
+      <div style="z-index: 2;padding-left: 60px;left: -21px;border-color: rgb(0,80,0);position: absolute;bottom: 45%;top: unset;height: 40px;" class="boosts">
+        <img matTooltip="{{boost.desc}}" class="clickable3 bonusme" style="pointer-events:unset;width:40px;height:40px;" *ngFor="let boost of getBonuses(0)" src="./assets/images/classes/{{boost.classe}}.png"/>
+        <p style="position: relative;top:6px" *ngIf="getBonuses(0).length==0">No bonus</p>
+      </div>
+      <div *ngIf="profile!=id" style="  z-index: 2;padding-right: 60px;right: -15px;border-color: rgb(80,0,0);left: unset;position: absolute;bottom: 45%;top: unset;height: 40px;" class="boosts bonushe">
+        <img matTooltip="{{boost.desc}}" class="clickable3" style="width:40px;height:40px;" *ngFor="let boost of getBonusesPvm()" src="./assets/images/classes/{{boost.classe}}.png"/>
+        <p style="position: relative;top:6px" *ngIf="getBonusesPvm().length==0">No bonus</p>
+      </div>
+
+      <div class="persopvm" style="position:absolute;display:flex;justify-content: space-evenly;width:80%;top:60%;left:10%">
+        <div *ngFor="let perso of getPersoPvm()">
+          <div style="display:flex;position: absolute;top: -40px;z-index:9">
+            <p style="margin-right:5px;">({{perso.niveau}})</p>
+            <p>{{perso.nom}}</p>
+          </div>
+          <img src="{{getSprite(perso)}}" style="height:200px;" [style.scale]="perso.scale" [style.transform]="perso.turn?'scaleX(-1)':'unset'">
+        </div>
+      </div>
+    </div>
+
     <!-- <DUEL -->
     
     <div *ngIf="state=='duel'" class="classduel">
@@ -62,7 +121,7 @@
         </div>
 
         <div>
-          <p class="containerStatsDuel2" style="padding:0px">{{getFightName(adversaire)}}</p>
+          <p class="containerStatsDuel2" style="padding:0px">{{fightpvm?getPvmName():getFightName(adversaire)}}</p>
           <div *ngFor="let perso of team2;let i=index" class="containerStatsDuel2" [style.opacity]="perso.pdv>0?1:0.7">
             <div style="display:flex;justify-content: right;"><p>{{perso.nom}}</p><div style="display: flex;position: absolute;left: 10px;top: 2px;"><p *ngFor="let item of [].constructor(perso.level);">☆</p></div></div>
             <div style="display: flex;">
@@ -234,8 +293,6 @@
 
     <!-- <PROFILE -->
 
-    <div *ngIf="profile" class="profile">
-      
       <div class="fightInfos clickable3" (click)="showinfo=false;" *ngIf="showinfo">
         <p style="font-size: 50px;">Class Affinity</p>
         <div *ngFor="let row of fightInfos" class="rowInfos">
@@ -251,6 +308,7 @@
         <img src="./assets/images/avantages.png"/>
       </div>
 
+    <div *ngIf="profile" class="profile">
       <div class="histoPulls clickable3" (click)="historiquePulls=false;" *ngIf="historiquePulls">
         <div *ngFor="let pull of histpull" class="pullbloc">
           <p>{{pull.date | date:'HH:mm:ss - dd/MM/yyyy' }}</p>
@@ -443,6 +501,7 @@
       </div>
   
       <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'||state=='shop'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
+      <img draggable="false" src="./assets/images/{{modepvm=='easy'?'bgpvm':'bgpvm2'}}.png" [style.display]="state=='pvm'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
   
       <!-- <RECAP -->
 
@@ -644,6 +703,7 @@
       <!-- <FOOTER -->
 
       <div class="footer" style="z-index: 3;box-shadow: white 1px -1px 10px;position: absolute;bottom: 0px;width: 99%;height: 190px;background-color: rgba(100,150,200,0.8);border: 3px ridge orange;display:flex;justify-content: space-around;">
+        <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?clickPvm():null" src="./assets/images/pvmButton.png"/>
         <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='formation':null" src="./assets/images/formationButton.png"/>
         <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='banner':null" src="./assets/images/summonButton.png"/>
         <img draggable="false" (click)="clickMenu();profile=undefined;state!='invocation'?state='friends':null" src="./assets/images/friendsButton.png"/>
