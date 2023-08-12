@@ -1,12 +1,26 @@
     <!-- <PVM -->
     
     <div *ngIf="state=='pvm'">
+
+      <div class="fightInfos clickable3" (click)="classementPvm=false;" *ngIf="classementPvm"
+      style="left:35%;width:unset;max-height:80%;max-height:80%;overflow-y: scroll;">
+        <p style="font-size: 50px;">Classement PVM {{modepvm}}</p>
+        <div *ngFor="let user of getUsersClassement();let i=index" class="rowInfos">
+          <div style="padding:0px 40px;width:100%;display:flex;justify-content: space-between;">
+            <p style="font-size: 30px">{{i+1}}</p>
+            <p style="font-size: 30px;position: absolute;width: 80%;text-align: center;">{{user.nom}}</p>
+            <p style="font-size: 30px">{{modepvm=='easy'?(user.pvm_easy+1):(user.pvm_hard+1)}}</p>
+          </div>
+        </div>
+      </div>
+
       <div class="datapvm">
         <div style="justify-content: center;">
           <p>{{getPvmName()}}</p>
         </div>
         <div>
           <p [class.red]="modepvm=='hard'" (click)="modepvm=='easy'?modepvm='hard':modepvm='easy'" class="clickable" style="text-decoration: underline;">Mode {{modepvm}}</p>
+          <button (click)="classementPvm=!classementPvm">Classement</button>
           <button (click)="launchDuelPvm()">Fight</button>
           <p>Etage {{(getPvmLevel()+1) + '/' + (getPvmMaxLevel()+1)}}</p>
         </div>
@@ -291,22 +305,26 @@
       </div>
     </div>
 
-    <!-- <PROFILE -->
+    <!-- <AFFINITY -->
 
-      <div class="fightInfos clickable3" (click)="showinfo=false;" *ngIf="showinfo">
-        <p style="font-size: 50px;">Class Affinity</p>
-        <div *ngFor="let row of fightInfos" class="rowInfos">
-          <div class="blocInfos" *ngFor="let classe of row.row" [style.background-color]="classe.done?'rgb(20, 20, 20)':'rgb(20, 0, 0)'">
-            <p style="text-decoration: underline;font-size: 30px;position: relative;left: 20px;">{{classe.class}}</p>
-            <p style="position: absolute;bottom: 30px;height: 40%;">{{classe.desc}}</p>
-            <img src="./assets/images/classes/{{classe.class}}.png" style="position: absolute;width: 70px;top: 8px;left: 8px;"/>
-          </div>
+    <div class="fightInfos clickable3" (click)="showinfo=false;" *ngIf="showinfo">
+      <p style="font-size: 50px;">Class Affinity</p>
+      <div *ngFor="let row of fightInfos" class="rowInfos">
+        <div class="blocInfos" *ngFor="let classe of row.row" [style.background-color]="classe.done?'rgb(20, 20, 20)':'rgb(20, 0, 0)'">
+          <p style="text-decoration: underline;font-size: 30px;position: relative;left: 20px;">{{classe.class}}</p>
+          <p style="position: absolute;bottom: 30px;height: 40%;">{{classe.desc}}</p>
+          <img src="./assets/images/classes/{{classe.class}}.png" style="position: absolute;width: 70px;top: 8px;left: 8px;"/>
         </div>
       </div>
+    </div>
+    
+    <!-- <AVANTAGES -->
 
-      <div class="fightInfos clickable3" (click)="showinfo2=false;" *ngIf="showinfo2" style="width:unset;left:24%">
-        <img src="./assets/images/avantages.png"/>
-      </div>
+    <div class="fightInfos clickable3" (click)="showinfo2=false;" *ngIf="showinfo2" style="width:unset;left:24%">
+      <img src="./assets/images/avantages.png"/>
+    </div>
+
+    <!-- <PROFILE -->
 
     <div *ngIf="profile" class="profile">
       <div class="histoPulls clickable3" (click)="historiquePulls=false;" *ngIf="historiquePulls">

@@ -279,6 +279,7 @@ export class AppComponent implements OnInit
   public histowinstot: any = [];
 
   public lastpage = '';
+  public classementPvm = false;
 
   public combatInterval: any;
   public place:any = 0;
@@ -2766,6 +2767,7 @@ export class AppComponent implements OnInit
     if(launchnp)
     {
       let smart = false;
+
       if(!persoatq.np||persoatq.np.nom=="Stolen NP")
       {
         persoatq.np = 
@@ -2783,7 +2785,12 @@ export class AppComponent implements OnInit
           }
         }
       }
-      if(persoatq.np.type=="Support")
+
+      if(persoatq.pdvmax-persoatq.pdv>persoatq.pdvmax*0.8)
+      {
+        smart = true;
+      }
+      else if(persoatq.np.type=="Support")
       {
         let team:any;
         if(this.teamattaque==0)team = this.team1.filter((t:any)=>t.pdv>0);
@@ -2794,7 +2801,7 @@ export class AppComponent implements OnInit
           if(t.pdvmax-t.pdv>t.pdvmax*0.15)cpt++;
           if(t.pdvmax-t.pdv>t.pdvmax*0.5)cpt2++;
         })
-        if(cpt>team.length-2||cpt2>team.length-3||persoatq.pdvmax-persoatq.pdv>persoatq.pdvmax*0.7)smart = true;
+        if(cpt>team.length-2||cpt2>team.length-3)smart = true;
       }
       else if(persoatq.np.type=="ST")
       {
@@ -4682,6 +4689,32 @@ export class AppComponent implements OnInit
   {
     if(this.modepvm=="easy")this.users.find((u:any)=>u.id==this.id).pvm_easy += i;
     else this.users.find((u:any)=>u.id==this.id).pvm_hard += i;
+  }
+
+  getUsersClassement()
+  {
+    let tmp: any = [];
+    this.users.forEach((u:any)=>{
+      if(this.modepvm=='easy')
+      {
+        if(u.pvm_easy>0)tmp.push(u);
+      }
+      else
+      {
+        if(u.pvm_hard>0)tmp.push(u);
+      }
+    });
+    tmp.sort((a:any,b:any)=>{
+      if(this.modepvm=='easy')
+      {
+        return b.pvm_easy - a.pvm_easy;
+      }
+      else
+      {
+        return b.pvm_hard - a.pvm_hard;
+      }
+    })
+    return tmp;
   }
 
   getPvmBg()
