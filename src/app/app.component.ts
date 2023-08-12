@@ -2561,7 +2561,12 @@ export class AppComponent implements OnInit
     return (min/max)*100;
   }
 
-  endFight2(t1:any,t2:any)
+  endFight3()
+  {
+    this.endFight2(this.team2.filter((t:any)=>t.pdv>0).length);
+  }
+
+  endFight2(t2:any)
   {
     if(t2==0)
     {
@@ -2613,8 +2618,11 @@ export class AppComponent implements OnInit
     this.state = 'pvm';
     this.team1 = [];
     this.team2 = [];
+    clearInterval(this.attaqueInterval);
     clearInterval(this.idleInterval);
     clearInterval(this.combatInterval);
+    clearInterval(this.arriveInterval);
+    clearInterval(this.npInterval);
   }
 
   endFight(t1:any,t2:any)
@@ -2706,7 +2714,7 @@ export class AppComponent implements OnInit
     if(left1.length==0||left2.length==0)
     {
       if(!this.fightpvm)this.endFight(left1.length,left2.length);
-      else this.endFight2(left1.length,left2.length);
+      else this.endFight2(left2.length);
       return;
     }
 
@@ -2841,7 +2849,7 @@ export class AppComponent implements OnInit
       persocible.atqanim = persoatq.classe;
       this.setAnimX2(cible,200,"dashavant",false);
     }
-    else if(persoatq.classe=="Berserker")
+    else if(persoatq.classe=="Berserker"&&this.team2.length>1)
     {
       passiveBerserker = this.passiveBerserker(cible);
       passiveBerserker.forEach((p:any)=>persosCleave.push(teamcible[p]));

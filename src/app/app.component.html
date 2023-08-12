@@ -62,7 +62,7 @@
 
       <div class="persopvm" style="position:absolute;display:flex;justify-content: space-evenly;width:80%;top:50%;left:10%">
         <div *ngFor="let perso of getPersoPvm()">
-          <div style="display:flex;position: absolute;top: -40px;z-index:9">
+          <div style="display:flex;position: absolute;top: -40px;z-index:6">
             <p style="margin-right:5px;">({{perso.niveau}})</p>
             <p>{{perso.nom}}</p>
           </div>
@@ -71,9 +71,15 @@
       </div>
     </div>
 
+
     <!-- <DUEL -->
     
     <div *ngIf="state=='duel'" class="classduel">
+      
+    <div style="position:absolute;width:100%;display: flex;justify-content: center;top:6%;z-index: 8;">
+      <button (click)="endFight3()">Surrender</button>
+    </div>
+
       <img class="bgDuel" src="./assets/images/bgDuel.png" [style.filter]="npUsed!='0'?'invert(1)':'unset'" [style.left]="decalbgduelx+'px'" [style.top]="decalbgduely+'px'"/>
 
       <div *ngIf="test" style="position:absolute;left:815px;top:534px;">
