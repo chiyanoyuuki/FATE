@@ -125,15 +125,18 @@ export class AppComponent implements OnInit
   public assassinteamboost = 0.02;
   public berserkerpassivechance1 = 75;
   public berserkerpassivechance2 = 25;
+  public berserkerallboost = 0.25;
   public berserkerteamboost = 1;
   public casterpassiveincrease = 30;
   public casterteamboost = 15;
+  public groupdamageboost = 0.25;
   public lancerpassivespike = 0.2;
   public lancerteamspike = 0.1;
   public mooncancerpassiveheal = 0.2;
   public shielderpassivechance = 50;
   public rulerteamboost = 0.9;
   public saberpassiveincrease = 0.1;
+  public saberteamincrease = 0.05;
 
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
@@ -292,12 +295,19 @@ export class AppComponent implements OnInit
   public decalbgduely = 0;
   
   public teambonus = [
-    {classe:"Archer",qte:2,desc:"10% More chance to dodge for all team"},
-    {classe:"Assassin",qte:2,desc:"Poisons are 10% stronger"},
-    {classe:"Berserker",qte:2,desc:"10% More chance to steal the turn"},
+    {classe:"Archer",qte:2,desc:"More chance to dodge for all team"},
+    {classe:"Assassin",qte:2,desc:"Poisons are stronger"},
+    {classe:"Berserker",qte:2,desc:"More chance to steal the turn"},
+    {classe:"Berserker",qte:4,desc:"Big damage boost",nom:"Full Berserkers"},
     {classe:"Caster",qte:2,desc:"All team starts with NP charged a little"},
-    {classe:"Lancer",qte:2,desc:"All team gains 5% spike dmg"},
-    {classe:"Ruler",qte:1,desc:"All team takes 90% damage"}
+    {classe:"Lancer",qte:2,desc:"All team gains spike dmg"},
+    {classe:"Ruler",qte:1,desc:"All team takes less damage"},
+    {classe:"Saber",qte:2,desc:"All team increases damage each strike"},
+    
+    {classe:"Group", classes:["Saber","Archer","Lancer"],desc:"Dmg boost for all team", qte:1},
+    {classe:"Group", classes:["Lancer","Rider","Assassin"],desc:"Dmg boost for all team", qte:1},
+    {classe:"Group", classes:["Alter Ego","Pretender","Foreigner"],desc:"Dmg boost for all team", qte:1},
+    {classe:"Group", classes:["Ruler","Moon Cancer","Avenger"],desc:"Dmg boost for all team", qte:1}
   ]
   public bonus1: any;
   public bonus2: any;
@@ -3584,9 +3594,13 @@ export class AppComponent implements OnInit
       persocible.poison+=Math.round(dmg*(0.1+bonus));
     }
 
+    let more = 0;
+    if(this.teamattaque==0&&this.bonus1.find((b:any)=>b.classe=="Saber"))more = this.saberteamincrease;
+    else if(this.teamattaque==1&&this.bonus2.find((b:any)=>b.classe=="Saber"))more = this.saberteamincrease;
+    
     if(ec&&classeatq=="Saber")
     {
-      let dec = Math.round(persoatq.dmg * this.saberpassiveincrease);
+      let dec = Math.round(persoatq.dmg * (this.saberpassiveincrease+more));
       persoatq.dmg -= dec;
       let i = 0;
       if(this.teamattaque==0)i = this.team1.indexOf(persoatq);
@@ -3595,7 +3609,25 @@ export class AppComponent implements OnInit
     }
     else if(!ec&&classeatq=="Saber")
     {
-      let inc = Math.round(persoatq.dmg * this.saberpassiveincrease);
+      let inc = Math.round(persoatq.dmg * (this.saberpassiveincrease+more));
+      persoatq.dmg += inc;
+      let i = 0;
+      if(this.teamattaque==0)i = this.team1.indexOf(persoatq);
+      else i = this.team2.indexOf(persoatq);
+      this.addDmg(false,false,i,persoatq,inc,1,"increase",undefined);
+    }
+    else if(ec&&more>0)
+    {
+      let dec = Math.round(persoatq.dmg * more);
+      persoatq.dmg -= dec;
+      let i = 0;
+      if(this.teamattaque==0)i = this.team1.indexOf(persoatq);
+      else i = this.team2.indexOf(persoatq);
+      this.addDmg(false,false,i,persoatq,dec,1,"decrease",undefined);
+    }
+    else if(!ec&&more>0)
+    {
+      let inc = Math.round(persoatq.dmg * more);
       persoatq.dmg += inc;
       let i = 0;
       if(this.teamattaque==0)i = this.team1.indexOf(persoatq);
@@ -3663,7 +3695,7 @@ export class AppComponent implements OnInit
     }
 
     //Passive Lancer
-    if(!ec && persoatq && type!="spike")
+    if(!ec && persoatq && type!="spike" && type!="heal")
     {
       let spikedmg = 0;
       if(persocible.classe=="Lancer")
@@ -3908,6 +3940,8 @@ export class AppComponent implements OnInit
           if(this.bonus1.find((b:any)=>b.classe=="Caster"))
             tmp.npjauge += this.casterteamboost;
           tmp.dmg = this.getDmg(tmp);
+          if(this.bonus1.find((b:any)=>b.nom=="Full Berserkers"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.berserkerallboost);
+          if(this.bonus1.find((b:any)=>b.classe=="Group"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.groupdamageboost);
           tmp.pdv = this.getPdv(tmp);
           tmp.pdvmax = tmp.pdv;
           return tmp;
@@ -3938,6 +3972,8 @@ export class AppComponent implements OnInit
           if(this.bonus2.find((b:any)=>b.classe=="Caster"))
             tmp.npjauge += this.casterteamboost;
           tmp.dmg = this.getDmg(tmp);
+          if(this.bonus2.find((b:any)=>b.nom=="Full Berserkers"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.berserkerallboost);
+          if(this.bonus2.find((b:any)=>b.classe=="Group"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.groupdamageboost);
           tmp.pdv = this.getPdv(tmp);
           tmp.pdvmax = tmp.pdv;
           return tmp;
@@ -4027,6 +4063,8 @@ export class AppComponent implements OnInit
           if(this.bonus1.find((b:any)=>b.classe=="Caster"))
             tmp.npjauge += this.casterteamboost;
           tmp.dmg = this.getDmg(tmp);
+          if(this.bonus1.find((b:any)=>b.nom=="Full Berserkers"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.berserkerallboost);
+          if(this.bonus1.find((b:any)=>b.classe=="Group"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.groupdamageboost);
           tmp.pdv = this.getPdv(tmp);
           tmp.pdvmax = tmp.pdv;
           return tmp;
@@ -4047,6 +4085,8 @@ export class AppComponent implements OnInit
           if(this.bonus2.find((b:any)=>b.classe=="Caster"))
             tmp.npjauge += this.casterteamboost;
           tmp.dmg = this.getDmg(tmp);
+          if(this.bonus2.find((b:any)=>b.nom=="Full Berserkers"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.berserkerallboost);
+          if(this.bonus2.find((b:any)=>b.classe=="Group"))tmp.dmg = tmp.dmg + Math.round(tmp.dmg*this.groupdamageboost);
           tmp.pdv = this.getPdv(tmp);
           tmp.pdvmax = tmp.pdv;
         }
@@ -4096,13 +4136,23 @@ export class AppComponent implements OnInit
     {
       compo = this.pvps.find((p:any)=>p.user_id == this.profile);
     }
+
     let classes: any = [];
+    compo.team.forEach((t:any)=>{
+      classes.push(this.data.find((d:any)=>d.id==t).classe);
+    })
+    
     if(compo)
     {
-      compo.team.forEach((t:any)=>{
-        classes.push(this.data.find((d:any)=>d.id==t).classe);
-      })
-      this.teambonus.forEach((t:any)=>{
+      this.teambonus.filter((b:any)=>b.classes).forEach((t:any)=>{
+        let ok = true;
+        t.classes.forEach((c:any)=>{
+          if(!classes.includes(c))ok = false;
+        })
+        if(ok)bonus.push(t);
+      });
+
+      this.teambonus.filter((b:any)=>!b.classes).forEach((t:any)=>{
         if(classes.filter((c:any)=>c==t.classe).length>=t.qte)
         {
           bonus.push(t);
