@@ -118,28 +118,22 @@ import {
 
 export class AppComponent implements OnInit
 {
+  public alteregopassiveheal = 0.3;
+  public archerpassivedodgeboost = 25;
+  public archerteamboost = 10;
+  public assassinpassivepoison = 0.1;
+  public assassinteamboost = 0.02;
   public berserkerpassivechance1 = 75;
   public berserkerpassivechance2 = 25;
   public berserkerteamboost = 1;
-
-  public shielderpassivechance = 50;
-
-  public archerpassivedodgeboost = 25;
-  public archerteamboost = 10;
-
-  public assassinpassivepoison = 0.1;
-  public assassinteamboost = 0.02;
-
-  public rulerteamboost = 0.9;
-
-  public mooncancerpassiveheal = 0.2;
-
-  public alteregopassiveheal = 0.3;
-
-  public saberpassiveincrease = 0.1;
-
   public casterpassiveincrease = 30;
   public casterteamboost = 15;
+  public lancerpassivespike = 0.2;
+  public lancerteamspike = 0.1;
+  public mooncancerpassiveheal = 0.2;
+  public shielderpassivechance = 50;
+  public rulerteamboost = 0.9;
+  public saberpassiveincrease = 0.1;
 
   public static rotatestate: string = '0';
   public static rotatestate2: string = '0';
@@ -260,6 +254,7 @@ export class AppComponent implements OnInit
   public histoPulls:any;
   public npUsed = "0";
   public fightpvm = false;
+  public farm = false;
 
   public idpersotest = 342;
   public scaletest = 1;
@@ -301,6 +296,7 @@ export class AppComponent implements OnInit
     {classe:"Assassin",qte:2,desc:"Poisons are 10% stronger"},
     {classe:"Berserker",qte:2,desc:"10% More chance to steal the turn"},
     {classe:"Caster",qte:2,desc:"All team starts with NP charged a little"},
+    {classe:"Lancer",qte:2,desc:"All team gains 5% spike dmg"},
     {classe:"Ruler",qte:1,desc:"All team takes 90% damage"}
   ]
   public bonus1: any;
@@ -323,7 +319,7 @@ export class AppComponent implements OnInit
         {class:"Berserker",desc:"Chance to hit up to 2 ennemies next to the initial target",done:true},
         {class:"Caster",desc:"Starts the fight with his NP jauge charged a bit",done:true},
         {class:"Foreigner",desc:"Obtain stealth after beeing hit",done:false},
-        {class:"Lancer",desc:"Chance to hit the attacker for a little amount",done:false},
+        {class:"Lancer",desc:"Hit the attacker for a little amount",done:true},
         {class:"Moon Cancer",desc:"Heals a percentage of damage dealt",done:true}
       ],
     },
@@ -2573,7 +2569,7 @@ export class AppComponent implements OnInit
       let accountlevel = this.getPvmLevel();
       let maxmodelevel = this.getPvmMaxLevel();
 
-      if(accountlevel<=maxmodelevel)
+      if(!this.farm&&accountlevel<=maxmodelevel)
       {
         if(this.modepvm=="easy"){this.spendQuartz(-10);}
         else {this.spendQuartz(-30);}
@@ -2615,6 +2611,8 @@ export class AppComponent implements OnInit
 
   resetFight()
   {
+    this.nps = [];
+    this.npUsed = "0";
     this.state = 'pvm';
     this.team1 = [];
     this.team2 = [];
@@ -3619,7 +3617,7 @@ export class AppComponent implements OnInit
     let tmp: any;
     let bonus = 1;
 
-    if(type=="normal")
+    if(type=="normal" || type=="spike")
     {
       if(this.team1.indexOf(persocible)!=-1)
       {
@@ -3668,6 +3666,22 @@ export class AppComponent implements OnInit
       tmp.left=this.xs1[cible]+20;
     }
 
+    //Passive Lancer
+    if(persoatq && type!="spike")
+    {
+      let spikedmg = 0;
+      if(persocible.classe=="Lancer")
+      {
+        spikedmg = this.lancerpassivespike;
+      }
+      if(this.teamattaque==0&&this.bonus2.find((b:any)=>b.classe=="Lancer"))spikedmg+=this.lancerteamspike;
+      else if(this.teamattaque==1&&this.bonus1.find((b:any)=>b.classe=="Lancer"))spikedmg+=this.lancerteamspike;
+  
+      console.log(spikedmg);
+
+      if(spikedmg>0)this.addDmg(false,false,this.teamattaque==0?this.team1.indexOf(persoatq):this.team2.indexOf(persoatq),persoatq,Math.round(persocible.dmg*spikedmg),this.getMultAffinity(persocible.classe,persoatq.classe),"spike",persocible);
+    }
+
     this.dmgs.push(tmp);
 
     let tmpinterval = setInterval(() => {
@@ -3678,11 +3692,11 @@ export class AppComponent implements OnInit
 
     if(!ec)
     {
-      if(type=="normal"||type=="poison")
+      if(type=="normal"||type=="poison"||type=="spike")
       {
         this.getNpCharge(persocible,dmg);
 
-        persocible.negative = true;
+        if(type!='spike')persocible.negative = true;
         persocible.pdv = persocible.pdv - dmg;
         if(persocible.pdv<=0)
         {
@@ -3691,6 +3705,11 @@ export class AppComponent implements OnInit
           {
             persocible.passive--;
             this.addDmg(false,false,cible,persocible,Math.round(persocible.pdvmax*this.alteregopassiveheal),1,"heal",undefined);
+          }
+          else if(type=='spike')
+          {
+            persoatq.arrivex=0;
+            persoatq.animation="death";
           }
         }
       }
@@ -3936,13 +3955,14 @@ export class AppComponent implements OnInit
     });
   }
 
-  launchDuelPvm()
+  launchDuelPvm(farm:any)
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
     {
       this.duel = pvp;
       this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(levels=>
       {
+        this.farm = farm;
         this.fightpvm = true;
         this.levels = levels;
 
@@ -3952,7 +3972,8 @@ export class AppComponent implements OnInit
         this.bonus2 = this.getBonusesPvm();
 
         let team1 = pvp.find((p:any)=>p.user_id == this.id);
-        this.team2 = JSON.parse(JSON.stringify(this.getPersoPvm()));
+        if(!farm)this.team2 = JSON.parse(JSON.stringify(this.getPersoPvm()));
+        else this.team2 = JSON.parse(JSON.stringify(this.getPersoPvmFarm()));
 
         this.titlesduel = team1.titles;
 
@@ -4786,6 +4807,17 @@ export class AppComponent implements OnInit
 
     if(level>this.getPvmMaxLevel())return this.pvm.find((p:any)=>p.level==level-1).team;
     else return this.pvm.find((p:any)=>p.level==level).team;
+  }
+
+  getPersoPvmFarm()
+  {
+    let level = 0;
+
+    if(this.modepvm=="easy")level = this.users.find((u:any)=>u.id==this.id).pvm_easy;
+    else level = this.users.find((u:any)=>u.id==this.id).pvm_hard;
+
+    if(level>this.getPvmMaxLevel())return this.pvm.find((p:any)=>p.level==level-2).team;
+    else return this.pvm.find((p:any)=>p.level==level-1).team;
   }
 
   buyServ2(sell:any)

@@ -20,8 +20,9 @@
         </div>
         <div>
           <p [class.red]="modepvm=='hard'" (click)="modepvm=='easy'?modepvm='hard':modepvm='easy'" class="clickable" style="text-decoration: underline;">Mode {{modepvm}}</p>
+          <button [class.disabledButton]="getPvmLevel()==0" (click)="launchDuelPvm(true)">Farm</button>
           <button (click)="classementPvm=!classementPvm">Classement</button>
-          <button (click)="launchDuelPvm()">Fight</button>
+          <button (click)="launchDuelPvm(false)">Fight</button>
           <p>Etage {{(getPvmLevel()+1) + '/' + (getPvmMaxLevel()+1)}}</p>
         </div>
         <div>
@@ -63,6 +64,7 @@
       <div class="persopvm" style="position:absolute;display:flex;justify-content: space-evenly;width:80%;top:50%;left:10%">
         <div *ngFor="let perso of getPersoPvm()">
           <div style="display:flex;position: absolute;top: -40px;z-index:6">
+            <img matTooltip="{{perso.classe}}" class="clickable3" style="width:40px;height:40px;position: absolute;left: -50px;top: -7px;" src="./assets/images/classes/{{perso.classe}}.png"/>
             <p style="margin-right:5px;">({{modepvm=='easy'?perso.niveau:(perso.niveau+100)}})</p>
             <p>{{perso.nom}}</p>
           </div>
