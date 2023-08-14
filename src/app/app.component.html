@@ -63,7 +63,7 @@
       <div class="persopvm" style="position:absolute;display:flex;justify-content: space-evenly;width:80%;top:50%;left:10%">
         <div *ngFor="let perso of getPersoPvm()">
           <div style="display:flex;position: absolute;top: -40px;z-index:6">
-            <p style="margin-right:5px;">({{perso.niveau}})</p>
+            <p style="margin-right:5px;">({{modepvm=='easy'?perso.niveau:(perso.niveau+100)}})</p>
             <p>{{perso.nom}}</p>
           </div>
           <img src="{{getSprite(perso)}}" style="height:200px;" [style.scale]="perso.scale" [style.transform]="perso.turn?'scaleX(-1)':'unset'">

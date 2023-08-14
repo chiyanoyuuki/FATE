@@ -3822,6 +3822,7 @@ export class AppComponent implements OnInit
   {
     this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
     {
+      this.fightpvm = false;
       this.duel = pvp;
       this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(levels=>
       {
