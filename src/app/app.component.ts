@@ -71,19 +71,23 @@ import {
       state('idle',       style({ left: "0px" })),
       state('dashavant',  style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('coup',       style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
+      state('doubledash', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('takedamage', style({ left: "{{arrivex}}px" }), {params: {arrivex: '0'}}),
       state('death',      style({ left: "{{arrivex}}px", opacity:0 }), {params: {arrivex: '0'}}),
       state('np',         style({ left: "{{arrivex}}px", top: "-200px" }), {params: {arrivex: '0'}}),
       transition('idle => dashavant', animate('400ms ease-in')),
       transition('idle => takedamage', animate('400ms ease-out')),
       transition('dashavant => idle', animate('400ms ease-out')),
+      transition('dashavant => doubledash', animate('400ms ease-out')),
       transition('dashavant => coup', animate('400ms ease-in')),
       transition('dashavant => takedamage', animate('400ms ease-out')),
+      transition('doubledash => idle', animate('400ms ease-out')),
       transition('coup => dashavant', animate('400ms ease-out')),
       transition('takedamage => idle', animate('400ms ease-in')),
       transition('idle => np', animate('400ms ease-out')),
       transition('np => idle', animate('400ms ease-in')),
 
+      transition('doubledash => death', animate('1000ms')),
       transition('takedamage => death', animate('1000ms')),
       transition('dashavant => death', animate('1000ms')),
       transition('idle => death', animate('1000ms')),
@@ -123,6 +127,8 @@ export class AppComponent implements OnInit
   public archerteamboost = 15;
   public assassinpassivepoison = 0.1;
   public assassinteamboost = 0.02;
+  public avengerpassivechance = 20;
+  public avengerteamchance = 10;
   public berserkerpassivechance1 = 75;
   public berserkerpassivechance2 = 25;
   public berserkerallboost = 0.25;
@@ -134,6 +140,8 @@ export class AppComponent implements OnInit
   public lancerteamspike = 0.1;
   public mooncancerpassiveheal = 0.2;
   public shielderpassivechance = 50;
+  public ridertwicechance = 20;
+  public riderteamchance = 10;
   public rulerteamboost = 0.9;
   public saberpassiveincrease = 0.1;
   public saberteamincrease = 0.05;
@@ -243,6 +251,7 @@ export class AppComponent implements OnInit
   public histpvp = [];
   public personp: any = undefined;
   public modepvm = 'easy';
+  public addpos = 0;
 
   public idleState: number[] = [0,0,0,0];
   public idleState2: number[] = [0,0,0,0];
@@ -297,10 +306,12 @@ export class AppComponent implements OnInit
   public teambonus = [
     {classe:"Archer",qte:2,desc:"More chance to dodge for all team"},
     {classe:"Assassin",qte:2,desc:"Poisons are stronger"},
+    {classe:"Avenger",qte:2,desc:"All team have a little chance to strike back"},
     {classe:"Berserker",qte:2,desc:"More chance to steal the turn"},
     {classe:"Berserker",qte:4,desc:"Big damage boost",nom:"Full Berserkers"},
     {classe:"Caster",qte:2,desc:"All team starts with NP charged a little"},
     {classe:"Lancer",qte:2,desc:"All team gains spike dmg"},
+    {classe:"Rider",qte:2,desc:"All team have a little chance to strike twice"},
     {classe:"Ruler",qte:1,desc:"All team takes less damage"},
     {classe:"Saber",qte:2,desc:"All team increases damage each strike"},
     
@@ -319,7 +330,7 @@ export class AppComponent implements OnInit
         {class:"Alter Ego",desc:"Triggers Guts on 1st death",done:true},
         {class:"Archer",desc:"Dodge stat greatly increased",done:true},
         {class:"Assassin",desc:"Inflicts stacking poison on every attacks",done:true},
-        {class:"Avenger",desc:"Chance to strike back when attacked",done:false},
+        {class:"Avenger",desc:"Chance to strike back when attacked",done:true},
         {class:"Beast",desc:"Increasing damage on non beasts party members every turn",done:false},
       ],
     },
@@ -337,7 +348,7 @@ export class AppComponent implements OnInit
       row:
       [
         {class:"Pretender",desc:"Gives evade for one strike to non pretender party members",done:false},
-        {class:"Rider",desc:"Little chance to strike twice instead of one time",done:false},
+        {class:"Rider",desc:"Little chance to strike twice instead of one time",done:true},
         {class:"Ruler",desc:"Gives every party member more DEF",done:false},
         {class:"Saber",desc:"Dmg increase on strike, decrease on miss",done:true},
         {class:"Shielder",desc:"Chance to take the focus instead of one ally",done:true}
@@ -2883,9 +2894,34 @@ export class AppComponent implements OnInit
         if(persoatq.pdv>0)
         {
           if(fail){persoatq.fail=true;}
-          let dmg = this.damage(i,cible,false);
+          let dmg = this.damage(i,cible,false,false);
           if(persoatq.pdv>0)this.setAnimX(i,300,"coup");
-          if(persocible.pdv>0)this.setAnimX2(cible,-100,"takedamage",dmg);
+          //Passive Avenger
+          let strikeback = 0;
+          if(persocible.pdv>0)
+          {
+            if(persocible.classe=="Avenger")
+              strikeback += this.avengerpassivechance;
+            if(this.teamattaque==0&&this.bonus2.find((b:any)=>b.classe=="Avenger"))strikeback+=this.avengerteamchance;
+            else if(this.teamattaque==1&&this.bonus1.find((b:any)=>b.classe=="Avenger"))strikeback+=this.avengerteamchance;
+            if(strikeback>0)
+            {
+              let tmp = Math.round(Math.random()*100);
+              if(tmp<strikeback)
+              {
+                this.addDmg(false,false,i,persoatq,Math.round(persocible.dmg*0.8),this.getMultAffinity(persocible.classe,persoatq.classe),"normal",persocible);
+                this.setAnimX2(cible,200,"dashavant",dmg);
+              }
+              else
+              {
+                this.setAnimX2(cible,-100,"takedamage",dmg);
+              }
+            }
+            else
+            {
+              this.setAnimX2(cible,-100,"takedamage",dmg);
+            }
+          }
         }
         if(passiveShielder!=-1)
         {
@@ -2897,7 +2933,7 @@ export class AppComponent implements OnInit
       if(this.timerAttaque==800)
       {
         let dmgcleave: any = [];
-        passiveBerserker.forEach((p:any)=>dmgcleave.push(this.damage(i,p,true)));
+        passiveBerserker.forEach((p:any)=>dmgcleave.push(this.damage(i,p,true,false)));
         for(let i=0;i<passiveBerserker.length;i++)
         {
           if(dmgcleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],-100,"takedamage",dmgcleave[i]);
@@ -2906,6 +2942,7 @@ export class AppComponent implements OnInit
       //APRES COUP NORMAL
       if(this.timerAttaque==900)
       {
+        persoatq.negative = false;
         teamcible.filter((t:any)=>t.negative).forEach((t:any)=>t.negative=false);
         if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
         if(persoatq.pdv>0)this.setAnimX(i,200,"dashavant");
@@ -3511,7 +3548,7 @@ export class AppComponent implements OnInit
     return retour;
   }
 
-  damage(atq:any,cible:any,cibleBerserk:any)
+  damage(atq:any,cible:any,cibleBerserk:any,twicehit:any)
   {
     let persoatq;
     let persocible;
@@ -3598,6 +3635,25 @@ export class AppComponent implements OnInit
     if(this.teamattaque==0&&this.bonus1.find((b:any)=>b.classe=="Saber"))more = this.saberteamincrease;
     else if(this.teamattaque==1&&this.bonus2.find((b:any)=>b.classe=="Saber"))more = this.saberteamincrease;
     
+    //Passive Rider
+    let twice = 0;
+    if(!ec&&!twicehit)
+    {
+      if(persoatq&&persoatq.classe=="Rider")
+        twice += this.ridertwicechance;
+      if(this.teamattaque==0&&this.bonus1.find((b:any)=>b.classe=="Rider"))twice+=this.riderteamchance;
+      else if(this.teamattaque==1&&this.bonus2.find((b:any)=>b.classe=="Rider"))twice+=this.riderteamchance;
+      if(twice>0)
+      {
+        let tmp = Math.round(Math.random()*100);
+        if(tmp<twice)
+        {
+          this.damage(atq,cible,cibleBerserk,true);
+        }
+        
+      }
+    }
+
     if(ec&&classeatq=="Saber")
     {
       let dec = Math.round(persoatq.dmg * (this.saberpassiveincrease+more));
@@ -3680,7 +3736,7 @@ export class AppComponent implements OnInit
     }
     else
     {
-      tmp = {anim:'0',pos:this.ys[cible]+20,left:this.xs2[cible],dmg:"-"+dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
+      tmp = {anim:'0',pos:this.ys[cible]+this.addpos,left:this.xs2[cible],dmg:"-"+dmg,timer:0,color:'white',size:'40px', cc:cc, ec:ec};
       if(mult>1){tmp.color='#f1da00';tmp.size='50px'}
       else if(mult<1){tmp.color='#4738ff';tmp.size='30px'}
       if(type=="poison"){tmp.color='#003000';tmp.size='30px'}
@@ -3688,6 +3744,11 @@ export class AppComponent implements OnInit
       else if(type=="decrease"){tmp.color='red';tmp.size='20px';tmp.dmg = "-"+dmg+" dmg";}
       else if(type=="increase"){tmp.color='gold';tmp.size='20px';tmp.dmg = "+"+dmg+" dmg";}
     }
+
+    if(this.addpos==0)this.addpos=30;
+    else if(this.addpos==30)this.addpos=60;
+    else if(this.addpos==60)this.addpos=90;
+    else this.addpos=0;
 
     if(this.team1.indexOf(persocible)!=-1)
     {

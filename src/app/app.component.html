@@ -527,7 +527,7 @@
       </div>
   
       <img draggable="false" src="./assets/images/bgrecap.png" [style.display]="state=='recap'||state=='formation'||state=='friends'||state=='shop'?'unset':'none'" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:88%"/>
-      <img *ngIf="state=='pvm'" draggable="false" src="./assets/images/pvm/{{getPvmBg()}}.png" style="position: absolute;z-index: -1;width: 100%;top: 100px;height:71%"/>
+      <img *ngIf="state=='pvm'" draggable="false" src="./assets/images/pvm/{{getPvmBg()}}.png" style="position: absolute;z-index: -1;width: 100%;top: 100px;min-height:72%;max-height:100%"/>
   
       <!-- <RECAP -->
 
