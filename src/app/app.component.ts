@@ -119,8 +119,8 @@ import {
 export class AppComponent implements OnInit
 {
   public alteregopassiveheal = 0.3;
-  public archerpassivedodgeboost = 25;
-  public archerteamboost = 10;
+  public archerpassivedodgeboost = 30;
+  public archerteamboost = 15;
   public assassinpassivepoison = 0.1;
   public assassinteamboost = 0.02;
   public berserkerpassivechance1 = 75;
@@ -2822,7 +2822,7 @@ export class AppComponent implements OnInit
         let leftennemies;
         if(this.teamattaque==0)leftennemies = left2.length;
         else leftennemies = left1.length;
-        if(persocible.pdv>25000||leftennemies==1)smart = true;
+        if(persocible.pdv>15000||leftennemies==1)smart = true;
       }
       else if(persoatq.np.type=="AoE")
       {

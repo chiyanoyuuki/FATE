@@ -82,7 +82,7 @@
       <button (click)="endFight3()">Surrender</button>
     </div>
 
-      <img class="bgDuel" src="./assets/images/bgDuel.png" [style.filter]="npUsed!='0'?'invert(1)':'unset'" [style.left]="decalbgduelx+'px'" [style.top]="decalbgduely+'px'"/>
+      <img class="bgDuel" src="./assets/images/{{fightpvm?'pvm/'+getPvmBg():'bgDuel'}}.png" [style.filter]="npUsed!='0'?'invert(1)':'unset'" [style.left]="decalbgduelx+'px'" [style.top]="decalbgduely+'px'"/>
 
       <div *ngIf="test" style="position:absolute;left:815px;top:534px;">
         <div style="display: flex;"><button (click)="idpersotest=idpersotest-1;scaletest=getPersoTest().scale;">-</button><p>{{idpersotest}}</p><button (click)="idpersotest=idpersotest+1;scaletest=getPersoTest().scale;">+</button></div>
