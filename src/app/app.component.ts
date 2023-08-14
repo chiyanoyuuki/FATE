@@ -2694,7 +2694,6 @@ export class AppComponent implements OnInit
       if(t.pdv>0&&t.poison>0)
       {
         this.addDmg(false,false,i,t,t.poison,1,"poison",undefined);
-        if(t.pdv==0)this.setAnimX22(t,0,"death",false);
       }
     }
     for(let i=0;i<this.team2.length;i++)
@@ -2703,7 +2702,6 @@ export class AppComponent implements OnInit
       if(t2.pdv>0&&t2.poison>0)
       {
         this.addDmg(false,false,i,t2,t2.poison,1,"poison",undefined);
-        if(t2.pdv-t2.poison<=0)this.setAnimX22(t2,0,"death",false);
       }
     }
 
@@ -2876,8 +2874,8 @@ export class AppComponent implements OnInit
         {
           if(fail){persoatq.fail=true;}
           let dmg = this.damage(i,cible,false);
-          this.setAnimX(i,300,"coup");
-          this.setAnimX2(cible,-100,"takedamage",dmg);
+          if(persoatq.pdv>0)this.setAnimX(i,300,"coup");
+          if(persocible.pdv>0)this.setAnimX2(cible,-100,"takedamage",dmg);
         }
         if(passiveShielder!=-1)
         {
@@ -2890,14 +2888,16 @@ export class AppComponent implements OnInit
       {
         let dmgcleave: any = [];
         passiveBerserker.forEach((p:any)=>dmgcleave.push(this.damage(i,p,true)));
-        for(let i=0;i<passiveBerserker.length;i++){this.setAnimX2(passiveBerserker[i],-100,"takedamage",dmgcleave[i]);}
+        for(let i=0;i<passiveBerserker.length;i++)
+        {
+          if(dmgcleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],-100,"takedamage",dmgcleave[i]);
+        }
       }
       //APRES COUP NORMAL
       if(this.timerAttaque==900)
       {
         teamcible.filter((t:any)=>t.negative).forEach((t:any)=>t.negative=false);
         if(persocible.pdv>0)this.setAnimX2(cible,0,"idle",false);
-        else this.setAnimX2(cible,0,"death",false);
         if(persoatq.pdv>0)this.setAnimX(i,200,"dashavant");
       }
       //APRES CLEAVE
@@ -2906,7 +2906,6 @@ export class AppComponent implements OnInit
         for(let i=0;i<passiveBerserker.length;i++)
         {
           if(persosCleave[i].pdv>0)this.setAnimX2(passiveBerserker[i],0,"idle",false);
-          else this.setAnimX2(passiveBerserker[i],0,"death",false);
         }
       }
       //RETOUR IDLE
@@ -2941,7 +2940,7 @@ export class AppComponent implements OnInit
   {
 
     perso.npjauge = 0;
-    this.setAnimX(i,200,"np");
+    if(perso.pdv>0)this.setAnimX(i,200,"np");
     clearInterval(this.combatInterval);
     this.timerAttaque = 0;
     this.npUsed = "1";
@@ -2978,7 +2977,7 @@ export class AppComponent implements OnInit
       if(this.timerAttaque==7000)
       {
         this.npUsed = "0";
-        this.setAnimX(i,200,"idle");
+        if(perso.pdv>0)this.setAnimX(i,200,"idle");
         perso.nplaunched=false;
         this.personp = undefined;
         clearInterval(this.attaqueInterval);
@@ -3006,7 +3005,6 @@ export class AppComponent implements OnInit
                   let mult = this.getMultAffinity(perso.classe,persotodmg.classe);
                   dmg = Math.round(dmg*mult);
                   this.addDmg(false,false,i,persotodmg,dmg,mult,"normal",perso);
-                  if(persotodmg.pdv==0)this.setAnimX2(i,0,"death",false);
                 }
               }
             }
@@ -3021,7 +3019,6 @@ export class AppComponent implements OnInit
                   let mult = this.getMultAffinity(perso.classe,persotodmg.classe);
                   dmg = Math.round(dmg*mult);
                   this.addDmg(false,false,i,persotodmg,dmg,mult,"normal",perso);
-                  if(persotodmg.pdv==0)this.setAnimX2(i,0,"death",false);
                 }
               }
             }
@@ -3127,7 +3124,6 @@ export class AppComponent implements OnInit
             let mult = this.getMultAffinity(perso.classe,persocible.classe);
             dmg = Math.round(dmg*mult);
             this.addDmg(false,false,cible,persocible,dmg,mult,"normal",perso);
-            if(persocible.pdv==0)this.setAnimX2(cible,0,"death",false);
           }
           if(this.nptimer < 2000)
           {
@@ -3667,7 +3663,7 @@ export class AppComponent implements OnInit
     }
 
     //Passive Lancer
-    if(persoatq && type!="spike")
+    if(!ec && persoatq && type!="spike")
     {
       let spikedmg = 0;
       if(persocible.classe=="Lancer")
@@ -3676,8 +3672,6 @@ export class AppComponent implements OnInit
       }
       if(this.teamattaque==0&&this.bonus2.find((b:any)=>b.classe=="Lancer"))spikedmg+=this.lancerteamspike;
       else if(this.teamattaque==1&&this.bonus1.find((b:any)=>b.classe=="Lancer"))spikedmg+=this.lancerteamspike;
-  
-      console.log(spikedmg);
 
       if(spikedmg>0)this.addDmg(false,false,this.teamattaque==0?this.team1.indexOf(persoatq):this.team2.indexOf(persoatq),persoatq,Math.round(persocible.dmg*spikedmg),this.getMultAffinity(persocible.classe,persoatq.classe),"spike",persocible);
     }
@@ -3706,10 +3700,10 @@ export class AppComponent implements OnInit
             persocible.passive--;
             this.addDmg(false,false,cible,persocible,Math.round(persocible.pdvmax*this.alteregopassiveheal),1,"heal",undefined);
           }
-          else if(type=='spike')
+          else
           {
-            persoatq.arrivex=0;
-            persoatq.animation="death";
+            persocible.arrivex=0;
+            persocible.animation="death";
           }
         }
       }
