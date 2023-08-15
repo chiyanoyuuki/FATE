@@ -377,6 +377,14 @@ export class AppComponent implements OnInit
     //token garde compte
     //refresh auto donnees
 
+    let data = "SELECT fate_users.nom, fate_servants.servant_id, fate_servants.qte FROM fate_servants JOIN fate_users on fate_users.id = fate_servants.user_id WHERE fate_users.nom = 'Chiya'";
+    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEget?data='+data).subscribe(response=>
+    {
+      console.log(response);
+    });
+
+
+
     this.timerInterval = setInterval(() => {
       this.timerBanner -= 1000;
       this.timerQuartz -= 1000;
