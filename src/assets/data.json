@@ -9786,170 +9786,6 @@
     },
     {
 		"scale":1,
-		"id":419,
-		"nom":"Artoria Berserker",
-		"level":5,
-		"np":
-		{
-			"nom":"Sword of Inherited Hopes",
-			"type":"ST",
-			"dmg":0,
-			"effets":
-			[
-				"enforcement",
-				"ignoreInvincible"
-			],
-			"enemiesEffets":
-			[
-				"critDown"
-			]
-		},
-		"classe":"Berserker",
-		"img1":"./assets/images/servants/artoriaBerserker/0.png",
-		"img2":"./assets/images/servants/artoriaBerserker/1.png",
-		"img3":"./assets/images/servants/artoriaBerserker/2.png",
-		"img4":"./assets/images/servants/artoriaBerserker/3.png",
-		"special":false,
-		"sprite1":"./assets/images/servants/artoriaBerserker/sprite0.png",
-		"sprite2":"./assets/images/servants/artoriaBerserker/sprite1.png",
-		"sprite3":"./assets/images/servants/artoriaBerserker/sprite2.png"
-    },
-    {
-		"scale":1,
-		"id":420,
-		"nom":"Suzuka Gozen Summer",
-		"level":5,
-		"np":
-		{
-			"nom":"Midsummer Paradise - Nimbus Garden",
-			"type":"AoE",
-			"dmg":0,
-			"effets":
-			[
-				"ignoreInvincible"
-			]
-		},
-		"classe":"Rider",
-		"img1":"./assets/images/servants/suzukaGozenSummer/0.png",
-		"img2":"./assets/images/servants/suzukaGozenSummer/1.png",
-		"img3":"./assets/images/servants/suzukaGozenSummer/2.png",
-		"img4":"./assets/images/servants/suzukaGozenSummer/3.png",
-		"special":false,
-		"sprite1":"./assets/images/servants/suzukaGozenSummer/sprite0.png",
-		"sprite2":"./assets/images/servants/suzukaGozenSummer/sprite1.png",
-		"sprite3":"./assets/images/servants/suzukaGozenSummer/sprite2.png"
-    },
-    {
-		"scale":1,
-		"id":421,
-		"nom":"Chloe von Einzbern Summer",
-		"level":5,
-		"np":
-		{
-			"nom":"Delivering the Richly Coloured Black and White to You",
-			"type":"AoE",
-			"dmg":0,
-			"enemiesEffets":
-			[
-				"npChargeDown"
-			]
-		},
-		"classe":"Avenger",
-		"img1":"./assets/images/servants/chloevonEinzbernSummer/0.png",
-		"img2":"./assets/images/servants/chloevonEinzbernSummer/1.png",
-		"img3":"./assets/images/servants/chloevonEinzbernSummer/2.png",
-		"img4":"./assets/images/servants/chloevonEinzbernSummer/3.png",
-		"special":false,
-		"sprite1":"./assets/images/servants/chloevonEinzbernSummer/sprite0.png",
-		"sprite2":"./assets/images/servants/chloevonEinzbernSummer/sprite1.png",
-		"sprite3":"./assets/images/servants/chloevonEinzbernSummer/sprite2.png"
-    },
-    {
-		"scale":1,
-		"id":422,
-		"nom":"UDK Barghest",
-		"level":5,
-		"np":
-		{
-			"nom":" ",
-			"type":" ",
-			"dmg":0
-		},
-		"classe":"Archer",
-		"img1":"./assets/images/servants/uDKBarghest/0.jpg",
-		"img2":"./assets/images/servants/uDKBarghest/1.jpg",
-		"img3":"./assets/images/servants/uDKBarghest/2.jpg",
-		"img4":"./assets/images/servants/uDKBarghest/3.jpg",
-		"special":false,
-		"sprite1":"./assets/images/servants/uDKBarghest/sprite0.png",
-		"sprite2":"./assets/images/servants/uDKBarghest/sprite1.png",
-		"sprite3":"./assets/images/servants/uDKBarghest/sprite2.png"
-    },
-    {
-		"scale":1,
-		"id":423,
-		"nom":"Cait Cú Cerpriestess",
-		"level":5,
-		"np":
-		{
-			"nom":" ",
-			"type":" ",
-			"dmg":0
-		},
-		"classe":"Pretender",
-		"img1":"./assets/images/servants/caitCuCerpriestess/0.jpg",
-		"img2":"./assets/images/servants/caitCuCerpriestess/1.jpg",
-		"img3":"./assets/images/servants/caitCuCerpriestess/2.jpg",
-		"img4":"./assets/images/servants/caitCuCerpriestess/3.jpg",
-		"special":false,
-		"sprite1":"./assets/images/servants/caitCuCerpriestess/sprite0.png",
-		"sprite2":"./assets/images/servants/caitCuCerpriestess/sprite1.png",
-		"sprite3":"./assets/images/servants/caitCuCerpriestess/sprite2.png"
-    },
-    {
-		"scale":1,
-		"id":424,
-		"nom":"Mélusine Ruler",
-		"level":5,
-		"np":
-		{
-			"nom":" ",
-			"type":" ",
-			"dmg":0
-		},
-		"classe":"Ruler",
-		"img1":"./assets/images/servants/mélusineRuler/0.jpg",
-		"img2":"./assets/images/servants/mélusineRuler/1.jpg",
-		"img3":"./assets/images/servants/mélusineRuler/2.jpg",
-		"img4":"./assets/images/servants/mélusineRuler/3.jpg",
-		"special":false,
-		"sprite1":"./assets/images/servants/mélusineRuler/sprite0.png",
-		"sprite2":"./assets/images/servants/mélusineRuler/sprite1.png",
-		"sprite3":"./assets/images/servants/mélusineRuler/sprite2.png"
-    },
-    {
-		"scale":1,
-		"id":425,
-		"nom":"Cnoc na Riabh",
-		"level":5,
-		"np":
-		{
-			"nom":" ",
-			"type":" ",
-			"dmg":0
-		},
-		"classe":"Foreigner",
-		"img1":"./assets/images/servants/cnocnaRiabh/0.jpg",
-		"img2":"./assets/images/servants/cnocnaRiabh/1.jpg",
-		"img3":"./assets/images/servants/cnocnaRiabh/2.jpg",
-		"img4":"./assets/images/servants/cnocnaRiabh/3.jpg",
-		"special":false,
-		"sprite1":"./assets/images/servants/cnocnaRiabh/sprite0.png",
-		"sprite2":"./assets/images/servants/cnocnaRiabh/sprite1.png",
-		"sprite3":"./assets/images/servants/cnocnaRiabh/sprite2.png"
-    },
-    {
-		"scale":1,
 		"id":385,
 		"nom":"Craft Essence",
 		"img1":"https://gamepress.gg/grandorder/sites/grandorder/files/2017-07/craft_essence_002.jpg",
@@ -10238,7 +10074,10 @@
 		"img2":"./assets/images/servants/tonelico/1.jpg",
 		"img3":"./assets/images/servants/tonelico/2.jpg",
 		"img4":"./assets/images/servants/tonelico/3.jpg",
-		"special":false
+		"special":false,
+		"sprite1":"./assets/images/servants/tonelico/sprite0.png",
+		"sprite2":"./assets/images/servants/tonelico/sprite1.png",
+		"sprite3":"./assets/images/servants/tonelico/sprite2.png"
     },
     {
 		"scale":1,
@@ -10383,6 +10222,265 @@
 		"img3":"./assets/images/servants/ereshalter/0.png",
 		"img4":"./assets/images/servants/ereshalter/4.png",
 		"special":true
-    }
+    },
+    {
+		"scale":1,
+		"id":419,
+		"nom":"Artoria Berserker",
+		"level":5,
+		"np":
+		{
+			"nom":"Sword of Inherited Hopes",
+			"type":"ST",
+			"dmg":0,
+			"effets":
+			[
+				"enforcement",
+				"ignoreInvincible"
+			],
+			"enemiesEffets":
+			[
+				"critDown"
+			]
+		},
+		"classe":"Berserker",
+		"img1":"./assets/images/servants/artoriaBerserker/0.png",
+		"img2":"./assets/images/servants/artoriaBerserker/1.png",
+		"img3":"./assets/images/servants/artoriaBerserker/2.png",
+		"img4":"./assets/images/servants/artoriaBerserker/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/artoriaBerserker/sprite0.png",
+		"sprite2":"./assets/images/servants/artoriaBerserker/sprite1.png",
+		"sprite3":"./assets/images/servants/artoriaBerserker/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":420,
+		"nom":"Suzuka Gozen Summer",
+		"level":5,
+		"np":
+		{
+			"nom":"Midsummer Paradise - Nimbus Garden",
+			"type":"AoE",
+			"dmg":0,
+			"effets":
+			[
+				"ignoreInvincible"
+			]
+		},
+		"classe":"Rider",
+		"img1":"./assets/images/servants/suzukaGozenSummer/0.png",
+		"img2":"./assets/images/servants/suzukaGozenSummer/1.png",
+		"img3":"./assets/images/servants/suzukaGozenSummer/2.png",
+		"img4":"./assets/images/servants/suzukaGozenSummer/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/suzukaGozenSummer/sprite0.png",
+		"sprite2":"./assets/images/servants/suzukaGozenSummer/sprite1.png",
+		"sprite3":"./assets/images/servants/suzukaGozenSummer/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":421,
+		"nom":"Chloe von Einzbern Summer",
+		"level":5,
+		"np":
+		{
+			"nom":"Delivering the Richly Coloured Black and White to You",
+			"type":"AoE",
+			"dmg":0,
+			"enemiesEffets":
+			[
+				"npChargeDown"
+			]
+		},
+		"classe":"Avenger",
+		"img1":"./assets/images/servants/chloevonEinzbernSummer/0.png",
+		"img2":"./assets/images/servants/chloevonEinzbernSummer/1.png",
+		"img3":"./assets/images/servants/chloevonEinzbernSummer/2.png",
+		"img4":"./assets/images/servants/chloevonEinzbernSummer/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/chloevonEinzbernSummer/sprite0.png",
+		"sprite2":"./assets/images/servants/chloevonEinzbernSummer/sprite1.png",
+		"sprite3":"./assets/images/servants/chloevonEinzbernSummer/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":422,
+		"nom":"UDK Barghest",
+		"level":5,
+		"np":
+		{
+			"nom":"Watersave Galatine ",
+			"type":"ST",
+			"dmg":0,
+			"enemiesEffets":
+			[
+				"removeBuffs"
+			]
+		},
+		"classe":"Archer",
+		"img1":"./assets/images/servants/udkbarghest/0.png",
+		"img2":"./assets/images/servants/udkbarghest/1.png",
+		"img3":"./assets/images/servants/udkbarghest/2.png",
+		"img4":"./assets/images/servants/udkbarghest/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/udkbarghest/sprite0.png",
+		"sprite2":"./assets/images/servants/udkbarghest/sprite1.png",
+		"sprite3":"./assets/images/servants/udkbarghest/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":423,
+		"nom":"Cait Cú Cerpriestess",
+		"level":5,
+		"np":
+		{
+			"nom":"Easter Failnaught",
+			"type":"AoE",
+			"dmg":0,
+			"effets":
+			[
+				"restoreHp",
+				"increaseNpCharge",
+				"critUp"
+			],
+			"enemiesEffets":
+			[
+				"curse",
+				"poison",
+				"atkDown"
+			]
+		},
+		"classe":"Pretender",
+		"img1":"./assets/images/servants/caitcucerpriestess/0.png",
+		"img2":"./assets/images/servants/caitcucerpriestess/1.png",
+		"img3":"./assets/images/servants/caitcucerpriestess/2.png",
+		"img4":"./assets/images/servants/caitcucerpriestess/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/caitcucerpriestess/sprite0.png",
+		"sprite2":"./assets/images/servants/caitcucerpriestess/sprite1.png",
+		"sprite3":"./assets/images/servants/caitcucerpriestess/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":424,
+		"nom":"Mélusine Ruler",
+		"level":5,
+		"np":
+		{
+			"nom":"Sprite Albion ",
+			"type":"AoE ",
+			"dmg":0,
+			"effets":
+			[
+				"critUp"
+			]
+		},
+		"classe":"Ruler",
+		"img1":"./assets/images/servants/melusineruler/0.png",
+		"img2":"./assets/images/servants/melusineruler/1.png",
+		"img3":"./assets/images/servants/melusineruler/2.png",
+		"img4":"./assets/images/servants/melusineruler/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/melusineruler/sprite0.png",
+		"sprite2":"./assets/images/servants/melusineruler/sprite1.png",
+		"sprite3":"./assets/images/servants/melusineruler/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":425,
+		"nom":"Cnoc na Riabh",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Foreigner",
+		"img1":"./assets/images/servants/cnocnariabh/0.png",
+		"img2":"./assets/images/servants/cnocnariabh/1.png",
+		"img3":"./assets/images/servants/cnocnariabh/2.png",
+		"img4":"./assets/images/servants/cnocnariabh/3.png",
+		"special":false,
+		"sprite1":"./assets/images/servants/cnocnariabh/sprite0.png",
+		"sprite2":"./assets/images/servants/cnocnariabh/sprite1.png",
+		"sprite3":"./assets/images/servants/cnocnariabh/sprite2.png"
+    },
+    {
+		"scale":1,
+		"id":426,
+		"nom":"Teach summer",
+		"level":4,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Rider",
+		"img1":"./assets/images/servants/teachsummer/0.png",
+		"img2":"./assets/images/servants/teachsummer/0.png",
+		"img3":"./assets/images/servants/teachsummer/0.png",
+		"img4":"./assets/images/servants/teachsummer/3.png",
+		"special":true,
+		"sprite1":"./assets/images/servants/teachsummer/sprite.png"	
+    },
+    {
+		"scale":1,
+		"id":427,
+		"nom":"Ragnar",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Berserker",
+		"img1":"./assets/images/servants/ragnar/0.png",
+		"img2":"./assets/images/servants/ragnar/1.png",
+		"img3":"./assets/images/servants/ragnar/1.png",
+		"img4":"./assets/images/servants/ragnar/3.png",
+		"special":true,
+		"sprite1":"./assets/images/servants/ragnar/sprite.png"	
+    },
+    {
+		"scale":1,
+		"id":428,
+		"nom":"Lagertha",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Berserker",
+		"img1":"./assets/images/servants/lagertha/0.png",
+		"img2":"./assets/images/servants/lagertha/0.png",
+		"img3":"./assets/images/servants/lagertha/0.png",
+		"img4":"./assets/images/servants/lagertha/3.png",
+		"special":true,
+    },
+     {
+		"scale":1,
+		"id":429,
+		"nom":"Aslaug",
+		"level":5,
+		"np":
+		{
+			"nom":" ",
+			"type":" ",
+			"dmg":0
+		},
+		"classe":"Archer",
+		"img1":"./assets/images/servants/aslaug/0.png",
+		"img2":"./assets/images/servants/aslaug/1.png",
+		"img3":"./assets/images/servants/aslaug/1.png",
+		"img4":"./assets/images/servants/aslaug/3.png",
+		"special":true,
+		"sprite1":"./assets/images/servants/aslaug/sprite.png"	
+    },
 	
 ]
