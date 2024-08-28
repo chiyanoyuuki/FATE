@@ -1,6 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import DATA from '../assets/data.json';
 import SUCC from '../assets/succes.json';
+
+import MOCKUSERS from '../assets/mocks/users.json';
+import MOCKUSERDATA from '../assets/mocks/servants.json';
+import MOCKBANNER from '../assets/mocks/banner.json';
+import MOCKLEVELS from '../assets/mocks/levels.json';
+import MOCKHISTOPULLS from '../assets/mocks/histopulls.json';
+import MOCKHISTOPVP from '../assets/mocks/histopvp.json';
+import MOCKPROFILES from '../assets/mocks/profile.json';
+import MOCKPVM from '../assets/mocks/pvm.json';
+import MOCKPVP from '../assets/mocks/pvp.json';
+
 import { HttpClient } from '@angular/common/http';
 import { Observable, from } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -122,6 +133,16 @@ import {
 
 export class AppComponent implements OnInit
 {
+  public mockUsers = MOCKUSERS;
+  public mockUserData = MOCKUSERDATA;
+  public mockBanner = MOCKBANNER;
+  public mockLevels = MOCKLEVELS;
+  public mockHistoPulls = MOCKHISTOPULLS;
+  public mockHistoPvp = MOCKHISTOPVP;
+  public mockProfiles = MOCKPROFILES;
+  public mockPvm = MOCKPVM;
+  public mockPvp = MOCKPVP;
+
   public alteregopassiveheal = 0.3;
   public archerpassivedodgeboost = 30;
   public archerteamboost = 15;
@@ -377,12 +398,6 @@ export class AppComponent implements OnInit
     //token garde compte
     //refresh auto donnees
 
-    let data = "SELECT fate_users.nom, fate_servants.servant_id, fate_servants.qte FROM fate_servants JOIN fate_users on fate_users.id = fate_servants.user_id WHERE fate_users.nom = 'Chiya'";
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEget?data='+data).subscribe(response=>
-    {
-      console.log(response);
-    });
-
 
 
     this.timerInterval = setInterval(() => {
@@ -401,7 +416,7 @@ export class AppComponent implements OnInit
       if(this.timerBanner<=0)
       {
         this.timerBanner = 1800000;
-        this.generateBanner();
+        //this.generateBanner();
       }
   },1000);
 
@@ -501,10 +516,7 @@ export class AppComponent implements OnInit
     else this.myprofile = {servs:[]};
     this.profile = id;
     this.myprofiledata = this.users.find((u:any)=>u.id==id);
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetProfilesData?id=' + id).subscribe(data=>
-    {
-      this.myprofilestats = data[0];
-    });
+    this.myprofilestats = [];
   }
 
   public resetVid()
@@ -878,8 +890,7 @@ export class AppComponent implements OnInit
 
   getPvp()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
-    {
+    let pvp:any = this.mockPvp;
       this.pvps = pvp;
       this.pvp = pvp.find((p:any)=>p.user_id==this.id);
 
@@ -900,7 +911,6 @@ export class AppComponent implements OnInit
         }
       });
       //this.myprofile = this.profiles.find((p:any)=>p.user_id==this.id)
-    });
   }
 
   connect(afterCreate:boolean){
@@ -909,9 +919,10 @@ export class AppComponent implements OnInit
       return;
     }
     this.sonbtn.play();
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUser?nom=' + this.pseudo + '&mdp=' + this.mdp).subscribe(data=>
-    {
-      if(data.length==0&&afterCreate)
+
+    let data: any = this.mockUsers.filter((user:any)=>user.nom.toLowerCase()==this.pseudo.toLowerCase()&&user.mdp==this.mdp);
+    console.log(this.mockUsers,data,this.pseudo,this.mdp);
+    if(data.length==0&&afterCreate)
       {
         this.message = "Pseudo déjà existant.";
       }
@@ -927,7 +938,7 @@ export class AppComponent implements OnInit
         this.score = data[0].score;
         this.getUserData(false);
         this.getUsers();
-        this.conn();
+        //this.conn();
         this.getLevels();
         this.getTitles();
         this.getShop();
@@ -942,7 +953,6 @@ export class AppComponent implements OnInit
         this.getPvp();
         this.getPvm();
       }
-    });
   }
 
   getPvpHisto():any
@@ -983,8 +993,7 @@ export class AppComponent implements OnInit
   
   gethistoPvp()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetHistoPvp?').subscribe(data=>
-    {
+    let data:any = this.mockHistoPvp;
       this.histowinstot = [];
 
       this.users.forEach((u:any)=>{
@@ -1043,15 +1052,12 @@ export class AppComponent implements OnInit
           h.team2[i].perso = this.data.find((d:any)=>d.id==h.team2[i].id);
         }
       })
-    });
   }
 
   getLevels()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(data=>
-    {
-      this.levels = data;
-    });
+    let data = this.mockLevels;
+    this.levels = data;
   }
 
   addSuccess(id:any)
@@ -1797,10 +1803,8 @@ export class AppComponent implements OnInit
 
   refreshUser()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUser?nom=' + this.pseudo + '&mdp=' + this.mdp).subscribe(data=>
-    {
-        this.quartz = data[0].quartz;
-    });
+    let data: any = this.mockUsers.filter((user:any)=>user.nom==this.pseudo&&user.mdp==this.mdp);
+    this.quartz = data[0].quartz;
   }
 
   conn()
@@ -1825,29 +1829,25 @@ export class AppComponent implements OnInit
 
   getTitles()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEtitles?id=' + this.id).subscribe(data=>
-    {
+    let data :any = this.mockUserData.filter((d:any)=>d.user_id==this.id);
       this.titles = data.map((x:any)=>
       {
         let tmp = this.data.find((y:any)=>y.id==x.servant_id).id;
         return tmp;
       });
       this.titles = this.titles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
-    });
   }
 
   getAllTitles()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEallTitles').subscribe(data=>
+    let data = [...new Set(this.mockUserData.map(item => item.servant_id))];
+    this.allTitles = data.map((x:any)=>
     {
-      this.allTitles = data.map((x:any)=>
-      {
-        let tmp = this.data.find((y:any)=>y.id==x.servant_id).id;
-        return tmp;
-      });
-      this.allTitles = this.allTitles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
-      this.allTitles = this.allTitles.filter((d:any)=>this.data.find((x:any)=>x.id==d).level>3);
+      let tmp = this.data.find((y:any)=>y.id==x);
+      return tmp.id;
     });
+    this.allTitles = this.allTitles.filter((d:any)=>this.data.find((x:any)=>x.id==d).nom!="Craft Essence");
+    this.allTitles = this.allTitles.filter((d:any)=>this.data.find((x:any)=>x.id==d).level>3);
   }
 
   got(quartz:number,servant:any,servantWithTitle:any)
@@ -1986,23 +1986,22 @@ export class AppComponent implements OnInit
   }
 
   getUsers(){
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUsers').subscribe(data=>
-    {
-      this.users = data;
+    let data: any = this.mockUsers;
+    
+    this.users = data;
 
-      this.users.forEach((u:any)=>{
-        let ecart = this.getEcart(u.last,false,true,false);
-        u.lastinvoc = u.last;
-        u.last = ecart;
-        ecart = this.getEcart(u.conn,false,false,false);
-        let ecartActivite = this.getEcart(u.maj,false,false,true);
-        if(ecartActivite as number > 7) ecart = "Déconnecté"
-        u.conn = ecart;
-      });      
+    this.users.forEach((u:any)=>{
+      let ecart = this.getEcart(u.last,false,true,false);
+      u.lastinvoc = u.last;
+      u.last = ecart;
+      ecart = this.getEcart(u.conn,false,false,false);
+      let ecartActivite = this.getEcart(u.maj,false,false,true);
+      if(ecartActivite as number > 7) ecart = "Déconnecté"
+      u.conn = ecart;
+    });      
 
-      this.users.sort((a: any,b: any) => b.score - a.score);
-      this.getAllTitles();
-    });
+    this.users.sort((a: any,b: any) => b.score - a.score);
+    this.getAllTitles();
   }
 
   getEcart(date:any,getSec:boolean, ilya: boolean, getmin: boolean){
@@ -2115,8 +2114,7 @@ export class AppComponent implements OnInit
 
   getShop()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEshop').subscribe(data=>
-    {
+    let data: any = [];
       this.cantSell = [];
       data.forEach((d:any)=>
       {
@@ -2136,8 +2134,7 @@ export class AppComponent implements OnInit
         if(x.price_servant_id_with_title!=-1)tmp.servantPriceWithTitle = this.data.find((y:any)=>y.id==x.price_servant_id_with_title);
         return tmp;
       });
-      this.shop.sort((a:any,b:any)=>{return a.price_quartz - b.price_quartz})
-    });
+      this.shop.sort((a:any,b:any)=>{return a.price_quartz - b.price_quartz});
   }
 
   getProfile(id:any)
@@ -2221,8 +2218,7 @@ export class AppComponent implements OnInit
   getHistoPulls()
   {
     let ce = [385,386,387,388,389];
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetHistoPulls').subscribe(data=>
-    {
+    let data = this.mockHistoPulls;
       this.histoPulls = data;
       this.histoPulls.forEach((h:any)=>{
         let tmp: any = [];
@@ -2235,15 +2231,13 @@ export class AppComponent implements OnInit
       })
       this.histpull = this.histoPulls.filter((h:any)=>h.user_id==this.id);
     this.histpull.sort((a:any,b:any)=>{return new Date(b.date).getTime() - new Date(a.date).getTime()});
-    });
     
     
   }
 
   getProfiles()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetProfiles').subscribe(data=>
-    {
+    let data:any = this.mockProfiles;
       this.profiles = data;
       this.profiles.forEach((p:any)=>{
         if(p.servant_id!=-1)p.servant = this.data.find((d:any)=>d.id==p.servant_id);
@@ -2283,7 +2277,6 @@ export class AppComponent implements OnInit
         this.myprofile = this.profiles.find((p:any)=>p.user_id==this.id)
         this.profiledesc = this.myprofile.description;
       }
-    });
   }
 
   descProfile()
@@ -2334,19 +2327,19 @@ export class AppComponent implements OnInit
 
   getUserData(calc:boolean)
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUserData?id=' + this.id).subscribe(data=>
+    console.log("==>",this.mockUserData,this.id);
+    let data = this.mockUserData.filter((d:any)=>d.user_id==this.id);
+    
+    this.userData = data.map((x:any)=>
     {
-      this.userData = data.map((x:any)=>
-      {
-        let tmp = this.data.find((y:any)=>y.id==x.servantid);
-        tmp.qte = x.qte;
-        return tmp;
-      });
-      if(calc)
-      {
-        this.calc();
-      }
+      let tmp = this.data.find((y:any)=>y.id==x.servant_id);
+      tmp.qte = x.qte;
+      return tmp;
     });
+    if(calc)
+    {
+      this.calc();
+    }
   }
 
   setBanner()
@@ -2364,27 +2357,25 @@ export class AppComponent implements OnInit
 
   getBanner()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetBanner').subscribe(data=>
+    let data = this.mockBanner;
+    this.banner = data[0];
+    this.setBanner();
+    let date = new Date(data[0].maj);
+    let now = Date.now();
+    let ecart = now-date.getTime();
+    ecart = ecart/1000;//secondes
+    ecart = ecart/60;//minutes
+    if(ecart>30)
     {
-      this.banner = data[0];
-      this.setBanner();
-      let date = new Date(data[0].maj);
-      let now = Date.now();
-      let ecart = now-date.getTime();
-      ecart = ecart/1000;//secondes
-      ecart = ecart/60;//minutes
-      if(ecart>30)
-      {
-        this.generateBanner();
-        this.timerBanner = 30*60000;
-      }
-      else
-      {
-        ecart = ecart*60000;
-        let restant = 30*60000 - ecart;
-        this.timerBanner = restant;
-      }
-    });
+      //this.generateBanner();
+      this.timerBanner = 30*60000;
+    }
+    else
+    {
+      ecart = ecart*60000;
+      let restant = 30*60000 - ecart;
+      this.timerBanner = restant;
+    }
   }
 
   reinitBanner(){
@@ -3934,12 +3925,10 @@ export class AppComponent implements OnInit
 
   launchDuel()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
-    {
+    let pvp:any = this.mockPvp;
       this.fightpvm = false;
       this.duel = pvp;
-      this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(levels=>
-      {
+      let levels: any = this.mockLevels;
         this.levels = levels;
 
         this.state="duel";
@@ -4050,17 +4039,13 @@ export class AppComponent implements OnInit
         
         this.adversaire = this.profile;
         this.profile = undefined;
-      });
-    });
   }
 
   launchDuelPvm(farm:any)
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvp').subscribe(pvp=>
-    {
+    let pvp:any = this.mockPvp;
       this.duel = pvp;
-      this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetLevels?').subscribe(levels=>
-      {
+      let levels: any = this.mockLevels;
         this.farm = farm;
         this.fightpvm = true;
         this.levels = levels;
@@ -4160,8 +4145,6 @@ export class AppComponent implements OnInit
           tmp.pdvmax = tmp.pdv;
         }
         this.profile = undefined;
-      });
-    });
   }
 
   getPdv(perso:any)
@@ -4803,8 +4786,7 @@ export class AppComponent implements OnInit
 
   getPvm()
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetPvm').subscribe(data=>
-    {
+    let data:any = this.mockPvm;
       this.pvm = data;
       this.pvm.forEach((p:any)=>{
         let team: any = [];
@@ -4819,7 +4801,6 @@ export class AppComponent implements OnInit
         }
         p.team = team;
       });
-    });
   }
 
   getPvmLevel()
@@ -4959,16 +4940,14 @@ export class AppComponent implements OnInit
           }
           
           this.majInterval = setInterval(() => {
-            this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUser?nom=' + this.pseudo + '&mdp=' + this.mdp).subscribe(data=>
-            {
-                this.user = data[0];
-                this.quartz = data[0].quartz;
-                this.id = data[0].id;
-                this.score = data[0].score;
-                this.getUserData(true);
-                this.getTitles();
-                this.calc();
-            });
+            let data: any = this.mockUsers.filter((user:any)=>user.nom==this.pseudo&&user.mdp==this.mdp);
+            this.user = data[0];
+            this.quartz = data[0].quartz;
+            this.id = data[0].id;
+            this.score = data[0].score;
+            this.getUserData(true);
+            this.getTitles();
+            this.calc();
             clearInterval(this.majInterval);
         },300);
         });
@@ -5277,34 +5256,32 @@ export class AppComponent implements OnInit
 
   buyServ(sell:any)
   {
-    this.http.get<any>('https://www.chiya-no-yuuki.fr/FATEgetUserData?id=' + this.id).subscribe(data=>
+    let data = this.mockUserData.filter((d:any)=>d.user_id==this.id);
+    let priceid = -1;
+    let title = sell.price_servant_id_with_title!=-1;
+
+    if(sell.price_servant_id!=-1) priceid = sell.price_servant_id;
+    if(sell.price_servant_id_with_title!=-1) priceid = sell.price_servant_id_with_title;
+
+    if(sell.quartz!=-1)
     {
-      let priceid = -1;
-      let title = sell.price_servant_id_with_title!=-1;
-
-      if(sell.price_servant_id!=-1) priceid = sell.price_servant_id;
-      if(sell.price_servant_id_with_title!=-1) priceid = sell.price_servant_id_with_title;
-
-      if(sell.quartz!=-1)
+      this.buyServ3(sell);
+    }
+    else if(data.find((d:any)=>d.servantid==priceid))
+    {
+      if(title && this.titles.find((t:any)=>t==priceid))
       {
         this.buyServ3(sell);
       }
-      else if(data.find((d:any)=>d.servantid==priceid))
+      else if(!title)
       {
-        if(title && this.titles.find((t:any)=>t==priceid))
-        {
-          this.buyServ3(sell);
-        }
-        else if(!title)
-        {
-          this.buyServ3(sell);
-        }
-        else
-        {
-          this.refreshBoutique();
-        }
+        this.buyServ3(sell);
       }
-    });
+      else
+      {
+        this.refreshBoutique();
+      }
+    }
   }
 
   buyServ3(sell:any)

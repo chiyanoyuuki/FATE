@@ -1,0 +1,227 @@
+[
+  {
+    "id": "1",
+    "nom": "Stay Night - Main characters",
+    "level": "0",
+    "team": [403, 2, 11, 390],
+    "levels": [20, 40, 40, 20],
+    "ascs": [0, 0, 0, 0],
+    "bg": "0"
+  },
+  {
+    "id": "2",
+    "nom": "Stay Night - Common servants",
+    "level": "1",
+    "team": [17, 31, 23, 39],
+    "levels": [40, 40, 40, 40],
+    "ascs": [0, 0, 0, 0],
+    "bg": "1"
+  },
+  {
+    "id": "3",
+    "nom": "Stay Night - Secondary characters",
+    "level": "2",
+    "team": [395, 12, 47, 398],
+    "levels": [60, 60, 60, 60],
+    "ascs": [0, 0, 0, 0],
+    "bg": "1"
+  },
+  {
+    "id": "4",
+    "nom": "Stay Night (Boss)",
+    "level": "3",
+    "team": [111, 3, 399],
+    "levels": [60, 100, 60],
+    "ascs": [0, 0, 0],
+    "bg": "1"
+  },
+  {
+    "id": "5",
+    "nom": "Zero - Main characters",
+    "level": "4",
+    "team": [413, 2, 108, 37],
+    "levels": [80, 80, 80, 80],
+    "ascs": [0, 1, 0, 3],
+    "bg": "2"
+  },
+  {
+    "id": "6",
+    "nom": "Zero - Secondary characters",
+    "level": "5",
+    "team": [48, 71, 110, 32],
+    "levels": [80, 80, 80, 80],
+    "ascs": [0, 0, 0, 0],
+    "bg": "2"
+  },
+  {
+    "id": "7",
+    "nom": "Zero - Banquet of Kings (Boss)",
+    "level": "6",
+    "team": [12, 108, 2],
+    "levels": [100, 100, 100],
+    "ascs": [1, 3, 3],
+    "bg": "3"
+  },
+  {
+    "id": "8",
+    "nom": "Lord El Melloi - Main characters",
+    "level": "7",
+    "team": [37, 81, 243, 241],
+    "levels": [90, 90, 90, 90],
+    "ascs": [0, 0, 0, 0],
+    "bg": "4"
+  },
+  {
+    "id": "9",
+    "nom": "Heaven s Feel (Boss)",
+    "level": "8",
+    "team": [395],
+    "levels": [250],
+    "ascs": [3],
+    "bg": "5"
+  },
+  {
+    "id": "10",
+    "nom": "Apocrypha - Main Characters",
+    "level": "9",
+    "team": [76, 59, 208, 93],
+    "levels": [100, 100, 100, 100],
+    "ascs": [3, 0, 0, 1],
+    "bg": "6"
+  },
+  {
+    "id": "11",
+    "nom": "Apocrypha - Servants of Red",
+    "level": "10",
+    "team": [14, 34, 199, 85],
+    "levels": [100, 100, 100, 100],
+    "ascs": [0, 0, 0, 0],
+    "bg": "6"
+  },
+  {
+    "id": "12",
+    "nom": "Apocrypha - Servants of Black",
+    "level": "11",
+    "team": [52, 82, 207, 75],
+    "levels": [100, 100, 100, 100],
+    "ascs": [0, 0, 1, 0],
+    "bg": "6"
+  },
+  {
+    "id": "13",
+    "nom": "Apocrypha (Boss)",
+    "level": "12",
+    "team": [93],
+    "levels": [300],
+    "ascs": [3],
+    "bg": "7"
+  },
+  {
+    "id": "14",
+    "nom": "1st Singularity - Common Servants",
+    "level": "13",
+    "team": [29, 30, 9, 10],
+    "levels": [110, 110, 110, 110],
+    "ascs": [0, 0, 0, 0],
+    "bg": "8"
+  },
+  {
+    "id": "15",
+    "nom": "1st Singularity - Main Servants",
+    "level": "14",
+    "team": [6, 48, 52, 59],
+    "levels": [110, 110, 110, 110],
+    "ascs": [0, 0, 0, 0],
+    "bg": "8"
+  },
+  {
+    "id": "16",
+    "nom": "1st Singularity (Boss)",
+    "level": "15",
+    "team": [106],
+    "levels": [350],
+    "ascs": [3],
+    "bg": "9"
+  },
+  {
+    "id": "17",
+    "nom": "2nd Singularity - Common Servants",
+    "level": "16",
+    "team": [18, 49, 7, 22],
+    "levels": [120, 120, 120, 120],
+    "ascs": [0, 0, 0, 0],
+    "bg": "10"
+  },
+  {
+    "id": "18",
+    "nom": "2nd Singularity - Main Servants",
+    "level": "17",
+    "team": [5, 37, 41, 58],
+    "levels": [120, 120, 120, 120],
+    "ascs": [0, 0, 0, 0],
+    "bg": "10"
+  },
+  {
+    "id": "19",
+    "nom": "2nd Singularity (Boss)",
+    "level": "18",
+    "team": [8],
+    "levels": [400],
+    "ascs": [3],
+    "bg": "11"
+  },
+  {
+    "id": "20",
+    "nom": "3nd Singularity - Common Servants",
+    "level": "19",
+    "team": [14, 25, 15, 63],
+    "levels": [130, 130, 130, 130],
+    "ascs": [0, 0, 0, 0],
+    "bg": "12"
+  },
+  {
+    "id": "21",
+    "nom": "3nd Singularity - Main Servants",
+    "level": "20",
+    "team": [47, 60, 65, 66],
+    "levels": [130, 130, 130, 130],
+    "ascs": [0, 0, 0, 0],
+    "bg": "12"
+  },
+  {
+    "id": "22",
+    "nom": "3nd Singularity (Boss)",
+    "level": "21",
+    "team": [67],
+    "levels": [450],
+    "ascs": [3],
+    "bg": "13"
+  },
+  {
+    "id": "23",
+    "nom": "4nd Singularity - Common servants",
+    "level": "22",
+    "team": [74, 62, 51, 82],
+    "levels": [140, 140, 140, 140],
+    "ascs": [0, 0, 0, 0],
+    "bg": "14"
+  },
+  {
+    "id": "24",
+    "nom": "4nd Singularity - Main servants",
+    "level": "23",
+    "team": [78, 77, 76, 83],
+    "levels": [140, 140, 140, 140],
+    "ascs": [0, 0, 0, 0],
+    "bg": "14"
+  },
+  {
+    "id": "25",
+    "nom": "4nd Singularity (Boss)",
+    "level": "24",
+    "team": [75],
+    "levels": [500],
+    "ascs": [3],
+    "bg": "15"
+  }
+]

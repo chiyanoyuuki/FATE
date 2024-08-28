@@ -1,0 +1,270 @@
+[
+  {
+    "user_id": "54",
+    "user_id2": "76",
+    "win": "1",
+    "team1": [
+      {
+        "id": 82,
+        "np": 0,
+        "pdv": 16510,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 23405,
+        "ascension": 3
+      },
+      {
+        "id": 202,
+        "np": 0,
+        "pdv": 29920,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 35190,
+        "ascension": 3
+      },
+      {
+        "id": 97,
+        "np": 0,
+        "pdv": 26388,
+        "title": false,
+        "niveau": 99,
+        "pdvmax": 26388,
+        "ascension": 2
+      },
+      {
+        "id": 323,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 60,
+        "pdvmax": 17029,
+        "ascension": 1
+      }
+    ],
+    "team2": [
+      {
+        "id": 379,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 26849,
+        "ascension": 3
+      },
+      {
+        "id": 300,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 60,
+        "pdvmax": 19790,
+        "ascension": 1
+      },
+      {
+        "id": 268,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 30,
+        "pdvmax": 11749,
+        "ascension": 0
+      },
+      {
+        "id": 25,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 20630,
+        "ascension": 3
+      }
+    ],
+    "date": "2023-08-07 14:01:31",
+    "id": "11"
+  },
+  {
+    "user_id": "54",
+    "user_id2": "48",
+    "win": "1",
+    "team1": [
+      {
+        "id": 82,
+        "np": 0,
+        "pdv": 10327,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 33118,
+        "ascension": 3
+      },
+      {
+        "id": 202,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 29991,
+        "ascension": 3
+      },
+      {
+        "id": 97,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 99,
+        "pdvmax": 34790,
+        "ascension": 2
+      },
+      {
+        "id": 323,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 60,
+        "pdvmax": 13870,
+        "ascension": 1
+      }
+    ],
+    "team2": [
+      {
+        "id": 232,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 99,
+        "pdvmax": 36977,
+        "ascension": 2
+      },
+      {
+        "id": 106,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 60,
+        "pdvmax": 20245,
+        "ascension": 1
+      },
+      {
+        "id": 361,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 99,
+        "pdvmax": 28491,
+        "ascension": 2
+      },
+      {
+        "id": 211,
+        "np": 0,
+        "pdv": 0,
+        "title": false,
+        "niveau": 99,
+        "pdvmax": 27441,
+        "ascension": 2
+      }
+    ],
+    "date": "2023-08-07 14:04:48",
+    "id": "12"
+  },
+  {
+    "user_id": "57",
+    "user_id2": "64",
+    "win": "1",
+    "team1": [
+      {
+        "id": 49,
+        "np": 0,
+        "pdv": 27163,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 27163,
+        "ascension": 3
+      },
+      {
+        "id": 251,
+        "np": 0,
+        "pdv": 27122,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 27122,
+        "ascension": 3
+      },
+      {
+        "id": 56,
+        "np": 0,
+        "pdv": 21590,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 22326,
+        "ascension": 3
+      },
+      {
+        "id": 55,
+        "np": 0,
+        "pdv": 30334,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 30334,
+        "ascension": 3
+      }
+    ],
+    "team2": [
+      { "id": 148, "np": 0, "pdv": 0, "title": false, "pdvmax": 909 },
+      { "id": 16, "np": 0, "pdv": 0, "title": false, "pdvmax": 851 },
+      { "id": 21, "np": 0, "pdv": 0, "title": false, "pdvmax": 725 },
+      { "id": 54, "np": 0, "pdv": 0, "title": false, "pdvmax": 945 }
+    ],
+    "date": "2023-08-07 14:13:46",
+    "id": "13"
+  },
+  {
+    "user_id": "57",
+    "user_id2": "64",
+    "win": "1",
+    "team1": [
+      {
+        "id": 49,
+        "np": 0,
+        "pdv": 24975,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 25286,
+        "ascension": 3
+      },
+      {
+        "id": 251,
+        "np": 0,
+        "pdv": 25569,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 25694,
+        "ascension": 3
+      },
+      {
+        "id": 56,
+        "np": 0,
+        "pdv": 30621,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 30621,
+        "ascension": 3
+      },
+      {
+        "id": 55,
+        "np": 0,
+        "pdv": 26671,
+        "title": false,
+        "niveau": 100,
+        "pdvmax": 26671,
+        "ascension": 3
+      }
+    ],
+    "team2": [
+      { "id": 148, "np": 0, "pdv": 0, "title": false, "pdvmax": 974 },
+      { "id": 16, "np": 0, "pdv": 0, "title": false, "pdvmax": 615 },
+      { "id": 21, "np": 0, "pdv": 0, "title": false, "pdvmax": 947 },
+      { "id": 54, "np": 0, "pdv": 0, "title": false, "pdvmax": 954 }
+    ],
+    "date": "2023-08-07 14:14:00",
+    "id": "14"
+  }
+]
